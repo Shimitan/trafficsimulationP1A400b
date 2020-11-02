@@ -1,2 +1,18 @@
 Her har vi scripts osv.
 ^_^
+
+
+Road
+	start xy
+	slut xy
+	lanes
+	speed limit
+	
+
+car	
+	location xy
+	Reaction time
+	acceleration
+	speed
+	endpoint xy
+	
