@@ -2,13 +2,13 @@
 #include "car.h"
 #include <stdio.h>
 #include <string.h>
-
+#include <unistd.h>
 
 
 int main(void){
    int done = 0;
 
-    /* road setup */
+    /* road setup */ 
     struct road road1;
     road1.startX = 0;
     road1.startY = 0;
@@ -17,7 +17,7 @@ int main(void){
     road1.speedLimit = 50;
     road1.lanes = 1;
 
-    /* car setup */
+    /* car setup */ 
     struct car car1;
     car1.locationX = 0;
     car1.locationY = 0;
@@ -32,7 +32,7 @@ int main(void){
 
         car1.locationX += car1.speed;
 
-        printf("speed = %ld, location = %lf\n", car1.speed, car1.locationX);
+        printf("speed = %lf, location = %lf\n", car1.speed, car1.locationX);
 
 
         if(car1.locationX > road1.endX){
