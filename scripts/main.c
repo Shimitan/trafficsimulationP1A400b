@@ -1,5 +1,5 @@
-#include "road.h"
-#include "car.h"
+#include "roadOLD.h"
+#include "carOLD.h"
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
@@ -11,17 +11,17 @@ int main(void){
 
     /* road setup */ 
     struct road road1;
-    road1.startX = 0;
-    road1.startY = 0;
-    road1.endX = 100;
-    road1.endY = 0;
+    road1.start.X = 0;
+    road1.start.Y = 0;
+    road1.end.X = 100;
+    road1.end.Y = 0;
     road1.speedLimit = 50;
     road1.lanes = 1;
 
     /* car setup */ 
     struct car *carP, car1;
-    car1.locationX = 0;
-    car1.locationY = 0;
+    car1.location.X = 0;
+    car1.location.Y = 0;
     (*carP).acceleration = 1;
     car1.speed = 0;
 

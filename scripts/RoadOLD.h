@@ -1,8 +1,8 @@
 #include <math.h>
 
 struct point{
-    int X;
-    int Y;
+    double X;
+    double Y;
 };
 
 struct vector{
@@ -22,7 +22,7 @@ struct road{
 
 };
 
-
+/* Finder enhedsvektor til en vej som bruges til bevægelse af biler */
 struct vector findDirection(struct point start, struct point end){
     struct vector vectorOut;
     struct vector vectorRoad;
