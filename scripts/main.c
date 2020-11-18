@@ -4,6 +4,7 @@
 #include <string.h>
 #include <unistd.h>
 
+int makeCar(double acceleration);
 
 int main(void){
    int done = 0;
@@ -18,12 +19,14 @@ int main(void){
     road1.lanes = 1;
 
     /* car setup */ 
-    struct car car1;
+    struct car *carP, car1;
     car1.locationX = 0;
     car1.locationY = 0;
-    car1.acceleration = 1;
+    (*carP).acceleration = 1;
     car1.speed = 0;
 
+    makeCar((*carP).acceleration);
+    /*
     while(!done){
 
         if(car1.speed < road1.speedLimit){
@@ -39,5 +42,12 @@ int main(void){
             done = 1;
         }
     }
-    printf("done\n");
+    printf("done\n"); */
+}
+
+int makeCar(double acceleration){
+
+    printf("%lf\n", acceleration);
+    
+
 }
