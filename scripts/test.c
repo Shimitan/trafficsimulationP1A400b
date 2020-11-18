@@ -13,7 +13,7 @@ struct road{
     int endID;
 
     double length;
-    int speedLimit;
+    double speedLimit;
 
     int maxCars;
     int currCars;
@@ -56,6 +56,8 @@ void moveCar(struct car* car, struct road road){
         car->speed -= car->acceleration;
     }
 
+
+
     if(car->dirBool == 1){
         car->location += car->speed;
     }else{
@@ -75,9 +77,10 @@ void moveCar(struct car* car, struct road road){
 
 double breakLength(struct car car){
     double dist = 0;
+    double i;
     
-    for(car.speed; car.speed > 0; car.speed -= car.acceleration){
-        dist += car.speed;
+    for(i = car.speed; i > 0; i -= car.acceleration){
+        dist += i;
     }
 
     return dist;
@@ -85,22 +88,32 @@ double breakLength(struct car car){
 
 
 int main(void){
-
+    struct road road;
     struct car car;
-    car.acceleration = 0.34;
+    int i = 0;
+
+    car.acceleration = 0.034;
     car.location = 0;
     car.speed = 0;
     car.dirBool = 1;
 
-    struct road road;
     road.length = 1000;
     road.speedLimit = 1.3889;
 
-    while(1){
-    moveCar(&car, road);
-    }
     
 
+    while(1){
+        moveCar(&car, road);
 
+        i++;
+        
+        printf("%d\n", i);
+        if(car.location == 1000){
+            break;
+        }
+        
+    }
 
+    
+    return 0;
 }
