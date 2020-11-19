@@ -16,10 +16,11 @@ void createCar(car* car, road road, int* k);
 
 int main(void){
     int i = 0;
+    int active = 0;
     int k = 0;
     int j = 110;
     road road;
-    car car[2];
+    car car[100];
     // car car[NUM_OF_CARS];
     // for(i = 0; i < NUM_OF_CARS; i++){
     //     car[i].active = 0;
@@ -60,8 +61,9 @@ int main(void){
 
         k++;
 
-        if(k > 100 && car[1].active != 1){
+        if(k > 10 && active != 1){
             car[1].active = 1;
+            active = 1;
             road.currCars[1] = 1;
         }
 
@@ -69,7 +71,7 @@ int main(void){
         for(i = 0; i < 2; i++){
             moveCar(&car[i], car, &road, i);
             if(car[i].active == 1){
-                printf("Location = %lf, Speed = %lf, ID = %d\n", car[i].location, car[i].speed, car[i].ID);
+                printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
             }
         }
 

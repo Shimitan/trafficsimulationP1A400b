@@ -49,6 +49,7 @@ double disToEnd(car car, road road, struct car carArr[]){
     int carInFront;
     double aheadLocation;
     isCarInFront(car, road, carArr, &aheadLocation, &carInFront);
+    printf("aheadLocation: %lf carInFront: %d\n", aheadLocation, carInFront);
     if(carInFront == 1){
         if(car.dirBool == 1){
             return aheadLocation - car.location;
@@ -84,7 +85,7 @@ void isCarInFront(car car, road road, struct car carArr[], double* carLocation, 
         }
     }
 
-    qsort(locations, k+1, sizeof(double), cmpfunc);
+    qsort(locations, k, sizeof(double), cmpfunc);
 
     for(j = 0; j < k; j++){
         printf("%lf ", locations[j]);
@@ -122,6 +123,7 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
 
         double distanceToEnd = disToEnd(*car, *road, carArr);
         car->breakLength = breakLength(*car);
+        printf("BreakLength: %lf\n", car->breakLength);
 
         /* Ændre bilens fart */
         if(car->speed < road->speedLimit && car->breakLength < distanceToEnd){
@@ -160,5 +162,5 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
 }
 
 int cmpfunc (const void * a, const void * b){
-    return ( *(int*)a - *(int*)b );
+    return ( *(double*)a - *(double*)b );
 }
