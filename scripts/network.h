@@ -1,3 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct car car;
+typedef struct road road;
+
 struct roadPoints{
     int ID;
     int connections;
@@ -12,7 +18,7 @@ struct road{
     double speedLimit;
 
     int maxCars;
-    int currCars;
+    int currCars[100];
 
 };
 
@@ -26,45 +32,80 @@ struct car{
     int currGoal;
     int endGoal;
     int dirBool; /* 1 er positiv retning. 0 er negativ retning */
+    int active;
+    int ID;
+    int arrayIndex;
 
 };
 
+double disToEnd(car car, road road, struct car carArr[]);
+void moveCar(car* car, struct car carArr[], road* road, int carNum);
+double breakLength(car car);
+void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
+int cmpfunc (const void * a, const void * b);
+
 /* lav om til: afstand til hvad end der er foran. om det er kryds eller anden bil */
-double disToEnd(struct car car, struct road road){
-    if(car.dirBool == 1){
-        return road.length - car.location;
-    }else{
-        return road.length - (road.length - car.location);
-    }
-}
-
-void moveCar(struct car* car, struct road road){
-    double distanceToEnd = disToEnd(*car, road);
-    car->breakLength = breakLength(*car);
-
-    if(car->speed < road.speedLimit && car->breakLength < distanceToEnd){
-        car->speed += car->acceleration;
-    }else if(car->breakLength >= distanceToEnd){
-        car->speed -= car->acceleration;
-    }
-
-    if(car->dirBool == 1){
-        car->location += car->speed;
-    }else{
-        car->location -= car->speed;
-    }
-
-    if(car->speed <= 0){
-        car->speed = 0;
-        if(car->dirBool == 1){
-            car->location = road.length; /* endpoint om det er bag en anden bil eller i et kryds */
+double disToEnd(car car, road road, struct car carArr[]){
+    int carInFront;
+    double aheadLocation;
+    isCarInFront(car, road, carArr, &aheadLocation, &carInFront);
+    if(carInFront == 1){
+        if(car.dirBool == 1){
+            return aheadLocation - car.location;
         }else{
-            car->location = 0;
+            return car.location - aheadLocation;
+        }
+    }else{
+        if(car.dirBool == 1){
+            return road.length - car.location;
+        }else{
+            return road.length - (road.length - car.location);
         }
     }
 }
 
-double breakLength(struct car car){
+void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool){
+
+    int i = 0, k = 0, j;
+    double locations[100];
+    int temp, SENTINAL = 1;
+    
+
+    while(SENTINAL){
+        temp = road.currCars[i];
+        if(temp == -1){
+            SENTINAL = 0;
+        }else if(carArr[i].dirBool == car.dirBool){
+            locations[i] = carArr[temp].location;
+            k++;
+            i++;
+        }else{
+            i++;
+        }
+    }
+
+    qsort(locations, k+1, sizeof(double), cmpfunc);
+
+    for(j = 0; j < k; j++){
+        printf("%lf ", locations[j]);
+    }
+    printf("\n");
+    for(j = 0; j < k-1; j++){
+        if(car.location == locations[j]){
+            *bool = 1;
+            if(car.dirBool == 1){
+                *carLocation = locations[j+1];
+            }else{
+                *carLocation = locations[j-1];
+            }
+            break;
+        }else{
+            *bool = 0;
+        }
+    }
+}
+
+double breakLength(car car){
     double dist = 0;
     double i;
     
@@ -73,4 +114,51 @@ double breakLength(struct car car){
     }
 
     return dist;
+}
+
+void moveCar(car* car, struct car carArr[], road* road, int carNum){
+    if(car->active == 1){
+        
+
+        double distanceToEnd = disToEnd(*car, *road, carArr);
+        car->breakLength = breakLength(*car);
+
+        /* Ændre bilens fart */
+        if(car->speed < road->speedLimit && car->breakLength < distanceToEnd){
+            car->speed += car->acceleration;
+        }else if(car->breakLength >= distanceToEnd && car->speed > 0){
+            car->speed -= car->acceleration;
+            if(car->speed < 0){
+                car->speed = 0;
+            }
+        }
+
+        /* Ændre bilens position */
+        if(car->dirBool == 1){
+            car->location += car->speed;
+        }else{
+            car->location -= car->speed;
+        }
+
+        /* Snapper bilen når den stopper */
+        if(car->location >= car->currGoal && car->dirBool == 1){
+            car->speed = 0;
+            car->active = 0;
+            road->currCars[car->arrayIndex] = -1;
+            
+            car->location = road->length; /* endpoint om det er bag en anden bil eller i et kryds */
+            
+            printf("Car stopped %d\n", carNum);
+        }else if(car->location <= car->currGoal && car->dirBool == 0){
+            car->speed = 0;
+            car->active = 0;
+            road->currCars[car->arrayIndex] = -1;
+
+            car->location = 0;
+        }
+    }
+}
+
+int cmpfunc (const void * a, const void * b){
+    return ( *(int*)a - *(int*)b );
 }
