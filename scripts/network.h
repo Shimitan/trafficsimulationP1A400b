@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//UwUbuntu
+
 typedef struct car car;
 typedef struct road road;
 
