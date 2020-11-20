@@ -30,7 +30,7 @@
 
 # Executables
 a.exe
-/scripts/a.exe
+**/a.exe
 *.exe
 *.out
 *.app
