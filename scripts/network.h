@@ -43,6 +43,7 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
+double distanceBetweenCars(car car);
 
 /* lav om til: afstand til hvad end der er foran. om det er kryds eller anden bil */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -52,9 +53,9 @@ double disToEnd(car car, road road, struct car carArr[]){
     printf("aheadLocation: %lf carInFront: %d\n", aheadLocation, carInFront);
     if(carInFront == 1){
         if(car.dirBool == 1){
-            return aheadLocation - car.location;
+            return (aheadLocation - (5 + distanceBetweenCars(car))) - car.location;
         }else{
-            return car.location - aheadLocation;
+            return car.location - (aheadLocation + (5 + distanceBetweenCars(car)));
         }
     }else{
         if(car.dirBool == 1){
@@ -63,6 +64,14 @@ double disToEnd(car car, road road, struct car carArr[]){
             return road.length - (road.length - car.location);
         }
     }
+}
+
+/* afstand bilen bør holde til bilen foran baseret på hastighed */
+double distanceBetweenCars(car car){
+    double kmt = car.speed * 10;
+    kmt *= 3.6;
+
+    return (kmt/4) + 1;
 }
 
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool){

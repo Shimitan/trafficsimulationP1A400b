@@ -9,6 +9,7 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
+double distanceBetweenCars(car car);
 
 
 void createCar(car* car, road road, int* k);
@@ -76,6 +77,7 @@ int main(void){
         }
 
         if(car[0].active == 0 && car[1].active == 0){
+            printf("break\n");
             break;
         }
     }
