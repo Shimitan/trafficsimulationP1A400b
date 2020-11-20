@@ -12,7 +12,7 @@ int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
 
 
-void createCar(car* car, road road, int* k);
+void createCar(car* car, road* road, int* k);
 
 
 int main(void){
@@ -21,7 +21,7 @@ int main(void){
     int k = 0;
     int j = 110;
     road road;
-    car car[100];
+    car car[1000];
     // car car[NUM_OF_CARS];
     // for(i = 0; i < NUM_OF_CARS; i++){
     //     car[i].active = 0;
@@ -84,7 +84,7 @@ int main(void){
     while(1){
         j++;
         if(j >= 120){
-            createCar(&car[k], road, &k);
+            createCar(&car[k], &road, &k);
             j = 0;
         }
         
@@ -96,6 +96,7 @@ int main(void){
         }
 
         if(k > 100){
+            printf("breakDOWN\n");
             break;
         }
     }
@@ -103,7 +104,7 @@ int main(void){
 }
 
 
-void createCar(car* car, road road, int* k){
+void createCar(car* car, road* road, int* k){
     int SENTINAL = 1, i = 0;
 
     car->acceleration = 0.034;
@@ -112,11 +113,11 @@ void createCar(car* car, road road, int* k){
     car->dirBool = 1;
     car->active = 1;
     car->ID = *k;
-    car->currGoal = road.length;
+    car->currGoal = road->length;
 
     while(SENTINAL){
-        if(road.currCars[i] == -1){
-            road.currCars[i] = *k;
+        if(road->currCars[i] == -1){
+            road->currCars[i] = *k;
             car->arrayIndex = i;
             SENTINAL = 0;
         }
