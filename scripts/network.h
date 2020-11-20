@@ -44,6 +44,7 @@ double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
+void pushArray(car car, road *road);
 
 /* lav om til: afstand til hvad end der er foran. om det er kryds eller anden bil */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -129,7 +130,6 @@ double breakLength(car car){
 void moveCar(car* car, struct car carArr[], road* road, int carNum){
     if(car->active == 1){
         
-
         double distanceToEnd = disToEnd(*car, *road, carArr);
         car->breakLength = breakLength(*car);
         printf("BreakLength: %lf\n", car->breakLength);
@@ -155,7 +155,7 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
         if(car->location >= car->currGoal && car->dirBool == 1){
             car->speed = 0;
             car->active = 0;
-            road->currCars[car->arrayIndex] = -1;
+            pushArray(*car, road);
             
             car->location = road->length; /* endpoint om det er bag en anden bil eller i et kryds */
             
@@ -172,4 +172,32 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
 
 int cmpfunc (const void * a, const void * b){
     return ( *(double*)a - *(double*)b );
+}
+
+void pushArray(car car, road *road){
+    int i = 0, SENTINAL = 1;
+
+    while(SENTINAL){
+        if(road->currCars[i] == car.ID){
+            SENTINAL = 0;
+        }else{
+            i++;
+        }
+    }
+
+    SENTINAL = 1;
+
+    while(SENTINAL){
+        road->currCars[i] = road->currCars[i + 1];
+        if (road->currCars[i + 1] == -1){
+            SENTINAL = 0;
+        }
+        i++;
+    }
+
+    /*DEBUG PRINTER ARRAYET XD*/
+    for (i = 0; i < 100; i++) {
+        printf("currCar[%d]: %d\n", i, road->currCars[i]);
+    }
+
 }

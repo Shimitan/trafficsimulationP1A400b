@@ -39,64 +39,66 @@ int main(void){
         road.currCars[i] = -1;
     }
 
-    car[0].location = 0;
-    car[0].dirBool = 1;
-    car[0].speed = 0;
-    car[0].acceleration = 0.034;
-    car[0].ID = 0;
-    car[0].active = 0;
-    car[0].currGoal = road.length;
-    road.currCars[0] = 0;
+    // car[0].location = 0;
+    // car[0].dirBool = 1;
+    // car[0].speed = 0;
+    // car[0].acceleration = 0.034;
+    // car[0].ID = 0;
+    // car[0].active = 0;
+    // car[0].currGoal = road.length;
+    // road.currCars[0] = 0;
 
-    car[1].location = 0;
-    car[1].dirBool = 1;
-    car[1].speed = 0;
-    car[1].acceleration = 0.05;
-    car[1].ID = 1;
-    car[1].active = 0;
-    car[1].currGoal = road.length;
+    // car[1].location = 0;
+    // car[1].dirBool = 1;
+    // car[1].speed = 0;
+    // car[1].acceleration = 0.05;
+    // car[1].ID = 1;
+    // car[1].active = 0;
+    // car[1].currGoal = road.length;
     
 
-    car[0].active = 1;
+    // car[0].active = 1;
+    // while(1){
+
+    //     k++;
+
+    //     if(k > 10 && active != 1){
+    //         car[1].active = 1;
+    //         active = 1;
+    //         road.currCars[1] = 1;
+    //     }
+
+
+    //     for(i = 0; i < 2; i++){
+    //         moveCar(&car[i], car, &road, i);
+    //         if(car[i].active == 1){
+    //             printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
+    //         }
+    //     }
+
+    //     if(car[0].active == 0 && car[1].active == 0){
+    //         printf("break\n");
+    //         break;
+    //     }
+    // }
     while(1){
-
-        k++;
-
-        if(k > 10 && active != 1){
-            car[1].active = 1;
-            active = 1;
-            road.currCars[1] = 1;
+        j++;
+        if(j >= 120){
+            createCar(&car[k], road, &k);
+            j = 0;
         }
-
-
-        for(i = 0; i < 2; i++){
+        
+        for(i = 0; i < k; i++){
             moveCar(&car[i], car, &road, i);
             if(car[i].active == 1){
                 printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
             }
         }
 
-        if(car[0].active == 0 && car[1].active == 0){
-            printf("break\n");
+        if(k > 100){
             break;
         }
     }
-    
-    // while(1){
-    //     j++;
-    //     if(j >= 120){
-    //         createCar(&car[k], road, &k);
-    //         j = 0;
-    //     }
-        
-    //     for(i = 0; i < k; i++){
-    //         moveCar(&car[i], car, &road, i);
-    //     }
-
-    //     if(k > 100){
-    //         break;
-    //     }
-    // }
     return 0;
 }
 
@@ -110,13 +112,15 @@ void createCar(car* car, road road, int* k){
     car->dirBool = 1;
     car->active = 1;
     car->ID = *k;
+    car->currGoal = road.length;
 
     while(SENTINAL){
-
         if(road.currCars[i] == -1){
             road.currCars[i] = *k;
             car->arrayIndex = i;
+            SENTINAL = 0;
         }
+        i++;
     }
     *k += 1;
 }
