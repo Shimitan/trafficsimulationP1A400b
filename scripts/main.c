@@ -107,18 +107,37 @@ int main(void){
 void createCar(car* car, road* road, int* k){
     int SENTINAL = 1, i = 0;
 
+    /*hardcoded shit. plz fix*//*
+    car->currNode = 1;
+    car->endGoal = 0;
+    car->currGoal = 0; */
+    if((*k % 2) == 0){
+        car->currNode = 1;
+        car->endGoal = 0;
+        car->currGoal = 0;
+    }else{
+        car->currNode = 0;
+        car->endGoal = 1;
+        car->currGoal = 1;
+    }
+
+
     car->acceleration = 0.034;
-    car->location = 0;
     car->speed = 0;
-    car->dirBool = 1;
     car->active = 1;
     car->ID = *k;
-    car->currGoal = road->length;
+
+    if(car->currGoal > car->currNode){
+        car->location = 0;
+        car->dirBool = 1;
+    }else{
+        car->location = road->length;
+        car->dirBool = 0;
+    }
 
     while(SENTINAL){
         if(road->currCars[i] == -1){
             road->currCars[i] = *k;
-            car->arrayIndex = i;
             SENTINAL = 0;
         }
         i++;

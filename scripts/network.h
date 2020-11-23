@@ -31,13 +31,12 @@ struct car{
     double location;
     double breakLength;
 
+    int currNode;
     int currGoal;
     int endGoal;
     int dirBool; /* 1 er positiv retning. 0 er negativ retning */
     int active;
     int ID;
-    int arrayIndex;
-
 };
 
 double disToEnd(car car, road road, struct car carArr[]);
@@ -103,17 +102,25 @@ void isCarInFront(car car, road road, struct car carArr[], double* carLocation, 
         printf("%lf ", locations[j]);
     }
     printf("\n");
-    for(j = 0; j < k-1; j++){
-        if(car.location == locations[j]){
-            *bool = 1;
-            if(car.dirBool == 1){
+    if(car.dirBool == 1){
+        for(j = 0; j < k-1; j++){
+            if(car.location == locations[j]){
+                *bool = 1;
                 *carLocation = locations[j+1];
+                break;
             }else{
-                *carLocation = locations[j-1];
+                *bool = 0;
             }
-            break;
-        }else{
-            *bool = 0;
+        }
+    }else{
+        for(j = k; j > 0; j--){
+            if(car.location == locations[j]){
+                *bool = 1;
+                *carLocation = locations[j-1];
+                break;
+            }else{
+                *bool = 0;
+            }
         }
     }
 }
@@ -130,6 +137,8 @@ double breakLength(car car){
 }
 
 void moveCar(car* car, struct car carArr[], road* road, int carNum){
+    int i;
+    int SENTINAL = 1;
     if(car->active == 1){
         
         double distanceToEnd = disToEnd(*car, *road, carArr);
@@ -154,7 +163,7 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
         }
 
         /* Snapper bilen når den stopper */
-        if(car->location >= car->currGoal && car->dirBool == 1){
+        if(car->location >= road->length && car->dirBool == 1){
             car->speed = 0;
             car->active = 0;
             pushArray(*car, road);
@@ -162,11 +171,10 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
             car->location = road->length; /* endpoint om det er bag en anden bil eller i et kryds */
             
             printf("Car stopped %d\n", carNum);
-        }else if(car->location <= car->currGoal && car->dirBool == 0){
+        }else if(car->location <= 0 && car->dirBool == 0){
             car->speed = 0;
             car->active = 0;
-            road->currCars[car->arrayIndex] = -1;
-
+            pushArray(*car, road);
             car->location = 0;
         }
     }
