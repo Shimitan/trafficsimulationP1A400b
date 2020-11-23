@@ -88,7 +88,7 @@ void isCarInFront(car car, road road, struct car carArr[], double* carLocation, 
         if(temp == -1){
             SENTINAL = 0;
         }else if(carArr[i].dirBool == car.dirBool){
-            locations[i] = carArr[temp].location;
+            locations[k] = carArr[temp].location;
             k++;
             i++;
         }else{
