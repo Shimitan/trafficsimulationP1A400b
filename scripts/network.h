@@ -137,8 +137,6 @@ double breakLength(car car){
 }
 
 void moveCar(car* car, struct car carArr[], road* road, int carNum){
-    int i;
-    int SENTINAL = 1;
     if(car->active == 1){
         
         double distanceToEnd = disToEnd(*car, *road, carArr);
