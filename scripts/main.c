@@ -137,8 +137,9 @@ void createCar(car* car, road* road, int* k){
 
     //virker ikke pt
 
-    // car->acceleration = ((rand() % 7) + 31)/1000;
-    // car->speedDeviation = ((rand() % 20) - 10)/100;
+    car->acceleration = ((double)(rand() % 7) + 31)/1000;
+    printf("----> ACCELERATION: %lf <------", car->acceleration);
+    car->speedDeviation = ((rand() % 10) + 1)/100;
 
     car->speed = 0;
     car->active = 1;
