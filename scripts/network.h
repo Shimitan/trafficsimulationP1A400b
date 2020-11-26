@@ -30,6 +30,7 @@ struct car{
     double speed;
     double location;
     double breakLength;
+    double speedDeviation;
 
     int currNode;
     int currGoal;
@@ -46,6 +47,7 @@ void isCarInFront(car car, road road, struct car carArr[], double* carLocation, 
 int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
 void pushArray(car car, road *road);
+void roadOutput(car car[], road road);
 
 /* lav om til: afstand til hvad end der er foran. om det er kryds eller anden bil */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -144,7 +146,7 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
         printf("BreakLength: %lf\n", car->breakLength);
 
         /* Ændre bilens fart */
-        if(car->speed < road->speedLimit && car->breakLength < distanceToEnd){
+        if(car->speed < (road->speedLimit + car->speedDeviation) && car->breakLength < distanceToEnd){
             car->speed += car->acceleration;
         }else if(car->breakLength >= distanceToEnd && car->speed > 0){
             car->speed -= car->acceleration;
@@ -207,5 +209,11 @@ void pushArray(car car, road *road){
     for (i = 0; i < 100; i++) {
         printf("currCar[%d]: %d\n", i, road->currCars[i]);
     }
+}
+
+void roadOutput(car car[], road road){
+
+
+
 
 }

@@ -10,6 +10,7 @@ double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
+void roadOutput(car car[], road road);
 
 
 void createCar(car* car, road* road, int* k);
@@ -34,6 +35,8 @@ int main(void){
     */
     road.length = 1000;
     road.speedLimit = 1.3889;
+
+    srand(398);
 
     for(i = 0; i < 100; i++){
         road.currCars[i] = -1;
@@ -110,7 +113,7 @@ void createCar(car* car, road* road, int* k){
     /*hardcoded shit. plz fix*//*
     car->currNode = 1;
     car->endGoal = 0;
-    car->currGoal = 0; */
+    car->currGoal = 0; 
     if((*k % 2) == 0){
         car->currNode = 1;
         car->endGoal = 0;
@@ -119,10 +122,24 @@ void createCar(car* car, road* road, int* k){
         car->currNode = 0;
         car->endGoal = 1;
         car->currGoal = 1;
-    }
+    } */
+
+    do{
+        car->currNode = rand() % 2;
+        car->endGoal = rand() % 2;
+    }while(car->currNode == car->endGoal);
+        car->currGoal = car->endGoal;
+
 
 
     car->acceleration = 0.034;
+    car->speedDeviation = 0;
+
+    //virker ikke pt
+
+    // car->acceleration = ((rand() % 7) + 31)/1000;
+    // car->speedDeviation = ((rand() % 20) - 10)/100;
+
     car->speed = 0;
     car->active = 1;
     car->ID = *k;
