@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define INFINITY 2147483647
+
 //UwUbuntu
 
 typedef struct car car;
@@ -8,7 +10,15 @@ typedef struct road road;
 
 struct roadPoints{
     int ID;
+
     int connections;
+
+    /* pathfinding ting */
+    int visited;
+    struct roadPoints* parent;
+    double local;
+
+
 };
 
 struct road{
@@ -38,6 +48,10 @@ struct car{
     int dirBool; /* 1 er positiv retning. 0 er negativ retning */
     int active;
     int ID;
+
+    // skal være antal af nodes i guess
+    int path[100];
+    int pathStep;
 };
 
 double disToEnd(car car, road road, struct car carArr[]);
@@ -48,6 +62,7 @@ int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
 void pushArray(car car, road *road);
 void roadOutput(car car[], road road);
+double kmhTompds(road road);
 
 /* lav om til: afstand til hvad end der er foran. om det er kryds eller anden bil */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -209,6 +224,35 @@ void pushArray(car car, road *road){
     for (i = 0; i < 100; i++) {
         printf("currCar[%d]: %d\n", i, road->currCars[i]);
     }
+}
+
+double kmhTompds(road road){
+    return road.speedLimit = (road.speedLimit/3.6)/10;
+}
+
+void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
+    int i;
+    int currentNode = car->currNode;
+
+    //100 skal være antal nodes
+    for(i = 0; i < 100; i++){
+        if(!(i == currentNode)){
+
+            
+
+
+
+        }
+    }
+    
+    for(i = 0; i < roadPointsArr[currentNode].connections; i++){
+
+    }
+
+
+
+
+
 }
 
 void roadOutput(car car[], road road){

@@ -11,6 +11,7 @@ void isCarInFront(car car, road road, struct car carArr[], double* carLocation, 
 int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
 void roadOutput(car car[], road road);
+double kmhTompds(road road);
 
 
 void createCar(car* car, road* road, int* k);
@@ -23,18 +24,16 @@ int main(void){
     int j = 110;
     road road;
     car car[1000];
-    // car car[NUM_OF_CARS];
-    // for(i = 0; i < NUM_OF_CARS; i++){
-    //     car[i].active = 0;
-    // }
-    /*
-    car.acceleration = 0.034;
-    car.location = 0;
-    car.speed = 0;
-    car.dirBool = 1;
-    */
+    
+    for(i = 0; i < 1000; i++){
+        car[i].active = 0;
+    }
+    
+    
     road.length = 1000;
-    road.speedLimit = 1.3889;
+    road.speedLimit = 50;
+
+    road.speedLimit = kmhTompds(road);
 
     srand(398);
 
@@ -42,48 +41,6 @@ int main(void){
         road.currCars[i] = -1;
     }
 
-    // car[0].location = 0;
-    // car[0].dirBool = 1;
-    // car[0].speed = 0;
-    // car[0].acceleration = 0.034;
-    // car[0].ID = 0;
-    // car[0].active = 0;
-    // car[0].currGoal = road.length;
-    // road.currCars[0] = 0;
-
-    // car[1].location = 0;
-    // car[1].dirBool = 1;
-    // car[1].speed = 0;
-    // car[1].acceleration = 0.05;
-    // car[1].ID = 1;
-    // car[1].active = 0;
-    // car[1].currGoal = road.length;
-    
-
-    // car[0].active = 1;
-    // while(1){
-
-    //     k++;
-
-    //     if(k > 10 && active != 1){
-    //         car[1].active = 1;
-    //         active = 1;
-    //         road.currCars[1] = 1;
-    //     }
-
-
-    //     for(i = 0; i < 2; i++){
-    //         moveCar(&car[i], car, &road, i);
-    //         if(car[i].active == 1){
-    //             printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
-    //         }
-    //     }
-
-    //     if(car[0].active == 0 && car[1].active == 0){
-    //         printf("break\n");
-    //         break;
-    //     }
-    // }
     while(1){
         j++;
         if(j >= 120){
@@ -110,32 +67,17 @@ int main(void){
 void createCar(car* car, road* road, int* k){
     int SENTINAL = 1, i = 0;
 
-    /*hardcoded shit. plz fix*//*
-    car->currNode = 1;
-    car->endGoal = 0;
-    car->currGoal = 0; 
-    if((*k % 2) == 0){
-        car->currNode = 1;
-        car->endGoal = 0;
-        car->currGoal = 0;
-    }else{
-        car->currNode = 0;
-        car->endGoal = 1;
-        car->currGoal = 1;
-    } */
-
     do{
         car->currNode = rand() % 2;
         car->endGoal = rand() % 2;
     }while(car->currNode == car->endGoal);
-        car->currGoal = car->endGoal;
+    car->currGoal = car->endGoal;
 
 
 
     car->acceleration = 0.034;
     car->speedDeviation = 0;
 
-    //virker ikke pt
 
     car->acceleration = ((double)(rand() % 7) + 31)/1000;
     printf("----> ACCELERATION: %lf <------", car->acceleration);
