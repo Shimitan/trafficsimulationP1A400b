@@ -29,8 +29,6 @@
 *.dylib
 
 # Executables
-**/a.exe
-a.exe
 *.exe
 *.out
 *.app
