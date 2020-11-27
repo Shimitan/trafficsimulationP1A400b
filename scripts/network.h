@@ -11,13 +11,13 @@ typedef struct road road;
 struct roadPoints{
     int ID;
 
-    int connections;
+    int numOfConnections;
+    int connections[4];
 
     /* pathfinding ting */
     int visited;
     struct roadPoints* parent;
     double local;
-
 
 };
 
@@ -231,28 +231,86 @@ double kmhTompds(road road){
 }
 
 void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
-    int i;
-    int currentNode = car->currNode;
+    int i, j, k, elements = 1, SENTINAL = 1;
+    int notTested[100];
+    int currentNode;
+    int tempArray[100];
+    double distance;
+    for(i = 0; i < 100; i++){
+        notTested[i] = -1;
+    }
 
+    notTested[0] = car->currNode;
+
+    //setup
     //100 skal være antal nodes
     for(i = 0; i < 100; i++){
-        if(!(i == currentNode)){
-
-            
-
-
-
+        if(i != notTested[0]){
+            roadPointsArr[i].local = INFINITY;
+            roadPointsArr[i].visited = 0;
+            roadPointsArr[i].parent = NULL;
+        }else{
+            roadPointsArr[i].local = 0;
+            roadPointsArr[i].visited = 1;
+            roadPointsArr[i].parent = NULL;
         }
     }
-    
-    for(i = 0; i < roadPointsArr[currentNode].connections; i++){
 
+    while(notTested[0] != -1){
+        distance = 0;
+
+        if(notTested[0] != -1){
+            currentNode = notTested[0];
+            elements--;
+
+            i = 0;
+            while(SENTINAL){
+                notTested[i] = notTested[i + 1];
+                if(notTested[i + 1] == -1){
+                    SENTINAL = 0;
+                }
+                i++;
+            }
+        }
+
+        for(i = 0; i < roadPointsArr[currentNode].numOfConnections; i++){
+            if(roadPointsArr[currentNode].local < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
+                notTested[elements] = roadPointsArr[roadPointsArr[currentNode].connections[i]].ID;
+                elements++;
+                roadPointsArr[roadPointsArr[currentNode].connections[i]].parent = &roadPointsArr[currentNode];
+
+                j = 0;
+                while(distance == 0){
+                    if((roadArr[j].startID == currentNode && roadArr[j].endID == roadPointsArr[currentNode].connections[i]) || (roadArr[j].startID == roadPointsArr[currentNode].connections[i] && roadArr[j].endID == currentNode)){
+                        distance = roadArr[j].length;
+                    }
+                    j++;
+                }
+
+                roadPointsArr[roadPointsArr[currentNode].connections[i]].local = roadPointsArr[currentNode].local + distance;
+            }
+        }
     }
 
+    if(roadPointsArr[car->endGoal].parent == NULL){
+        printf("No path for %d\n", car->ID);
+    }else{
+        currentNode = car->endGoal;
+        i = 0;
+        while(currentNode != car->currNode){
+            tempArray[i] = currentNode;
 
+            currentNode = roadPointsArr[currentNode].parent->ID;
 
-
-
+            i++;
+        }
+        tempArray[i] = currentNode;
+        k = 0;
+        for(j = i; j > 0; j--){
+            car->path[k] = tempArray[j];
+            k++;
+        }
+    }
 }
 
 void roadOutput(car car[], road road){
