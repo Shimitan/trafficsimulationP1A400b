@@ -187,12 +187,14 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             car->active = 0;
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
-            // printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
+            printf("Road[%d].startID: %d\n", 1, roadArr[1].startID);
+            printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
 
             /* DETTE FUNKTIONS KALD VIRKER IKKE... JEG ANDER IKK HVORFOR SÅ JEG HAR NU KONSTATERET AT DET IKKE ER MIT PROBLEM LIGE NU LMAO!*/
             pushArray(*car, road);
             
-            // printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
+            printf("Road[%d].startID: %d\n", 1, roadArr[1].startID);
+            printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             

@@ -68,8 +68,10 @@ int main(void){
 
     srand(398);
 
-    for(i = 0; i < 100; i++){
-        road.currCars[i] = -1;
+    for (l = 0; l < 100; l++){
+        for(i = 0; i < 100; i++){
+            roadArr[l].currCars[i] = -1;
+    }
     }
 
     // while(1){
