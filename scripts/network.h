@@ -7,6 +7,7 @@
 
 typedef struct car car;
 typedef struct road road;
+typedef struct roadPoints roadPoints;
 
 struct roadPoints{
     int ID;
@@ -55,14 +56,15 @@ struct car{
 };
 
 double disToEnd(car car, road road, struct car carArr[]);
-void moveCar(car* car, struct car carArr[], road* road, int carNum);
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
 void pushArray(car car, road *road);
 void roadOutput(car car[], road road);
-double kmhTompds(road road);
+double kmhTompds(road* road);
+void changeRoad(car* car, road roadArr[], int* debugBool);
 
 /* lav om til: afstand til hvad end der er foran. om det er kryds eller anden bil */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -153,7 +155,9 @@ double breakLength(car car){
     return dist;
 }
 
-void moveCar(car* car, struct car carArr[], road* road, int carNum){
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool){
+    int l;
+
     if(car->active == 1){
         
         double distanceToEnd = disToEnd(*car, *road, carArr);
@@ -181,16 +185,37 @@ void moveCar(car* car, struct car carArr[], road* road, int carNum){
         if(car->location >= road->length && car->dirBool == 1){
             car->speed = 0;
             car->active = 0;
+            // printf("CurrentRoadStart: %d\n", road->startID);
+            // printf("CurrentRoadEnd: %d\n", road->endID);
+            // printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
+
+            /* DETTE FUNKTIONS KALD VIRKER IKKE... JEG ANDER IKK HVORFOR SÅ JEG HAR NU KONSTATERET AT DET IKKE ER MIT PROBLEM LIGE NU LMAO!*/
             pushArray(*car, road);
             
-            car->location = road->length; /* endpoint om det er bag en anden bil eller i et kryds */
+            // printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
+            // printf("CurrentRoadStart: %d\n", road->startID);
+            // printf("CurrentRoadEnd: %d\n", road->endID);
             
+            car->location = road->length; /* endpoint om det er bag en anden bil eller i et kryds */
+
+            car->currNode = road->endID;
+            car->pathStep++;
+
             printf("Car stopped %d\n", carNum);
+
+            changeRoad(car, roadArr, debugBool);
         }else if(car->location <= 0 && car->dirBool == 0){
             car->speed = 0;
             car->active = 0;
             pushArray(*car, road);
             car->location = 0;
+
+            car->currNode = road->startID;
+            car->pathStep++;
+
+            printf("Car stopped %d\n", carNum);
+
+            changeRoad(car, roadArr, debugBool);
         }
     }
 }
@@ -226,8 +251,8 @@ void pushArray(car car, road *road){
     }
 }
 
-double kmhTompds(road road){
-    return road.speedLimit = (road.speedLimit/3.6)/10;
+double kmhTompds(road* road){
+    return road->speedLimit = (road->speedLimit/3.6)/10;
 }
 
 void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
@@ -260,4 +285,32 @@ void roadOutput(car car[], road road){
 
 
 
+}
+
+void changeRoad(car* car, road roadArr[], int* debugBool){
+    int l;
+    road road;
+
+    if (car->path[car->pathStep + 1] != -1){
+        car->active = 1;
+        car->currGoal = car->path[car->pathStep + 1];
+        for (l = 0; l < 100; l++) {
+            if ((roadArr[l].startID == car->currNode && roadArr[l].endID == car->currGoal) || (roadArr[l].endID == car->currNode && roadArr[l].startID == car->currGoal)) {
+                road = roadArr[l];
+                break;
+            }
+        }
+        
+        if(car->currGoal > car->currNode){
+            car->location = 0;
+            car->dirBool = 1;
+        }else{
+            car->location = road.length;
+            car->dirBool = 0;
+        }
+
+    }else{
+        printf("Endgoal Reached!\n");
+        *debugBool = 1;
+    }
 }
