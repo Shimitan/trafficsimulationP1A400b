@@ -54,8 +54,8 @@ int main(void){
         nodeArr[i].ID = i;
     }
     for(i = 0; i < 2; i++){
-        roadArr[i].length = 1000;
-        roadArr[i].speedLimit = 50;
+        roadArr[i].length = (i + 1) * 1000;
+        roadArr[i].speedLimit = (i + 1) * 50;
         roadArr[i].speedLimit = kmhTompds(&roadArr[i]);
         roadArr[i].startID = i;
         roadArr[i].endID = i + 1;

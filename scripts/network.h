@@ -191,6 +191,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
 
             /* DETTE FUNKTIONS KALD VIRKER IKKE... JEG ANDER IKK HVORFOR SÅ JEG HAR NU KONSTATERET AT DET IKKE ER MIT PROBLEM LIGE NU LMAO!*/
+            /*Det virker nu... Jeg gav mine roads currCar en værdi på -1 for at ressette den. Har INGEN ide om hvorfor det nogensinde ville fucke noget op...*/
             pushArray(*car, road);
             
             printf("Road[%d].startID: %d\n", 1, roadArr[1].startID);
