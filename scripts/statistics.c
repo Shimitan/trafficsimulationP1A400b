@@ -2,9 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include "statistics.h"
 
-void main(void){
+/*Skal koden køre et forudbestemt stykke tid eller er det op til brugeren?*/
+
+int main(void){
 
 
-    return(0);
+    return EXIT_SUCCESS;
 }
