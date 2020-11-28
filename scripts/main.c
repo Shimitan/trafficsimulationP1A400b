@@ -15,7 +15,7 @@ double kmhTompds(road* road);
 void changeRoad(car* car, road roadArr[], int* debugBool);
 
 
-void createCar(car* car, road* road, int* k);
+void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]);
 
 
 int main(void){
@@ -96,7 +96,7 @@ int main(void){
 
         for (l = 0; l < 100; l++) {
             if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
-                createCar(&car[i], &roadArr[l], &k);
+                createCar(&car[i], &roadArr[l], &k, roadArr, nodeArr);
                 // printf("Car[%d].currNode: %d\n", i, car[i].currNode);
                 // printf("Car[%d].currGoal: %d\n", i, car[i].currGoal);
                 break;
@@ -137,7 +137,7 @@ int main(void){
 }
 
 
-void createCar(car* car, road* road, int* k){
+void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]){
     int SENTINAL = 1, i = 0;
 
     // do{
@@ -170,6 +170,8 @@ void createCar(car* car, road* road, int* k){
         car->location = road->length;
         car->dirBool = 0;
     }
+
+
 
     while(SENTINAL){
         if(road->currCars[i] == -1){
