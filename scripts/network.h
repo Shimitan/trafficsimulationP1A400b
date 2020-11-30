@@ -156,7 +156,7 @@ double breakLength(car car){
 }
 
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool){
-    int l;
+    int l, startBuffer, endBuffer;
 
     if(car->active == 1){
         
@@ -187,15 +187,24 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             car->active = 0;
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
-            printf("Road[%d].startID: %d\n", 1, roadArr[1].startID);
-            printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
+            printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
+            startBuffer = roadArr[car->path[car->pathStep]].startID;
+            printf("Road[%d].endID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].endID);
+            endBuffer = roadArr[car->path[car->pathStep]].endID;
+            printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
+
 
             /* DETTE FUNKTIONS KALD VIRKER IKKE... JEG ANDER IKK HVORFOR SÅ JEG HAR NU KONSTATERET AT DET IKKE ER MIT PROBLEM LIGE NU LMAO!*/
             /*Det virker nu... Jeg gav mine roads currCar en værdi på -1 for at ressette den. Har INGEN ide om hvorfor det nogensinde ville fucke noget op...*/
+            /*JEG STEMMER FOR AT PUSHARRAY SKAL DRÆBES!! DEN ER CURSED AF!!!!*/
             pushArray(*car, road);
-            
-            printf("Road[%d].startID: %d\n", 1, roadArr[1].startID);
-            printf("Road[%d].endID: %d\n", 1, roadArr[1].endID);
+
+            roadArr[car->path[car->pathStep]].startID = startBuffer;
+            printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
+            roadArr[car->path[car->pathStep]].endID = endBuffer;
+            printf("Road[%d].endID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].endID);
+
+            printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             
@@ -292,6 +301,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
             elements--;
 
             i = 0;
+            SENTINAL = 1;
             while(SENTINAL){
                 notTested[i] = notTested[i + 1];
                 if(notTested[i + 1] == -1){
@@ -332,9 +342,14 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
 
             i++;
         }
+
+        // for (j = 0; j < 100; j++) {
+        //     printf("tempArray[%d] = %d\n", j, tempArray[j]);
+        // }
+
         tempArray[i] = currentNode;
         k = 0;
-        for(j = i; j > 0; j--){
+        for(j = i; j >= 0; j--){
             car->path[k] = tempArray[j];
             k++;
         }
@@ -350,14 +365,17 @@ void roadOutput(car car[], road road){
 
 void changeRoad(car* car, road roadArr[], int* debugBool){
     int l;
+    double roadLength;
     road road;
 
-    if (car->path[car->pathStep + 1] != -1){
+    if (car->path[car->pathStep] != -1){
         car->active = 1;
-        car->currGoal = car->path[car->pathStep + 1];
+        // car->currNode = car->currGoal;
+        car->currGoal = car->path[car->pathStep];
         for (l = 0; l < 100; l++) {
             if ((roadArr[l].startID == car->currNode && roadArr[l].endID == car->currGoal) || (roadArr[l].endID == car->currNode && roadArr[l].startID == car->currGoal)) {
                 road = roadArr[l];
+                printf("l: %d\n", l);
                 break;
             }
         }
@@ -374,4 +392,9 @@ void changeRoad(car* car, road roadArr[], int* debugBool){
         printf("Endgoal Reached!\n");
         *debugBool = 1;
     }
+
+    printf("road.lenght: %lf\n", road.length);
+    printf("road.startID: %d\n", road.startID);
+    printf("road.endID: %d\n", road.endID);
+
 }

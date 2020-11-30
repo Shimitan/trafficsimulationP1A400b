@@ -39,11 +39,11 @@ int main(void){
         }
     }
 
-    for(i = 0; i < 1000; i++){
-        for (l = 0; l < 3; l++) {
-            car[i].path[l] = l;
-        }
-    }
+    // for(i = 0; i < 1000; i++){
+    //     for (l = 0; l < 3; l++) {
+    //         car[i].path[l] = l;
+    //     }
+    // }
 
     for(i = 0; i < 100; i++){
         nodeArr[i].ID = -1;
@@ -62,17 +62,26 @@ int main(void){
 
         printf("Road[%d].startID: %d\n", i, roadArr[i].startID);
         printf("Road[%d].endID: %d\n", i, roadArr[i].endID);
+        printf("Road[%d).length: %lf\n", i, roadArr[i].length);
     }
 
-    
-
-    srand(398);
+    srand(420);
 
     for (l = 0; l < 100; l++){
         for(i = 0; i < 100; i++){
             roadArr[l].currCars[i] = -1;
+        }
     }
-    }
+
+    nodeArr[0].connections[0] = 1;
+    nodeArr[0].numOfConnections = 1;
+
+    nodeArr[1].connections[0] = 0;
+    nodeArr[1].connections[1] = 2;
+    nodeArr[1].numOfConnections = 2;
+
+    nodeArr[2].connections[0] = 1;
+    nodeArr[2].numOfConnections = 1;
 
     // while(1){
     //     j++;
@@ -138,22 +147,27 @@ int main(void){
 
 
 void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]){
-    int SENTINAL = 1, i = 0;
+    int SENTINAL = 1, i = 0, j;
 
     // do{
     //     car->currNode = rand() % 2;
     //     car->endGoal = rand() % 2;
     // }while(car->currNode == car->endGoal);
     // car->currGoal = car->endGoal;
+    
+    car->currNode = 0;
+    car->endGoal = 2;
 
-    car->currNode = car->path[0];
-    car->endGoal = car->path[2];
+    pathfinding(car, roadArr, roadPointsArr);
 
-    car->currGoal = car->path[car->pathStep + 1];
+    for (j = 0; j < 100; j++) {
+        printf("path[%d] = %d\n", j, car->path[j]);
+    }
 
-    car->acceleration = 0.034;
-    car->speedDeviation = 0;
+    car->pathStep = 1;
+    car->currGoal = car->path[car->pathStep];
 
+    printf("currGoal: %d\n", car->currGoal);
 
     car->acceleration = ((double)(rand() % 7) + 31)/1000;
     printf("----> ACCELERATION: %lf <------", car->acceleration);
