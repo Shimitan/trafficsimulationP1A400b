@@ -156,7 +156,7 @@ double breakLength(car car){
 }
 
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool){
-    int l, startBuffer, endBuffer;
+    int l, startBuffer, endBuffer, lengthBuffer;
 
     if(car->active == 1){
         
@@ -192,18 +192,21 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             printf("Road[%d].endID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].endID);
             endBuffer = roadArr[car->path[car->pathStep]].endID;
             printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
+            lengthBuffer = roadArr[car->path[car->pathStep]].length;
+
 
 
             /* DETTE FUNKTIONS KALD VIRKER IKKE... JEG ANDER IKK HVORFOR SÅ JEG HAR NU KONSTATERET AT DET IKKE ER MIT PROBLEM LIGE NU LMAO!*/
             /*Det virker nu... Jeg gav mine roads currCar en værdi på -1 for at ressette den. Har INGEN ide om hvorfor det nogensinde ville fucke noget op...*/
             /*JEG STEMMER FOR AT PUSHARRAY SKAL DRÆBES!! DEN ER CURSED AF!!!!*/
+            /* LAV EN FUCKING STRUCT BUFFER*/
             pushArray(*car, road);
 
             roadArr[car->path[car->pathStep]].startID = startBuffer;
             printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
             roadArr[car->path[car->pathStep]].endID = endBuffer;
             printf("Road[%d].endID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].endID);
-
+            roadArr[car->path[car->pathStep]].length = lengthBuffer;
             printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
