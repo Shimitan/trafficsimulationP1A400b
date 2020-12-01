@@ -8,7 +8,7 @@
 
 int main(void){
     double *speed;
-    data test = {1, 2, speed, 4, 5, 6, 7,};
+    data test = {1, 2, speed, 4, 5, 6, 7};
 
     return EXIT_SUCCESS;
 }
