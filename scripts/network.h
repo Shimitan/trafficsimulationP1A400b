@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "statistics.h"
 
 #define INFINITY 2147483647
 
@@ -104,9 +105,9 @@ void isCarInFront(car car, road road, struct car carArr[], double* carLocation, 
 
     while(SENTINAL){
         temp = road.currCars[i];
-        if(temp == -1){
+        if (temp == -1){
             SENTINAL = 0;
-        }else if(carArr[i].dirBool == car.dirBool){
+        } else if (carArr[i].dirBool == car.dirBool){
             locations[k] = carArr[temp].location;
             k++;
             i++;
@@ -155,7 +156,7 @@ double breakLength(car car){
     return dist;
 }
 
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool){
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool){ /*Tilføj parametre*/
     int l, startBuffer, endBuffer, lengthBuffer;
 
     if(car->active == 1){
@@ -180,6 +181,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }else{
             car->location -= car->speed;
         }
+        /*Gem farten til databehandling*/
 
         /* Snapper bilen når den stopper */
         if(car->location >= road->length && car->dirBool == 1){

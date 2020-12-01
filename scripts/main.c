@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 #define NUM_OF_CARS 110
-
+/*
 double disToEnd(car car, road road, struct car carArr[]);
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool);
 double breakLength(car car);
@@ -13,7 +13,7 @@ double distanceBetweenCars(car car);
 void roadOutput(car car[], road road);
 double kmhTompds(road* road);
 void changeRoad(car* car, road roadArr[], int* debugBool);
-
+*/
 
 void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]);
 

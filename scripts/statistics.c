@@ -1,14 +1,16 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
 #include "statistics.h"
 
 /*Skal koden køre et forudbestemt stykke tid eller er det op til brugeren?*/
 
-int main(void){
-    double *speed;
-    data test = {1, 2, speed, 4, 5, 6, 7};
+/* 1000 målinger / sekund
+ * 60 * 1000 målinger / minut
+ * 60000 * 4 bytes
+ * 240000 bytes
+ * 240 kB / minuts data
+ *
+ * */
 
-    return EXIT_SUCCESS;
-}
+/* Data for 1 minut
+ * Data for hvert kvarter
+ *
+ * */
