@@ -9,5 +9,5 @@ struct data{
     int timeInterval;
 };
 
-
+typedef struct data data;
 
