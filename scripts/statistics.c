@@ -12,5 +12,23 @@
 
 /* Data for 1 minut
  * Data for hvert kvarter
+ *      - Baseret på 15 1 minuts målinger
+ *
+ * Data for hver time
+ *      - Baseret på 4 15 minutters målinger
+ *
+ * Data for hvert døgn? Maybe(TM)
  *
  * */
+
+double* createSpeedArray(int amountOfCars, int ticksPerSecond){
+    double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond);
+    return speedArray;
+}
+
+
+
+
+
+
+

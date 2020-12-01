@@ -29,11 +29,8 @@
 *.dylib
 
 # Executables
-<<<<<<< HEAD
-=======
 a.exe
 **/a.exe
->>>>>>> arthurs-lejeplads
 *.exe
 *.out
 *.app
@@ -55,10 +52,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-<<<<<<< HEAD
 
-#Folders
+#Folders and txts
 /.idea
-=======
->>>>>>> arthurs-lejeplads
 *.exe
+/scripts/CMakeLists.txt
+/scripts/cmake-build-debug
