@@ -29,7 +29,7 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
 
 void measureSpeed(double speed, data *dp, int index){
     dp->speedOfCars[index] = speed;
-    dp->ticksWithCarOnRoad++;
+    dp->speedMeasurementCount++;
 }
 
 

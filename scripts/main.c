@@ -41,7 +41,7 @@ int main(void){
                 printf("Error allocating memory for [%d][%d]\n", i, k);
                 exit(EXIT_FAILURE);
             } else {
-                minuteData[i][k].ticksWithCarOnRoad = 0;
+                minuteData[i][k].speedMeasurementCount = 0;
             }
         }
     }
@@ -162,7 +162,7 @@ int main(void){
     // }
     for (l = 0; l < 2; l++) {
         for (i = 0; i < MINUTES_SIMULATED; i++){
-            printf("Ticks with car on road %d for minute %2d: %d\n", l, i, minuteData[l][i].ticksWithCarOnRoad);
+            printf("Ticks with car on road %d for minute %2d: %d\n", l, i, minuteData[l][i].speedMeasurementCount);
         }
     }
 

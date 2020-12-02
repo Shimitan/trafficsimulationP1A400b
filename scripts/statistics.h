@@ -13,7 +13,7 @@
 struct data{
     int amountOfCars;
     int timeStamp;
-    int ticksWithCarOnRoad;
+    int speedMeasurementCount;
     double *speedOfCars; //skal være et array af alle målte hastigheder i løbet af et minut i simulationen
     double averageSpeed;
     double flow;
