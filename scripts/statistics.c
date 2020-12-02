@@ -21,14 +21,17 @@
  *      - Jeg har ingen ide om hvorvidt det er en god ide
  * */
 
+/*Allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
     return speedArray;
 }
-/*
-void measureSpeed(double speed, data *){
 
-}*/
+void measureSpeed(double speed, data *dp, int index){
+    dp->speedOfCars[index] = speed;
+    printf("Speed of car is %lf\n", dp->speedOfCars[index]);
+}
+
 
 /*
 void analyseData(data oneMinuteData, ){

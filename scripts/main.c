@@ -25,7 +25,7 @@ int main(void){
     int active = 0;
     int k = 0;
     int j = 110;
-    char wait;
+    int speedIndex = 0, ticks = 0, minuteIndex = 0;
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road roadArr[100];
@@ -39,16 +39,15 @@ int main(void){
             minuteData[i][k].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
             if (minuteData[i][k].speedOfCars == NULL){
                 printf("Error allocating memory for [%d][%d]\n", i, k);
-                scanf(" %c", &wait);
                 exit(EXIT_FAILURE);
             } else {
-                printf("Allocation successful for [%d][%d]\n", i, k);
+                minuteData[i][k].ticksWithCarOnRoad = 0;
             }
         }
     }
 
 
-/*
+
     for(i = 0; i < 1000; i++){
         car[i].active = 0;
         car[i].pathStep = 0;
@@ -78,9 +77,9 @@ int main(void){
         roadArr[i].startID = i;
         roadArr[i].endID = i + 1;
 
-        printf("Road[%d].startID: %d\n", i, roadArr[i].startID);
-        printf("Road[%d].endID: %d\n", i, roadArr[i].endID);
-        printf("Road[%d).length: %lf\n", i, roadArr[i].length);
+        //printf("Road[%d].startID: %d\n", i, roadArr[i].startID);
+        //printf("Road[%d].endID: %d\n", i, roadArr[i].endID);
+        //printf("Road[%d).length: %lf\n", i, roadArr[i].length);
     }
 
     srand(420);
@@ -136,21 +135,23 @@ int main(void){
     while (debugBool == 0) {
         for(i = 0; i < 1; i++){
             for (l = 0; l < 100; l++) {
-                // printf("\nRoad[%d].startID: %d\n", l, roadArr[l].startID);
-                // printf("Road[%d].endID: %d\n", l, roadArr[l].endID);
-                // printf("Road[%d].startID: %d\n", l + 1, roadArr[l + 1].startID);
-                // printf("Road[%d].endID: %d\n", l + 1, roadArr[l + 1].endID);
-
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
-                    // printf("hihi xd\n");
-                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool);
-                    printf("CarActive?: %d\n", car[i].active);
+                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[l][minuteIndex], speedIndex);
+                    minuteData[l][minuteIndex].roadID = l;
+                    speedIndex++;
+                    //printf("CarActive?: %d\n", car[i].active);
                     break;
                 }
             }
             if(car[i].active == 1){
-                printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
+                //printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
             }
+        }
+        ticks++;
+        if (ticks % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {
+            minuteIndex++;
+            speedIndex = 0;
+            printf("speedIndex = %d, minuteIndex = %d\n", speedIndex, minuteIndex);
         }
     }
 
@@ -159,7 +160,16 @@ int main(void){
     //         break;
     //     }
     // }
-*/
+    for (l = 0; l < 2; l++) {
+        printf("Road %d", l);
+        for (i = 0; i < MINUTES_SIMULATED; i++){
+            for (int m = 0; m < (AMOUNT_OF_CARS * TICKS_PER_SECOND * SECONDS_PER_MINUTE); ++m) {
+                printf(" %lf", minuteData[l][i].speedOfCars[m]);
+            }
+        }
+    }
+
+
     for (i = 0; i < AMOUNT_OF_ROADS; i++){
         for (k = 0; k < MINUTES_SIMULATED; k++){
             free(minuteData[i][k].speedOfCars);
