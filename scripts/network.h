@@ -181,7 +181,8 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }else{
             car->location -= car->speed;
         }
-        /*Gem farten til databehandling*/
+        /* Gem farten til databehandling
+         * TODO: Lav et if statement så der ikke måles fart tæt på krydsene*/
         measureSpeed(car->speed, dp, index);
 
         /* Snapper bilen når den stopper */
