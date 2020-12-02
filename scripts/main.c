@@ -266,6 +266,7 @@ void getInput(road roadArr[], int* nodeAmount, int* roadAmount) {
                     /*Skriv logic for indlæsning af data til de individuelle veje*/
                     str[l] = '\0';
                     sscanf(str, "%d, %d, %lf, %lf", &roadArr[k].startID, &roadArr[k].endID, &roadArr[k].length, &roadArr[k].speedLimit);
+                    roadArr[k].speedLimit = kmhTompds(&roadArr[k]);
                     // printf("startID: %d\nendId: %d\nlength: %lf\nspeedLimit: %lf\n", roadArr[k].startID, roadArr[k].endID, roadArr[k].length, roadArr[k].speedLimit);
                     k++;
                     l = -1;
@@ -279,6 +280,7 @@ void getInput(road roadArr[], int* nodeAmount, int* roadAmount) {
         }
             str[l] = '\0';
             sscanf(str, "%d, %d, %lf, %lf", &roadArr[k].startID, &roadArr[k].endID, &roadArr[k].length, &roadArr[k].speedLimit);
+            roadArr[k].speedLimit = kmhTompds(&roadArr[k]);
             // printf("startID: %d\nendId: %d\nlength: %lf\nspeedLimit: %lf\n", roadArr[k].startID, roadArr[k].endID, roadArr[k].length, roadArr[k].speedLimit);
             k++;
     }
