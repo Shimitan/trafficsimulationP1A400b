@@ -63,16 +63,16 @@ int main(void){
     getInput(roadArr, &nodeAmount, &roadAmount);
 
     /* WAS USED TO DEBUG THE INPUT FUNCTION */    
-    // printf("nodeAmount: %d\n", nodeAmount);
-    // printf("roadAmount: %d\n", roadAmount);
+    printf("nodeAmount: %d\n", nodeAmount);
+    printf("roadAmount: %d\n", roadAmount);
     
-    // for (i = 0; i < 100; i++) {
-    //     printf("roadArr[%d].startID: %d\n", i, roadArr[i].startID);
-    //     printf("roadArr[%d].endID: %d\n", i, roadArr[i].endID);
-    //     printf("roadArr[%d].lenght: %lf\n", i, roadArr[i].length);
-    //     printf("roadArr[%d].speedLimit: %lf\n\n", i, roadArr[i].speedLimit);
+    for (i = 0; i < 100; i++) {
+        printf("roadArr[%d].startID: %d\n", i, roadArr[i].startID);
+        printf("roadArr[%d].endID: %d\n", i, roadArr[i].endID);
+        printf("roadArr[%d].lenght: %lf\n", i, roadArr[i].length);
+        printf("roadArr[%d].speedLimit: %lf\n\n", i, roadArr[i].speedLimit);
 
-    // }
+    }
 
     for(i = 0; i < 4; i++){
         nodeArr[i].ID = i;
@@ -113,7 +113,7 @@ int main(void){
 
     roadArr[2].startID = 1;
     roadArr[2].endID = 3;
-
+/*
     // while(1){
     //     j++;
     //     if(j >= 120){
@@ -172,7 +172,7 @@ int main(void){
     //         break;
     //     }
     // }
-
+*/
     return 0;
 }
 
@@ -230,18 +230,16 @@ void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadP
 void getInput(road roadArr[], int* nodeAmount, int* roadAmount) {
     int ch, i = 0, l = 0, k = 0, counter = 0;
     char str[16];
-    char strBuff[10000];
     FILE *inputFile;
 
     inputFile = fopen("Input.txt", "r");
 
     if (inputFile != NULL) {
         while ((ch = fgetc(inputFile)) != EOF) {
-            strBuff[i] = ch;
-            str[l] = strBuff[i];
+            str[l] = ch;
             // printf("strBuff: %c\n", strBuff[i]);
             // printf("str: %c\n", str[l]);
-            if (strBuff[i] == '\n') {
+            if (str[l] == '\n') {
                 switch (counter){
                 case 0:
                     // for (i = 0; i < 16; i++) {
