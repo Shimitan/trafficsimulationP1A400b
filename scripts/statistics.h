@@ -1,8 +1,30 @@
-//
-// Created by Arthur on 01-12-2020.
-//
+/*#includes*/
+#include <stdlib.h>
+#include <stdio.h>
 
-#ifndef TRAFFICSIMULATIONP1A400B_STATISTICS_H
-#define TRAFFICSIMULATIONP1A400B_STATISTICS_H
+/*Constants*/
+#define AMOUNT_OF_CARS 1
+#define TICKS_PER_SECOND 10
+#define SECONDS_PER_MINUTE 60
+#define AMOUNT_OF_ROADS 10
+#define MINUTES_SIMULATED 30
 
-#endif //TRAFFICSIMULATIONP1A400B_STATISTICS_H
+/*Structs*/
+struct data{
+    int amountOfCars;
+    int timeStamp;
+    int speedMeasurementCount;
+    double *speedOfCars; //skal være et array af alle målte hastigheder i løbet af et minut i simulationen
+    double averageSpeed;
+    double flow;
+    double density;
+    int roadID;
+    int roadLength;
+    int timeInterval;
+};
+
+typedef struct data data;
+
+/*Prototypes*/
+double* createSpeedArray(int amountOfCars, int ticksPerSecond);
+void measureSpeed(double speed, data *dp, int index);
