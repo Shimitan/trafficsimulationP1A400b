@@ -61,3 +61,6 @@ dkms.conf
 /.idea
 =======
 >>>>>>> arthurs-lejeplads
+*.cmake
+/scripts/cmake-build-debug
+CMakeLists.txt
