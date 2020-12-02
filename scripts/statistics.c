@@ -29,7 +29,7 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
 
 void measureSpeed(double speed, data *dp, int index){
     dp->speedOfCars[index] = speed;
-    printf("Speed of car is %lf\n", dp->speedOfCars[index]);
+    dp->ticksWithCarOnRoad++;
 }
 
 

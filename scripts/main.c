@@ -131,7 +131,7 @@ int main(void){
     }
 
 
-
+    printf("speedIndex = %d, minuteIndex = %d\n", speedIndex, minuteIndex);
     while (debugBool == 0) {
         for(i = 0; i < 1; i++){
             for (l = 0; l < 100; l++) {
@@ -161,11 +161,8 @@ int main(void){
     //     }
     // }
     for (l = 0; l < 2; l++) {
-        printf("Road %d", l);
         for (i = 0; i < MINUTES_SIMULATED; i++){
-            for (int m = 0; m < (AMOUNT_OF_CARS * TICKS_PER_SECOND * SECONDS_PER_MINUTE); ++m) {
-                printf(" %lf", minuteData[l][i].speedOfCars[m]);
-            }
+            printf("Ticks with car on road %d for minute %2d: %d\n", l, i, minuteData[l][i].ticksWithCarOnRoad);
         }
     }
 
@@ -205,7 +202,7 @@ void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadP
     printf("currGoal: %d\n", car->currGoal);
 
     car->acceleration = ((double)(rand() % 7) + 31)/1000;
-    printf("----> ACCELERATION: %lf <------", car->acceleration);
+    printf("----> ACCELERATION: %lf <------\n", car->acceleration);
     car->speedDeviation = ((rand() % 10) + 1)/100;
 
     car->speed = 0;
