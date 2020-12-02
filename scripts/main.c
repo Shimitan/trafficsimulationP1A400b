@@ -13,6 +13,7 @@ double distanceBetweenCars(car car);
 void roadOutput(car car[], road road);
 double kmhTompds(road* road);
 void changeRoad(car* car, road roadArr[], int* debugBool);
+void getInput(road roadArr[], int* nodeAmount, int* roadAmount);
 
 
 void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]);
@@ -20,6 +21,8 @@ void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadP
 
 int main(void){
     int debugBool = 0;
+    int nodeAmount = 0;
+    int roadAmount = 0;
     int i = 0;
     int l = 0;
     int active = 0;
@@ -30,7 +33,7 @@ int main(void){
     struct road roadArr[100];
     roadPoints nodeArr[100];
     car car[1000];
-    
+
     for(i = 0; i < 1000; i++){
         car[i].active = 0;
         car[i].pathStep = 0;
@@ -50,6 +53,27 @@ int main(void){
         roadArr[i].startID = -1;
         roadArr[i].endID = -1;
     }
+
+    for (l = 0; l < 100; l++){
+        for(i = 0; i < 100; i++){
+            roadArr[l].currCars[i] = -1;
+        }
+    }
+
+    getInput(roadArr, &nodeAmount, &roadAmount);
+
+    /* WAS USED TO DEBUG THE INPUT FUNCTION */    
+    // printf("nodeAmount: %d\n", nodeAmount);
+    // printf("roadAmount: %d\n", roadAmount);
+    
+    // for (i = 0; i < 100; i++) {
+    //     printf("roadArr[%d].startID: %d\n", i, roadArr[i].startID);
+    //     printf("roadArr[%d].endID: %d\n", i, roadArr[i].endID);
+    //     printf("roadArr[%d].lenght: %lf\n", i, roadArr[i].length);
+    //     printf("roadArr[%d].speedLimit: %lf\n\n", i, roadArr[i].speedLimit);
+
+    // }
+
     for(i = 0; i < 4; i++){
         nodeArr[i].ID = i;
     }
@@ -66,12 +90,6 @@ int main(void){
     }
 
     srand(420);
-
-    for (l = 0; l < 100; l++){
-        for(i = 0; i < 100; i++){
-            roadArr[l].currCars[i] = -1;
-        }
-    }
 
     nodeArr[0].connections[0] = 1;
     nodeArr[0].numOfConnections = 1;
@@ -198,8 +216,6 @@ void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadP
         car->dirBool = 0;
     }
 
-
-
     while(SENTINAL){
         if(road->currCars[i] == -1){
             road->currCars[i] = *k;
@@ -210,3 +226,61 @@ void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadP
     *k += 1;
 }
 
+/* This funktion read the file called "Input.txt", and configures the roads in roadArr */
+void getInput(road roadArr[], int* nodeAmount, int* roadAmount) {
+    int ch, i = 0, l = 0, k = 0, counter = 0;
+    char str[16];
+    char strBuff[10000];
+    FILE *inputFile;
+
+    inputFile = fopen("Input.txt", "r");
+
+    if (inputFile != NULL) {
+        while ((ch = fgetc(inputFile)) != EOF) {
+            strBuff[i] = ch;
+            str[l] = strBuff[i];
+            // printf("strBuff: %c\n", strBuff[i]);
+            // printf("str: %c\n", str[l]);
+            if (strBuff[i] == '\n') {
+                switch (counter){
+                case 0:
+                    // for (i = 0; i < 16; i++) {
+                    //     printf("str[%d]: %c\n", i, str[i]);
+                    // }
+                    str[l] = '\0';
+                    *nodeAmount = atoi(str);
+                    // printf("nodeAmount: %d\n", *nodeAmount);
+                    counter++;
+                    l = -1;
+                    break;
+                
+                case 1:
+                    str[l] = '\0';
+                    *roadAmount = atoi(str);
+                    // printf("roadAmount: %d\n", *roadAmount);
+                    counter++;
+                    l = -1;
+                    break;
+                
+                default:
+                    /*Skriv logic for indlæsning af data til de individuelle veje*/
+                    str[l] = '\0';
+                    sscanf(str, "%d, %d, %lf, %lf", &roadArr[k].startID, &roadArr[k].endID, &roadArr[k].length, &roadArr[k].speedLimit);
+                    // printf("startID: %d\nendId: %d\nlength: %lf\nspeedLimit: %lf\n", roadArr[k].startID, roadArr[k].endID, roadArr[k].length, roadArr[k].speedLimit);
+                    k++;
+                    l = -1;
+                    break;
+                }
+            }
+
+            i++;
+            l++;
+
+        }
+            str[l] = '\0';
+            sscanf(str, "%d, %d, %lf, %lf", &roadArr[k].startID, &roadArr[k].endID, &roadArr[k].length, &roadArr[k].speedLimit);
+            // printf("startID: %d\nendId: %d\nlength: %lf\nspeedLimit: %lf\n", roadArr[k].startID, roadArr[k].endID, roadArr[k].length, roadArr[k].speedLimit);
+            k++;
+    }
+
+}

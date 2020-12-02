@@ -1,0 +1,6 @@
+ID-amount
+Road-amount
+ID, ID, RoadLenth, speedLimit
+ID, ID, RoadLenth, speedLimit
+ID, ID, RoadLenth, speedLimit
+...

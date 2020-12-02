@@ -330,7 +330,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
                 }
                 j++;
             }   
-            /* Går end i dette if-statement hvis der er en mere optimal route til den nabo node der bliver kigget på, så den bliver tilføjet til arrayt med nodes der skal testes */
+            /* Går ind i dette if-statement hvis der er en mere optimal route til den nabo node der bliver kigget på, så den bliver tilføjet til arrayt med nodes der skal testes */
             if(roadPointsArr[currentNode].local + distance < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
                 notTested[elements] = roadPointsArr[roadPointsArr[currentNode].connections[i]].ID;
                 elements++;
