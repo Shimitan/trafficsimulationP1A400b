@@ -25,12 +25,21 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
     return speedArray;
 }
+/*
+void measureSpeed(double speed, data *){
 
+}*/
+
+/*
 void analyseData(data oneMinuteData, ){
 
-}
+} */
 
+/* Calculate flow
+ *      - Calculate the difference between the current flow and the optimal flow given the amount of cars */
 
+/* Calculate density
+ *  */
 
-
+/* Write data to file */
 

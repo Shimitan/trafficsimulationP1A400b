@@ -25,12 +25,30 @@ int main(void){
     int active = 0;
     int k = 0;
     int j = 110;
+    char wait;
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road roadArr[100];
     roadPoints nodeArr[100];
     car car[1000];
-    
+
+    /*Allocates a 2D array for data collection statically*/
+    data minuteData[AMOUNT_OF_ROADS][MINUTES_SIMULATED];
+    for (i = 0; i < AMOUNT_OF_ROADS; i++){
+        for (k = 0; k < MINUTES_SIMULATED; k++){
+            minuteData[i][k].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
+            if (minuteData[i][k].speedOfCars == NULL){
+                printf("Error allocating memory for [%d][%d]\n", i, k);
+                scanf(" %c", &wait);
+                exit(EXIT_FAILURE);
+            } else {
+                printf("Allocation successful for [%d][%d]\n", i, k);
+            }
+        }
+    }
+
+
+/*
     for(i = 0; i < 1000; i++){
         car[i].active = 0;
         car[i].pathStep = 0;
@@ -141,6 +159,13 @@ int main(void){
     //         break;
     //     }
     // }
+*/
+    for (i = 0; i < AMOUNT_OF_ROADS; i++){
+        for (k = 0; k < MINUTES_SIMULATED; k++){
+            free(minuteData[i][k].speedOfCars);
+            minuteData[i][k].speedOfCars = NULL;
+        }
+    }
 
     return 0;
 }
