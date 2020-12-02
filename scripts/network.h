@@ -157,6 +157,7 @@ double breakLength(car car){
 
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool){
     int l, startBuffer, endBuffer, lengthBuffer;
+    struct road roadBuffer;
 
     if(car->active == 1){
         
@@ -194,6 +195,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
             lengthBuffer = roadArr[car->path[car->pathStep]].length;
 
+            roadBuffer = roadArr[car->path[car->pathStep]];
 
 
             /* DETTE FUNKTIONS KALD VIRKER IKKE... JEG ANDER IKK HVORFOR SÅ JEG HAR NU KONSTATERET AT DET IKKE ER MIT PROBLEM LIGE NU LMAO!*/
@@ -208,6 +210,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             printf("Road[%d].endID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].endID);
             roadArr[car->path[car->pathStep]].length = lengthBuffer;
             printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
+            roadArr[car->path[car->pathStep]] = roadBuffer;
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             

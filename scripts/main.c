@@ -50,15 +50,15 @@ int main(void){
         roadArr[i].startID = -1;
         roadArr[i].endID = -1;
     }
-    for(i = 0; i < 3; i++){
+    for(i = 0; i < 4; i++){
         nodeArr[i].ID = i;
     }
-    for(i = 0; i < 2; i++){
+    for(i = 0; i < 3; i++){
         roadArr[i].length = (i + 1) * 1000;
         roadArr[i].speedLimit = (i + 1) * 50;
         roadArr[i].speedLimit = kmhTompds(&roadArr[i]);
-        roadArr[i].startID = i;
-        roadArr[i].endID = i + 1;
+        // roadArr[i].startID = i;
+        // roadArr[i].endID = i + 1;
 
         printf("Road[%d].startID: %d\n", i, roadArr[i].startID);
         printf("Road[%d].endID: %d\n", i, roadArr[i].endID);
@@ -78,10 +78,23 @@ int main(void){
 
     nodeArr[1].connections[0] = 0;
     nodeArr[1].connections[1] = 2;
-    nodeArr[1].numOfConnections = 2;
+    nodeArr[1].connections[2] = 3;
+    nodeArr[1].numOfConnections = 3;
 
     nodeArr[2].connections[0] = 1;
     nodeArr[2].numOfConnections = 1;
+
+    nodeArr[3].connections[0] = 1;
+    nodeArr[3].numOfConnections = 1;
+
+    roadArr[0].startID = 0;
+    roadArr[0].endID = 1;
+
+    roadArr[1].startID = 1;
+    roadArr[1].endID = 2;
+
+    roadArr[2].startID = 1;
+    roadArr[2].endID = 3;
 
     // while(1){
     //     j++;
@@ -156,7 +169,7 @@ void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadP
     // car->currGoal = car->endGoal;
     
     car->currNode = 0;
-    car->endGoal = 2;
+    car->endGoal = 3;
 
     pathfinding(car, roadArr, roadPointsArr);
 
