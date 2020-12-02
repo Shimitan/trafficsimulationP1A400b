@@ -275,6 +275,7 @@ double kmhTompds(road* road){
 
 void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
     int i, j, k, elements = 1, SENTINAL = 1;
+    /* array der holder de nodes der mangler at blive testet. pathfindingen stopper når dette array er tomt*/
     int notTested[100];
     int currentNode;
     int tempArray[100];
@@ -302,34 +303,38 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
     while(notTested[0] != -1){
         distance = 0;
 
-        if(notTested[0] != -1){
-            currentNode = notTested[0];
-            elements--;
+        /* Fjerner den node der bliver testet fra arrayet */
+        currentNode = notTested[0];
+        elements--;
 
-            i = 0;
-            SENTINAL = 1;
-            while(SENTINAL){
-                notTested[i] = notTested[i + 1];
-                if(notTested[i + 1] == -1){
-                    SENTINAL = 0;
-                }
-                i++;
+        i = 0;
+        SENTINAL = 1;
+        while(SENTINAL){
+            notTested[i] = notTested[i + 1];
+            if(notTested[i + 1] == -1){
+                SENTINAL = 0;
             }
+            i++;
         }
+        
+        
+        
 
         for(i = 0; i < roadPointsArr[currentNode].numOfConnections; i++){
-            if(roadPointsArr[currentNode].local < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
+
+            /* finder afstanden fra den node vi er i til en nabo node */
+            j = 0;
+            while(distance == 0){
+                if((roadArr[j].startID == currentNode && roadArr[j].endID == roadPointsArr[currentNode].connections[i]) || (roadArr[j].startID == roadPointsArr[currentNode].connections[i] && roadArr[j].endID == currentNode)){
+                    distance = roadArr[j].length;
+                }
+                j++;
+            }   
+            /* Går end i dette if-statement hvis der er en mere optimal route til den nabo node der bliver kigget på, så den bliver tilføjet til arrayt med nodes der skal testes */
+            if(roadPointsArr[currentNode].local + distance < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
                 notTested[elements] = roadPointsArr[roadPointsArr[currentNode].connections[i]].ID;
                 elements++;
                 roadPointsArr[roadPointsArr[currentNode].connections[i]].parent = &roadPointsArr[currentNode];
-
-                j = 0;
-                while(distance == 0){
-                    if((roadArr[j].startID == currentNode && roadArr[j].endID == roadPointsArr[currentNode].connections[i]) || (roadArr[j].startID == roadPointsArr[currentNode].connections[i] && roadArr[j].endID == currentNode)){
-                        distance = roadArr[j].length;
-                    }
-                    j++;
-                }
 
                 roadPointsArr[roadPointsArr[currentNode].connections[i]].local = roadPointsArr[currentNode].local + distance;
             }
@@ -341,6 +346,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
     }else{
         currentNode = car->endGoal;
         i = 0;
+        /* Her laves et array som er routen, men dette er omvendt rækkefølge */
         while(currentNode != car->currNode){
             tempArray[i] = currentNode;
 
@@ -353,6 +359,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
         //     printf("tempArray[%d] = %d\n", j, tempArray[j]);
         // }
 
+        /* her vendes arrayet om */
         tempArray[i] = currentNode;
         k = 0;
         for(j = i; j >= 0; j--){
