@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 /*Constants*/
-#define AMOUNT_OF_CARS 2
+#define AMOUNT_OF_CARS 1000
 #define TICKS_PER_SECOND 10
 #define SECONDS_PER_MINUTE 60
 #define AMOUNT_OF_ROADS 10
@@ -20,6 +20,7 @@ struct data{
     double density;
     int roadID;
     int roadLength;
+    int direction;
     int timeInterval;
 };
 
@@ -27,4 +28,7 @@ typedef struct data data;
 
 /*Prototypes*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond);
-void measureSpeed(double speed, data *dp, int index);
+void measureSpeed(double speed, data *dp, int index, int dir);
+void analyseData(data *oneMinuteData);
+void averageSpeed(data *dp);
+double mpdsTokmh(double speed);
