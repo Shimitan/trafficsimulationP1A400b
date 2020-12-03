@@ -28,7 +28,8 @@ int main(void){
     int active = 0;
     int k = 0;
     int j = 110;
-    int speedIndex = 0, ticks = 0, minuteIndex = 0, roadIndex;
+    int ticks = 0, minuteIndex = 0, roadIndex, m;
+    int speedIndex[AMOUNT_OF_ROADS * 2];
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road roadArr[100];
@@ -47,6 +48,7 @@ int main(void){
                 minuteData[i][l].speedMeasurementCount = 0;
             }
         }
+        speedIndex[i] = 0;
     }
 
 
@@ -175,9 +177,9 @@ int main(void){
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
                     //printf("FOUND CORRECT ROAD!\n");
                     roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
-                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex);
+                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex[roadIndex]);
                     minuteData[l][minuteIndex].roadID = l;
-                    speedIndex++;
+                    speedIndex[roadIndex]++;
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
                 }
@@ -189,7 +191,9 @@ int main(void){
         ticks++;
         if (ticks % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {
             minuteIndex++;
-            speedIndex = 0;
+            for (m = 0; m < 2 * AMOUNT_OF_ROADS; m++){
+                speedIndex[m] = 0;
+            }
             // printf("speedIndex = %d, minuteIndex = %d\n", speedIndex, minuteIndex);
         }
     }
