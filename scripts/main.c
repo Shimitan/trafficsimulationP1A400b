@@ -2,8 +2,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define NUM_OF_CARS 2
-
 double disToEnd(car car, road road, struct car carArr[]);
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index);
 double breakLength(car car);
@@ -154,7 +152,7 @@ int main(void){
     // printf("speedIndex = %d, minuteIndex = %d\n", speedIndex, minuteIndex);
     while (debugBool == 0) {
         j++;
-        if (j >= 120 && k < NUM_OF_CARS) {
+        if (j >= 120 && k < AMOUNT_OF_CARS) {
             //Random midlertidigt fix xd
             car[k].currNode = car[k].path[0];
             car[k].endGoal = car[k].path[2];
@@ -171,7 +169,7 @@ int main(void){
             j = 0;
         }
 
-        for(i = 0; i < NUM_OF_CARS; i++){
+        for(i = 0; i < AMOUNT_OF_CARS; i++){
             for (l = 0; l < 100; l++) {
             //printf("CurrCar[0]: %d on road[%d]\n", roadArr[l].currCars[0], l); 
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
@@ -225,7 +223,6 @@ void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadP
         car->currNode = rand() % 4;
         car->endGoal = rand() % 4;
     }while(car->currNode == car->endGoal);
-    //car->currGoal = car->endGoal;
     
     /* MIDLERTIDIG MEME */
     // car->currNode = 0;
