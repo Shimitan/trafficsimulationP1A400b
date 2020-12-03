@@ -5,6 +5,7 @@
 #define INFINITY 2147483647
 
 //UwUbuntu
+//OwObonto
 
 typedef struct car car;
 typedef struct road road;
