@@ -183,15 +183,9 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }else{
             car->location -= car->speed;
         }
-        /* Gemmer farten til databehandling
-         * TODO: Lav et if statement så der ikke måles fart tæt på krydsene */
-        if ((road->length - car->location) > 40.0 && car->location > 40.0){
-            measureSpeed(car->speed, dp, index, car->dirBool);
-        }
-
-        //measureSpeed(car->speed, dp, index, car->dirBool);
-
-
+        /* Gem farten til databehandling
+         * TODO: Lav et if statement så der ikke måles fart tæt på krydsene*/
+        measureSpeed(car->speed, dp, index);
 
         /* stops the car and changes road if needed */
         if(car->location >= road->length && car->dirBool == 1){
