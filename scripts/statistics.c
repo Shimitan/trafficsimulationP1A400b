@@ -27,16 +27,31 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     return speedArray;
 }
 
-void measureSpeed(double speed, data *dp, int index){
+void measureSpeed(double speed, data *dp, int index, int dir){
     dp->speedOfCars[index] = speed;
     dp->speedMeasurementCount++;
+    dp->direction = dir;
 }
 
+void averageSpeed(data *dp){
+    int i;
+    double average = 0.0;
+    if (dp->speedMeasurementCount > 0){
+        for (i = 0; i < dp->speedMeasurementCount; i++){
+            average += dp->speedOfCars[i];
+        }
+        average = average/dp->speedMeasurementCount;
+    }
+    dp->averageSpeed = mpdsTokmh(average);
+}
 
-/*
-void analyseData(data oneMinuteData, ){
+double mpdsTokmh(double speed){
+    return speed * 10 * 3.6;
+}
 
-} */
+void analyseData(data *oneMinuteData){
+    averageSpeed(oneMinuteData);
+}
 
 /* Calculate flow
  *      - Calculate the difference between the current flow and the optimal flow given the amount of cars */

@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+<<<<<<< Updated upstream
+=======
+/*
+>>>>>>> Stashed changes
 double disToEnd(car car, road road, struct car carArr[]);
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index);
 double breakLength(car car);
@@ -28,13 +32,14 @@ int main(void){
     int active = 0;
     int k = 0;
     int j = 110;
-    int speedIndex = 0, ticks = 0, minuteIndex = 0;
+    int speedIndex = 0, ticks = 0, minuteIndex = 0, roadindex;
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road roadArr[100];
     roadPoints nodeArr[100];
     car car[1000];
 
+<<<<<<< Updated upstream
     /*Allocates a 2D array for data collection statically*/
     data minuteData[AMOUNT_OF_ROADS][MINUTES_SIMULATED];
     for (i = 0; i < AMOUNT_OF_ROADS; i++){
@@ -42,6 +47,15 @@ int main(void){
             minuteData[i][l].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
             if (minuteData[i][l].speedOfCars == NULL){
                 printf("Error allocating memory for [%d][%d]\n", i, l);
+=======
+    /*Allocates a 2D array for data collection statically. Has twice the amount of roads in the network to account for directions.*/
+    data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
+    for (i = 0; i < AMOUNT_OF_ROADS * 2; i++){
+        for (k = 0; k < MINUTES_SIMULATED; k++){
+            minuteData[i][k].speedOfCars = createSpeedArray(NUM_OF_CARS, TICKS_PER_SECOND);
+            if (minuteData[i][k].speedOfCars == NULL){
+                printf("Error allocating memory for [%d][%d]\n", i, k);
+>>>>>>> Stashed changes
                 exit(EXIT_FAILURE);
             } else {
                 minuteData[i][l].speedMeasurementCount = 0;
@@ -97,8 +111,13 @@ int main(void){
     for(i = 0; i < 4; i++){
         nodeArr[i].ID = i;
     }
+<<<<<<< Updated upstream
     for(i = 0; i < 3; i++){
         roadArr[i].length = (i + 1) * 1000;
+=======
+    for(i = 0; i < 2; i++){
+        roadArr[i].length = (i + 1) * 10000;
+>>>>>>> Stashed changes
         roadArr[i].speedLimit = (i + 1) * 50;
         roadArr[i].speedLimit = kmhTompds(&roadArr[i]);
         // roadArr[i].startID = i;
@@ -158,6 +177,7 @@ int main(void){
             car[k].endGoal = car[k].path[2];
             car[k].currGoal = car[k].path[car[k].pathStep + 1];
 
+<<<<<<< Updated upstream
             for (l = 0; l < 100; l++) {
                 if ((roadArr[l].startID == car[k].currNode && roadArr[l].endID == car[k].currGoal) || (roadArr[l].endID == car[k].currNode && roadArr[l].startID == car[k].currGoal)) {
                     createCar(&car[k], &roadArr[l], &k, roadArr, nodeArr);
@@ -168,13 +188,24 @@ int main(void){
                 }
             j = 0;
         }
+=======
+    /*
+     * Positiv retning = index 0
+     * Negativ retning = index 0 + antal veje
+     */
+>>>>>>> Stashed changes
 
         for(i = 0; i < AMOUNT_OF_CARS; i++){
             for (l = 0; l < 100; l++) {
             //printf("CurrCar[0]: %d on road[%d]\n", roadArr[l].currCars[0], l); 
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
+<<<<<<< Updated upstream
                     //printf("FOUND CORRECT ROAD!\n");                   
                     moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[l][minuteIndex], speedIndex);
+=======
+                    roadindex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
+                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadindex][minuteIndex], speedIndex);
+>>>>>>> Stashed changes
                     minuteData[l][minuteIndex].roadID = l;
                     speedIndex++;
                     // printf("CarActive?: %d\n", car[i].active);
@@ -200,7 +231,15 @@ int main(void){
     // }
     for (l = 0; l < 2; l++) {
         for (i = 0; i < MINUTES_SIMULATED; i++){
+<<<<<<< Updated upstream
             // printf("Ticks with car on road %d for minute %2d: %d\n", l, i, minuteData[l][i].speedMeasurementCount);
+=======
+            if (minuteData[l][i].speedMeasurementCount > 0){
+                printf("Ticks with car on road %d for minute %2d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
+                analyseData(&minuteData[l][i]);
+                printf("with average speed %.2lf km/h\n", minuteData[l][i].averageSpeed);
+            }
+>>>>>>> Stashed changes
         }
     }
 
