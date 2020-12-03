@@ -1,7 +1,7 @@
 #include "network.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+/*
 double disToEnd(car car, road road, struct car carArr[]);
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index);
 double breakLength(car car);
@@ -10,7 +10,7 @@ int cmpfunc (const void * a, const void * b);
 double distanceBetweenCars(car car);
 void roadOutput(car car[], road road);
 double kmhTompds(road* road);
-void changeRoad(car* car, road roadArr[], int* debugBool);
+void changeRoad(car* car, road roadArr[], int* debugBool);*/
 void getInput(road roadArr[], int* nodeAmount, int* roadAmount, int* seed, int* simulationTime);
 
 
@@ -29,7 +29,6 @@ int main(void){
     int k = 0;
     int j = 110;
     int speedIndex = 0, ticks = 0, minuteIndex = 0, roadIndex;
-    char wait;
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road roadArr[100];
