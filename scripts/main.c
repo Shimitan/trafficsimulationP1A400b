@@ -13,12 +13,8 @@ double distanceBetweenCars(car car);
 void roadOutput(car car[], road road);
 double kmhTompds(road* road);
 void changeRoad(car* car, road roadArr[], int* debugBool);
-<<<<<<< HEAD
-*/
-=======
 void getInput(road roadArr[], int* nodeAmount, int* roadAmount, int* seed, int* simulationTime);
-
->>>>>>> arthurs-lejeplads
+*/
 
 void createCar(car* car, road* road, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]);
 
@@ -41,7 +37,6 @@ int main(void){
     roadPoints nodeArr[100];
     car car[1000];
 
-<<<<<<< HEAD
     /*Allocates a 2D array for data collection statically*/
     data minuteData[AMOUNT_OF_ROADS][MINUTES_SIMULATED];
     for (i = 0; i < AMOUNT_OF_ROADS; i++){
@@ -58,8 +53,6 @@ int main(void){
 
 
 
-=======
->>>>>>> arthurs-lejeplads
     for(i = 0; i < 1000; i++){
         car[i].active = 0;
         car[i].pathStep = 0;

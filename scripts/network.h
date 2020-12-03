@@ -157,12 +157,7 @@ double breakLength(car car){
     return dist;
 }
 
-<<<<<<< HEAD
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index){ /*Tilføj parametre*/
-=======
-/* Moves car */
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool){
->>>>>>> arthurs-lejeplads
     int l, startBuffer, endBuffer, lengthBuffer;
     struct road roadBuffer;
 
@@ -172,11 +167,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         car->breakLength = breakLength(*car);
         //printf("BreakLength: %lf\n", car->breakLength);
 
-<<<<<<< HEAD
-        /* Ændrer bilens fart */
-=======
         /* Accelerates or deccelerates the car */
->>>>>>> arthurs-lejeplads
         if(car->speed < (road->speedLimit + car->speedDeviation) && car->breakLength < distanceToEnd){
             car->speed += car->acceleration;
         }else if(car->breakLength >= distanceToEnd && car->speed > 0){
@@ -186,11 +177,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             }
         }
 
-<<<<<<< HEAD
-        /* Ændrer bilens position */
-=======
         /* Moves the car */
->>>>>>> arthurs-lejeplads
         if(car->dirBool == 1){
             car->location += car->speed;
         }else{
@@ -221,19 +208,15 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             /*Det virker nu... Jeg gav mine roads currCar en værdi på -1 for at ressette den. Har INGEN ide om hvorfor det nogensinde ville fucke noget op...*/
             /*JEG STEMMER FOR AT PUSHARRAY SKAL DRÆBES!! DEN ER CURSED AF!!!!*/
             /* LAV EN FUCKING STRUCT BUFFER*/
-            //pushArray(*car, road);
+            pushArray(*car, road);
 
             roadArr[car->path[car->pathStep]].startID = startBuffer;
             //printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
             roadArr[car->path[car->pathStep]].endID = endBuffer;
             //printf("Road[%d].endID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].endID);
             roadArr[car->path[car->pathStep]].length = lengthBuffer;
-<<<<<<< HEAD
             //printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
-=======
-            printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
             roadArr[car->path[car->pathStep]] = roadBuffer;
->>>>>>> arthurs-lejeplads
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             
@@ -248,16 +231,12 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }else if(car->location <= 0 && car->dirBool == 0){
             car->speed = 0;
             car->active = 0;
-<<<<<<< HEAD
-            //pushArray(*car, road);
-=======
 
             /* Buffers because else it broke */
             roadBuffer = roadArr[car->path[car->pathStep]];
             pushArray(*car, road);
             roadArr[car->path[car->pathStep]] = roadBuffer;
 
->>>>>>> arthurs-lejeplads
             car->location = 0;
 
             car->currNode = road->startID;
