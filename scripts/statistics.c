@@ -36,6 +36,12 @@ void measureSpeed(double speed, data *dp, int index){
 /*
 void analyseData(data oneMinuteData, ){
 
+void analyseData(data *oneMinuteData){
+    averageSpeed(oneMinuteData);
+}
+/*
+void analyseData(data oneMinuteData, ){
+
 } */
 
 /* Calculate flow

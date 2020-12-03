@@ -36,8 +36,8 @@ int main(void){
     car car[1000];
 
     /*Allocates a 2D array for data collection statically*/
-    data minuteData[AMOUNT_OF_ROADS][MINUTES_SIMULATED];
-    for (i = 0; i < AMOUNT_OF_ROADS; i++){
+    data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
+    for (i = 0; i < AMOUNT_OF_ROADS * 2; i++){
         for (l = 0; l < MINUTES_SIMULATED; l++){
             minuteData[i][l].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
             if (minuteData[i][l].speedOfCars == NULL){
@@ -173,8 +173,9 @@ int main(void){
             for (l = 0; l < 100; l++) {
             //printf("CurrCar[0]: %d on road[%d]\n", roadArr[l].currCars[0], l); 
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
-                    //printf("FOUND CORRECT ROAD!\n");                   
-                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[l][minuteIndex], speedIndex);
+                    //printf("FOUND CORRECT ROAD!\n");
+                    roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
+                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex);
                     minuteData[l][minuteIndex].roadID = l;
                     speedIndex++;
                     // printf("CarActive?: %d\n", car[i].active);
@@ -200,7 +201,12 @@ int main(void){
     // }
     for (l = 0; l < 2; l++) {
         for (i = 0; i < MINUTES_SIMULATED; i++){
-            // printf("Ticks with car on road %d for minute %2d: %d\n", l, i, minuteData[l][i].speedMeasurementCount);
+            if (minuteData[l][i].speedMeasurementCount > 0){
+                printf("Ticks with car on road %d for minute %2d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
+                analyseData(&minuteData[l][i]);
+                printf("with average speed %.2lf km/h\n", minuteData[l][i].averageSpeed);
+            }
+
         }
     }
 
@@ -211,7 +217,6 @@ int main(void){
             minuteData[i][l].speedOfCars = NULL;
         }
     }
-
     return 0;
 }
 
