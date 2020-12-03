@@ -206,7 +206,6 @@ int main(void){
                 analyseData(&minuteData[l][i]);
                 printf("with average speed %.2lf km/h\n", minuteData[l][i].averageSpeed);
             }
-
         }
     }
 

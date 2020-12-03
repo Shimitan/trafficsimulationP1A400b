@@ -20,6 +20,7 @@ struct data{
     double density;
     int roadID;
     int roadLength;
+    int direction;
     int timeInterval;
 };
 
@@ -27,4 +28,7 @@ typedef struct data data;
 
 /*Prototypes*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond);
-void measureSpeed(double speed, data *dp, int index);
+void measureSpeed(double speed, data *dp, int index, int dir);
+void analyseData(data *oneMinuteData);
+void averageSpeed(data *dp);
+double mpdsTokmh(double speed);
