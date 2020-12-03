@@ -333,9 +333,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
             i++;
         }
         
-        
-        
-
+                
         for(i = 0; i < roadPointsArr[currentNode].numOfConnections; i++){
 
             /* finds distance from current node to neigbour node */
