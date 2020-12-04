@@ -21,7 +21,7 @@
  *      - Jeg har ingen ide om hvorvidt det er en god ide
  * */
 
-/*Sets up the minuteData 2D array*/
+/* Sets up the minuteData 2D array */
 void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[]){
     int i, l;
     for (i = 0; i < amountOfRoads * 2; i++){
@@ -33,19 +33,29 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amo
             } else {
                 minuteData[i][l].speedMeasurementCount = 0;
                 minuteData[i][l].carCount = 0;
+                minuteData[i][l].timeInterval = 1;
             }
         }
         speedIndex[i] = 0;
     }
 }
 
-
-
-
 /*Allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
     return speedArray;
+}
+
+void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+    int i, l;
+    for (l = 0; l < amountOfRoads; l++) {
+        for (i = 0; i < minutesSimulated; i++){
+            if (minuteData[l][i].speedMeasurementCount > 0){
+                averageSpeed(&minuteData[l][i]);
+                calculateFlow(&minuteData[l][i]);
+            }
+        }
+    }
 }
 
 void measureSpeed(double speed, data *dp, int index, int dir){
@@ -74,17 +84,38 @@ void calculateFlow(data *dp){
     dp->calculatedFlow = (double) dp->carCount/dp->timeInterval;
 }
 
-
 double mpdsTokmh(double speed){
     return speed * 10 * 3.6;
 }
 
-void analyseData(data *oneMinuteData){
-    averageSpeed(oneMinuteData);
+/* Prints the analysed data */
+void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+    int i, l;
+    for (l = 0; l < amountOfRoads; l++) {
+        for (i = 0; i < minutesSimulated; i++){
+            if (minuteData[l][i].speedMeasurementCount > 0){
+                printf("Ticks with car on road %3d for minute %3d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
+                printf("with average speed %05.2lf km/h and flow %03.2lf cars/min\n", minuteData[l][i].averageSpeed, minuteData[l][i].calculatedFlow);
+            }
+        }
+    }
 }
 
-/* Calculate flow
- *      - Calculate the difference between the current flow and the optimal flow given the amount of cars */
+/* Frees the allocated memory  */
+void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+    int i, l;
+    for (i = 0; i < amountOfRoads; i++){
+        for (l = 0; l < minutesSimulated; l++){
+            free(minuteData[i][l].speedOfCars);
+            minuteData[i][l].speedOfCars = NULL;
+        }
+    }
+}
+
+
+
+
+
 
 /* Calculate density
  *  */

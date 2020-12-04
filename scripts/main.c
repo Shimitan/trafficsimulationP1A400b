@@ -167,7 +167,7 @@ int main(void){
                     //printf("FOUND CORRECT ROAD!\n");
                     roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
                     moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex[roadIndex]);
-                    minuteData[l][minuteIndex].roadID = l;
+                    minuteData[roadIndex][minuteIndex].roadID = l;
                     speedIndex[roadIndex]++;
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
@@ -192,23 +192,10 @@ int main(void){
     //         break;
     //     }
     // }
-    for (l = 0; l < 2; l++) {
-        for (i = 0; i < MINUTES_SIMULATED; i++){
-            if (minuteData[l][i].speedMeasurementCount > 0){
-                printf("Ticks with car on road %d for minute %2d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
-                analyseData(&minuteData[l][i]);
-                printf("with average speed %.2lf km/h\n", minuteData[l][i].averageSpeed);
-            }
-        }
-    }
+    analyseData(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData);
+    printAnalysedData(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData);
+    freeSpeedArrays(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData);
 
-
-    for (i = 0; i < AMOUNT_OF_ROADS; i++){
-        for (l = 0; l < MINUTES_SIMULATED; l++){
-            free(minuteData[i][l].speedOfCars);
-            minuteData[i][l].speedOfCars = NULL;
-        }
-    }
     return 0;
 }
 

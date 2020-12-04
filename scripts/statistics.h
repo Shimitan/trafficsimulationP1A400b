@@ -31,8 +31,11 @@ typedef struct data data;
 /*Prototypes*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond);
 void measureSpeed(double speed, data *dp, int index, int dir);
-void analyseData(data *oneMinuteData);
+void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]);
 void averageSpeed(data *dp);
 double mpdsTokmh(double speed);
 void countCarFlow(data *dp);
 void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[]);
+void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]);
+void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]);
+void calculateFlow(data *dp);
