@@ -232,6 +232,7 @@ int main(void){
     free(roadArr);
     free(endNodes);
 
+    printf("pre return xd\n");
     return 0;
 }
 
@@ -239,19 +240,19 @@ int main(void){
 void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount){
     int SENTINAL = 1, i = 0, j, l = 0;
 
-    // do{
-    //     car->currNode = endNodes[rand() % endNodeAmount];
-    //     car->endGoal = endNodes[rand() % endNodeAmount];
-    // }while(car->currNode == car->endGoal);
+    do{
+        car->currNode = endNodes[rand() % endNodeAmount];
+        car->endGoal = endNodes[rand() % endNodeAmount];
+    }while(car->currNode == car->endGoal);
     
 
-    if (*k == 0) {
-        car->currNode = 0;
-        car->endGoal = 2;        
-    } else {
-        car->currNode = 0;
-        car->endGoal = 3;
-    }
+    // if (*k == 0) {
+    //     car->currNode = 2;
+    //     car->endGoal = 0;        
+    // } else {
+    //     car->currNode = 3;
+    //     car->endGoal = 0;
+    // }
     /* MIDLERTIDIG MEME */
     // car->currNode = 0;
     // car->endGoal = 3;
