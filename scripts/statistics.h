@@ -3,10 +3,10 @@
 #include <stdio.h>
 
 /*Constants*/
-#define AMOUNT_OF_CARS 1000
+#define AMOUNT_OF_CARS 2
 #define TICKS_PER_SECOND 10
 #define SECONDS_PER_MINUTE 60
-#define AMOUNT_OF_ROADS 10
+#define AMOUNT_OF_ROADS 3
 #define MINUTES_SIMULATED 30
 
 /*Structs*/

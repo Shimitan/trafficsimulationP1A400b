@@ -5,6 +5,7 @@
 #define INFINITY 2147483647
 
 //UwUbuntu
+//OwObonto
 
 typedef struct car car;
 typedef struct road road;
@@ -55,7 +56,7 @@ struct car{
 };
 
 double disToEnd(car car, road road, struct car carArr[]);
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index);
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
@@ -63,7 +64,7 @@ double distanceBetweenCars(car car);
 void pushArray(car car, road *road);
 void roadOutput(car car[], road road);
 double kmhTompds(road* road);
-void changeRoad(car* car, road roadArr[], int* debugBool);
+void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount);
 
 /* Finds distance to whatever is in front of the car, either being a node or another car */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -157,10 +158,9 @@ double breakLength(car car){
     return dist;
 }
 
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index){ /*Tilføj parametre*/
-    int l, i, startBuffer, endBuffer, lengthBuffer;
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount){ /*Tilføj parametre*/
+    int l, i, startBuffer, endBuffer, lengthBuffer, meme;
     struct road roadBuffer;
-
     if(car->active == 1){
         
         double distanceToEnd = disToEnd(*car, *road, carArr);
@@ -211,7 +211,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             //printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
             // ->lengthBuffer = roadArr[car->path[car->pathStep]].length;
 
-            // ->roadBuffer = roadArr[car->path[car->pathStep]];
+            //->roadBuffer = roadArr[car->path[car->pathStep]];
 
 
 
@@ -220,7 +220,18 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             /*JEG STEMMER FOR AT PUSHARRAY SKAL DRÆBES!! DEN ER CURSED AF!!!!*/
             /* LAV EN FUCKING STRUCT BUFFER*/
             /* Ladies and gentlebobs! It works! Who knew, that the problem was createCar... */
+            /* Den virker ikk igen...................... */
+            for (meme = 0; meme < roadAmount; meme++) {
+                printf("Road[%d].startID: %d\n", meme, roadArr[meme].startID);
+                printf("Road[%d].endID: %d\n", meme, roadArr[meme].endID);
+            }
+            
             pushArray(*car, road);
+            
+            for (meme = 0; meme < roadAmount; meme++) {
+                printf("Road[%d].startID: %d\n", meme, roadArr[meme].startID);
+                printf("Road[%d].endID: %d\n", meme, roadArr[meme].endID);
+            }
 
             // ->roadArr[car->path[car->pathStep]].startID = startBuffer;
             //printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
@@ -228,7 +239,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             //printf("Road[%d].endID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].endID);
             // ->roadArr[car->path[car->pathStep]].length = lengthBuffer;
             //printf("Road[%d].length: %lf\n", car->path[car->pathStep],roadArr[car->path[car->pathStep]].length);
-            // ->roadArr[car->path[car->pathStep]] = roadBuffer;
+            //->roadArr[car->path[car->pathStep]] = roadBuffer;
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             
@@ -237,9 +248,13 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             car->currNode = road->endID;
             car->pathStep++;
 
-            //printf("Car stopped %d\n", carNum);
+            printf("Car stopped %d\n", carNum);
 
-            changeRoad(car, roadArr, debugBool);
+            changeRoad(car, roadArr, debugBool, roadAmount);
+            printf("Road.length: %lf\n", roadArr[2].length);
+            for (meme = 0; meme < 100; meme++) {
+                printf("currCar[%d]: %d\n", meme, roadArr[2].currCars[meme]);
+            }
         }else if(car->location <= 0 && car->dirBool == 0){
             car->speed = 0;
             car->active = 0;
@@ -256,7 +271,9 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
 
             //printf("Car stopped %d\n", carNum);
 
-            changeRoad(car, roadArr, debugBool);
+            printf("pre Change\n");
+            changeRoad(car, roadArr, debugBool, roadAmount);
+            printf("post Change\n");
         }
     }
 }
@@ -270,16 +287,20 @@ int cmpfunc (const void * a, const void * b){
 void pushArray(car car, road *road){
     int i = 0, SENTINAL = 1;
 
+    printf("pre while\n");
     while(SENTINAL){
+        //printf("currCar[%d]: %d == %d <- car.ID\n", i, road->currCars[i], car.ID);
         if(road->currCars[i] == car.ID){
             SENTINAL = 0;
         }else{
             i++;
         }
     }
+    printf("post while\n");
 
     SENTINAL = 1;
 
+    printf("pre while 2\n");
     while(SENTINAL){
         road->currCars[i] = road->currCars[i + 1];
         if (road->currCars[i + 1] == -1){
@@ -287,6 +308,7 @@ void pushArray(car car, road *road){
         }
         i++;
     }
+    printf("post while 2\n");
 
     /*DEBUG PRINTER ARRAYET XD*/
     for (i = 0; i < 100; i++) {
@@ -343,9 +365,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
             i++;
         }
         
-        
-        
-
+                
         for(i = 0; i < roadPointsArr[currentNode].numOfConnections; i++){
 
             /* finds distance from current node to neigbour node */
@@ -403,8 +423,8 @@ void roadOutput(car car[], road road){
 }
 
 /* facilitates the change in road when car reaches a node */
-void changeRoad(car* car, road roadArr[], int* debugBool){
-    int l;
+void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount){
+    int l, i;
     double roadLength;
     road road;
 
@@ -412,9 +432,15 @@ void changeRoad(car* car, road roadArr[], int* debugBool){
         car->active = 1;
         // car->currNode = car->currGoal;
         car->currGoal = car->path[car->pathStep];
-        for (l = 0; l < 100; l++) {
+        for (l = 0; l < roadAmount; l++) {
             if ((roadArr[l].startID == car->currNode && roadArr[l].endID == car->currGoal) || (roadArr[l].endID == car->currNode && roadArr[l].startID == car->currGoal)) {
                 road = roadArr[l];
+                for (i = 0; i < 100; i++) {
+                    if (roadArr[l].currCars[i] == -1) {
+                        roadArr[l].currCars[i] = car->ID;
+                        break;
+                    }
+                }
                 //printf("l: %d\n", l);
                 break;
             }
