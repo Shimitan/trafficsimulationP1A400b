@@ -16,8 +16,10 @@ struct data{
     int speedMeasurementCount;
     double *speedOfCars; //skal være et array af alle målte hastigheder i løbet af et minut i simulationen
     double averageSpeed;
-    double flow;
+    double calculatedFlow;
+    double optimalFlow;
     double density;
+    int carCount;
     int roadID;
     int roadLength;
     int direction;
@@ -32,3 +34,4 @@ void measureSpeed(double speed, data *dp, int index, int dir);
 void analyseData(data *oneMinuteData);
 void averageSpeed(data *dp);
 double mpdsTokmh(double speed);
+void countCarFlow(data *dp);

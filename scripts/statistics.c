@@ -45,6 +45,12 @@ void averageSpeed(data *dp){
     dp->averageSpeed = mpdsTokmh(average);
 }
 
+void countCarFlow(data *dp){
+    dp->carCount++;
+}
+
+
+
 double mpdsTokmh(double speed){
     return speed * 10 * 3.6;
 }

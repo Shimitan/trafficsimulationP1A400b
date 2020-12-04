@@ -46,6 +46,7 @@ int main(void){
                 exit(EXIT_FAILURE);
             } else {
                 minuteData[i][l].speedMeasurementCount = 0;
+                minuteData[i][l].carCount = 0;
             }
         }
         speedIndex[i] = 0;
