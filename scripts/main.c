@@ -38,19 +38,7 @@ int main(void){
 
     /*Allocates a 2D array for data collection statically*/
     data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
-    for (i = 0; i < AMOUNT_OF_ROADS * 2; i++){
-        for (l = 0; l < MINUTES_SIMULATED; l++){
-            minuteData[i][l].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
-            if (minuteData[i][l].speedOfCars == NULL){
-                printf("Error allocating memory for [%d][%d]\n", i, l);
-                exit(EXIT_FAILURE);
-            } else {
-                minuteData[i][l].speedMeasurementCount = 0;
-                minuteData[i][l].carCount = 0;
-            }
-        }
-        speedIndex[i] = 0;
-    }
+    setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData, speedIndex);
 
 
 

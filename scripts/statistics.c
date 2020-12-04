@@ -21,6 +21,27 @@
  *      - Jeg har ingen ide om hvorvidt det er en god ide
  * */
 
+/*Sets up the minuteData 2D array*/
+void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[]){
+    int i, l;
+    for (i = 0; i < amountOfRoads * 2; i++){
+        for (l = 0; l < minutesSimulated; l++){
+            minuteData[i][l].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
+            if (minuteData[i][l].speedOfCars == NULL){
+                printf("Error allocating memory for [%d][%d]\n", i, l);
+                exit(EXIT_FAILURE);
+            } else {
+                minuteData[i][l].speedMeasurementCount = 0;
+                minuteData[i][l].carCount = 0;
+            }
+        }
+        speedIndex[i] = 0;
+    }
+}
+
+
+
+
 /*Allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
@@ -49,6 +70,9 @@ void countCarFlow(data *dp){
     dp->carCount++;
 }
 
+void calculateFlow(data *dp){
+    dp->calculatedFlow = (double) dp->carCount/dp->timeInterval;
+}
 
 
 double mpdsTokmh(double speed){

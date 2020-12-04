@@ -6,7 +6,7 @@
 #define AMOUNT_OF_CARS 1000
 #define TICKS_PER_SECOND 10
 #define SECONDS_PER_MINUTE 60
-#define AMOUNT_OF_ROADS 4
+#define AMOUNT_OF_ROADS 10
 #define MINUTES_SIMULATED 30
 
 /*Structs*/
@@ -35,3 +35,4 @@ void analyseData(data *oneMinuteData);
 void averageSpeed(data *dp);
 double mpdsTokmh(double speed);
 void countCarFlow(data *dp);
+void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[]);
