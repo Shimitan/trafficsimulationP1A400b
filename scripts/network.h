@@ -188,6 +188,16 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             measureSpeed(car->speed, dp, index, car->dirBool);
         }
 
+        /* Gem antal biler der har passeret midtpunktet af vejen */
+        /*   carPos >= length/2 && (carPos - speed) < length/2 */
+
+        if (car->dirBool == 1 && car->location >= (road->length/2) && (car->location - car->speed) < (road->length/2)){
+            countCarFlow(dp);
+        } else if (car->dirBool == 0 && car->location <= (road->length/2) && (car->location + car->speed) > (road->length/2)) {
+            countCarFlow(dp);
+        }
+
+
         /* stops the car and changes road if needed */
         if(car->location >= road->length && car->dirBool == 1){
             car->speed = 0;
