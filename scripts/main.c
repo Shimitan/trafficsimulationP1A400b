@@ -16,7 +16,7 @@ road* getRoadAmount(int* roadAmount);
 void getRestOfInput(road roadArr[], int* seed, int* simulationTime);
 
 
-void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]);
+void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount);
 
 
 int main(void){
@@ -24,6 +24,7 @@ int main(void){
     int nodeAmount = 0;
     int roadAmount = 0;
     int currTick = 0;
+    int endNodeAmount = 0;
     int seed;
     int simulationTime;
     int i = 0;
@@ -37,6 +38,7 @@ int main(void){
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road *roadArr;
     roadPoints *nodeArr;
+    int *endNodes;
     car car[1000];
 
     /*Allocates a 2D array for data collection statically*/
@@ -128,6 +130,28 @@ int main(void){
         nodeArr[roadArr[i].startID].ID = roadArr[i].startID;
     }
 
+    for (i = 0; i < nodeAmount; i++) {
+        if (nodeArr[i].numOfConnections == 1) {
+            endNodeAmount++;
+        }
+    }
+
+    endNodes = (int*)malloc(endNodeAmount * sizeof(int));
+
+    l = 0;
+
+    for (i = 0; i < nodeAmount; i++) {
+        if (nodeArr[i].numOfConnections == 1) {
+            endNodes[l] = nodeArr[i].ID;
+            printf("xd[%d]: %d\n", l, endNodes[l]);
+            l++;
+        }
+    }
+
+    for (i = 0; i < endNodeAmount; i++) {
+        printf("endNode[%d]: %d\n", i, endNodes[i]);
+    }
+
     // for (i = 0; i < nodeAmount; i++) {
     //     for (l = 0; l < nodeArr[i].numOfConnections; l++) {
     //         printf("nodeArr[%d].connection[%d]: %d\n", i, l, nodeArr[i].connections[l]);
@@ -161,7 +185,7 @@ int main(void){
             // car[k].endGoal = car[k].path[2];
             // car[k].currGoal = car[k].path[car[k].pathStep + 1];
             printf("pre car\n");
-            createCar(&car[k], &k, roadArr, nodeArr);
+            createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount);
             printf("post car\n");
             // for (l = 0; l < 100; l++) {
             //     if ((roadArr[l].startID == car[k].currNode && roadArr[l].endID == car[k].currGoal) || (roadArr[l].endID == car[k].currNode && roadArr[l].startID == car[k].currGoal)) {
@@ -223,17 +247,21 @@ int main(void){
             minuteData[i][l].speedOfCars = NULL;
         }
     }
-    
+
+    free(roadArr);
+    free(nodeArr);
+    free(endNodes);
+
     return 0;
 }
 
 
-void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[]){
+void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount){
     int SENTINAL = 1, i = 0, j, l = 0;
 
     do{
-        car->currNode = rand() % 4;
-        car->endGoal = rand() % 4;
+        car->currNode = endNodes[rand() % endNodeAmount];
+        car->endGoal = endNodes[rand() % endNodeAmount];
     }while(car->currNode == car->endGoal);
     
     /* MIDLERTIDIG MEME */
