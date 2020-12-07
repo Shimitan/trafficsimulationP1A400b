@@ -32,7 +32,8 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amo
                 exit(EXIT_FAILURE);
             } else {
                 minuteData[i][l].speedMeasurementCount = 0;
-                minuteData[i][l].carCount = 0;
+                minuteData[i][l].flowCarCount = 0;
+                minuteData[i][l].densityCarCount = 0;
                 minuteData[i][l].timeInterval = 1;
             }
         }
@@ -53,6 +54,7 @@ void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amount
             if (minuteData[l][i].speedMeasurementCount > 0){
                 averageSpeed(&minuteData[l][i]);
                 calculateFlow(&minuteData[l][i]);
+                calculateDensity(&minuteData[l][i]);
             }
         }
     }
@@ -76,12 +78,17 @@ void averageSpeed(data *dp){
     dp->averageSpeed = mpdsTokmh(average);
 }
 
+
+void calculateDensity(data *dp){
+    dp->density = (dp->densityCarCount / dp->roadLength) * 1000;
+}
+
 void countCarFlow(data *dp){
-    dp->carCount++;
+    dp->flowCarCount++;
 }
 
 void calculateFlow(data *dp){
-    dp->calculatedFlow = (double) dp->carCount/dp->timeInterval;
+    dp->calculatedFlow = (double) dp->flowCarCount / dp->timeInterval;
 }
 
 double mpdsTokmh(double speed){
@@ -94,8 +101,8 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
-                printf("Ticks with car on road %3d for minute %3d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
-                printf("with average speed %05.2lf km/h and flow %03.2lf cars/min\n", minuteData[l][i].averageSpeed, minuteData[l][i].calculatedFlow);
+                printf("Ticks with car on road %4d for minute %3d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
+                printf("with average speed %05.2lf km/h, flow %03.2lf cars/min and density %3.2lf\n", minuteData[l][i].averageSpeed, minuteData[l][i].calculatedFlow, minuteData[l][i].density);
             }
         }
     }
@@ -115,10 +122,6 @@ void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data minuteData[am
 
 
 
-
-
-/* Calculate density
- *  */
 
 /* Write data to file */
 

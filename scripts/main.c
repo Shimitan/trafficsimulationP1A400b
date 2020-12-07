@@ -200,7 +200,9 @@ int main(void){
                     roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
                     moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex[roadIndex], roadAmount);
                     minuteData[roadIndex][minuteIndex].roadID = l;
+                    minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
                     speedIndex[roadIndex]++;
+                    
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
                 }

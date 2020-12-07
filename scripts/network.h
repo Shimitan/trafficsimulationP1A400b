@@ -75,9 +75,9 @@ double disToEnd(car car, road road, struct car carArr[]){
     //printf("aheadLocation: %lf carInFront: %d\n", aheadLocation, carInFront);
     if(carInFront == 1){
         if(car.dirBool == 1){
-            return (aheadLocation - (5 + distanceBetweenCars(car))) - car.location;
+            return (aheadLocation - (CAR_LENGTH + distanceBetweenCars(car))) - car.location;
         }else{
-            return car.location - (aheadLocation + (5 + distanceBetweenCars(car)));
+            return car.location - (aheadLocation + (CAR_LENGTH + distanceBetweenCars(car)));
         }
     }else{
         if(car.dirBool == 1){
@@ -163,6 +163,9 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
     int l, i, startBuffer, endBuffer, lengthBuffer, meme;
     struct road roadBuffer;
     if(car->active == 1){
+        if ((car->location == 0 && car->dirBool == 1) || (car->location == road->length && car->dirBool == 0)){
+            dp->densityCarCount++;
+        }
         
         double distanceToEnd = disToEnd(*car, *road, carArr);
         car->breakLength = breakLength(*car);
@@ -190,8 +193,6 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }
 
         /* Gem antal biler der har passeret midtpunktet af vejen */
-        /*   carPos >= length/2 && (carPos - speed) < length/2 */
-
         if (car->dirBool == 1 && car->location >= (road->length/2) && (car->location - car->speed) < (road->length/2)){
             countCarFlow(dp);
         } else if (car->dirBool == 0 && car->location <= (road->length/2) && (car->location + car->speed) > (road->length/2)) {
@@ -203,6 +204,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         if(car->location >= road->length && car->dirBool == 1){
             car->speed = 0;
             car->active = 0;
+            dp->densityCarCount--;
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             //printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
@@ -259,7 +261,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }else if(car->location <= 0 && car->dirBool == 0){
             car->speed = 0;
             car->active = 0;
-
+            dp->densityCarCount--;
             /* Buffers because else it broke */
             // roadBuffer = roadArr[car->path[car->pathStep]];
             pushArray(*car, road);
