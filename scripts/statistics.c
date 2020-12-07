@@ -81,7 +81,7 @@ void averageSpeed(data *dp){
 
 
 void calculateDensity(data *dp){
-    dp->density = (dp->densityCarCount * 1000) / (dp->roadLength) ;
+    dp->density = (double) (dp->densityCarCount * 1000) / (dp->roadLength) ;
 }
 
 void countCarFlow(data *dp){

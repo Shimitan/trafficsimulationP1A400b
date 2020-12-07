@@ -164,7 +164,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
     struct road roadBuffer;
     if(car->active == 1){
         if ((car->location == 0 && car->dirBool == 1) || (car->location == road->length && car->dirBool == 0)){
-            *carsOnRoadCount++;
+            *carsOnRoadCount += 1;
         }
         
         double distanceToEnd = disToEnd(*car, *road, carArr);
@@ -204,7 +204,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         if(car->location >= road->length && car->dirBool == 1){
             car->speed = 0;
             car->active = 0;
-            *carsOnRoadCount--;
+            *carsOnRoadCount -= 1;
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             //printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
@@ -261,7 +261,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }else if(car->location <= 0 && car->dirBool == 0){
             car->speed = 0;
             car->active = 0;
-            *carsOnRoadCount--;
+            *carsOnRoadCount -= 1;
             /* Buffers because else it broke */
             // roadBuffer = roadArr[car->path[car->pathStep]];
             pushArray(*car, road);
