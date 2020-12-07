@@ -30,16 +30,21 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amo
             if (minuteData[i][l].speedOfCars == NULL){
                 printf("Error allocating memory for [%d][%d]\n", i, l);
                 exit(EXIT_FAILURE);
-            } else {
-                minuteData[i][l].speedMeasurementCount = 0;
-                minuteData[i][l].flowCarCount = 0;
-                minuteData[i][l].densityCarCount = 0;
-                minuteData[i][l].timeInterval = 1;
             }
+            minuteData[i][l].speedMeasurementCount = 0;
+            minuteData[i][l].flowCarCount = 0;
+            minuteData[i][l].densityCarCount = 0;
+            minuteData[i][l].timeInterval = 1;
+            
         }
         speedIndex[i] = 0;
         carsOnRoad[i] = 0;
     }
+    /* Gud hader menneskeheden så det her skal stå der for at lortet virker i [0][0]
+     * Din familie vil ikke være i live til næste jul hvis du fjerner det her
+     *      - Varme julehilsner <3,
+     *        Mette Frederiksen, 07-12-2020*/
+    minuteData[0][0].timeInterval = 1;
 }
 
 /*Allocates an array to store the speed for each car for each tick on a given road*/
@@ -103,7 +108,7 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
                 printf("Ticks with car on road %4d for minute %3d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
-                printf("with average speed %05.2lf km/h, flow %03.2lf cars/min and density %3.2lf\n", minuteData[l][i].averageSpeed, minuteData[l][i].calculatedFlow, minuteData[l][i].density);
+                printf("with average speed %05.2lf km/h, flow %03.2lf cars/min and density %3.2lf cars/km\n", minuteData[l][i].averageSpeed, minuteData[l][i].calculatedFlow, minuteData[l][i].density);
             }
         }
     }
