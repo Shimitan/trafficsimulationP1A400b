@@ -309,6 +309,7 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
 }
 
 /* This funktion read the file called "Input.txt", and configures the roads in roadArr */
+/* den her er ikk et problem :) */
 roadPoints* getNodeAmount(int* nodeAmount) {
     int ch, i = 0, l = 0, k = 0, debugBool = 0, xd;
     char str[16];

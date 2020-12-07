@@ -285,6 +285,7 @@ int cmpfunc (const void * a, const void * b){
 }
 
 /* pushes the array of cars on the road to avoid gaps */
+/* den her hader jeg stadig væk */
 void pushArray(car car, road *road){
     int i = 0, SENTINAL = 1;
 
@@ -337,7 +338,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
     notTested[0] = car->currNode;
 
     //setup
-    //100 skal være antal nodes
+    /* nu fixed */
     for(i = 0; i < nodeAmount; i++){
         if(i != notTested[0]){
             roadPointsArr[i].local = INFINITY;
