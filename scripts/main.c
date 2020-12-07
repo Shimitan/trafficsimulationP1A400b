@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 double disToEnd(car car, road road, struct car carArr[]);
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount);
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount, int *carsOnRoadCount);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
@@ -34,6 +34,7 @@ int main(void){
     int k = 0;
     int j = 110;
     int ticks = 0, minuteIndex = 0, roadIndex, m;
+    int carsOnRoadCount[AMOUNT_OF_ROADS * 2];
     int speedIndex[AMOUNT_OF_ROADS * 2];
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
@@ -44,7 +45,7 @@ int main(void){
 
     /*Allocates a 2D array for data collection statically*/
     data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
-    setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData, speedIndex);
+    setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData, speedIndex, carsOnRoadCount);
 
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
@@ -196,20 +197,22 @@ int main(void){
             // printf("Road[%d].startID: %d\n", l, roadArr[l].startID);
             // printf("Road[%d].endID: %d\n", l, roadArr[l].endID);
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
-                    printf("car[%d].id: %d\n", i, car[i].ID);
+                    //printf("car[%d].id: %d\n", i, car[i].ID);
                     roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
-                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex[roadIndex], roadAmount);
+                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex[roadIndex], roadAmount, &carsOnRoadCount[roadIndex]);
                     minuteData[roadIndex][minuteIndex].roadID = l;
                     minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
                     speedIndex[roadIndex]++;
-                    
+                    if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 599) {
+                        minuteData[roadIndex][minuteIndex].densityCarCount = carsOnRoadCount[roadIndex];
+                    }
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
                 }
             }
-            if(car[i].active == 1){
+            /*if(car[i].active == 1){
                 printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
-            }
+            }*/
         }
         currTick++;
         if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {

@@ -47,7 +47,7 @@ void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amount
 void averageSpeed(data *dp);
 double mpdsTokmh(double speed);
 void countCarFlow(data *dp);
-void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[]);
+void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[], int carsOnRoad[]);
 void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]);
 void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]);
 void calculateFlow(data *dp);

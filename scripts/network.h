@@ -56,7 +56,7 @@ struct car{
 };
 
 double disToEnd(car car, road road, struct car carArr[]);
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount);
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount, int *carsOnRoadCount);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
@@ -159,12 +159,12 @@ double breakLength(car car){
     return dist;
 }
 
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount){ /*Tilføj parametre*/
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount, int *carsOnRoadCount){ /*Tilføj parametre*/
     int l, i, startBuffer, endBuffer, lengthBuffer, meme;
     struct road roadBuffer;
     if(car->active == 1){
         if ((car->location == 0 && car->dirBool == 1) || (car->location == road->length && car->dirBool == 0)){
-            dp->densityCarCount++;
+            *carsOnRoadCount++;
         }
         
         double distanceToEnd = disToEnd(*car, *road, carArr);
@@ -204,7 +204,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         if(car->location >= road->length && car->dirBool == 1){
             car->speed = 0;
             car->active = 0;
-            dp->densityCarCount--;
+            *carsOnRoadCount--;
             // printf("CurrentRoadStart: %d\n", road->startID);
             // printf("CurrentRoadEnd: %d\n", road->endID);
             //printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
@@ -224,17 +224,17 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             /* LAV EN FUCKING STRUCT BUFFER*/
             /* Ladies and gentlebobs! It works! Who knew, that the problem was createCar... */
             /* Den virker ikk igen...................... */
-            for (meme = 0; meme < roadAmount; meme++) {
+            /*for (meme = 0; meme < roadAmount; meme++) {
                 printf("Road[%d].startID: %d\n", meme, roadArr[meme].startID);
                 printf("Road[%d].endID: %d\n", meme, roadArr[meme].endID);
-            }
+            }*/
             
             pushArray(*car, road);
             
-            for (meme = 0; meme < roadAmount; meme++) {
+            /*for (meme = 0; meme < roadAmount; meme++) {
                 printf("Road[%d].startID: %d\n", meme, roadArr[meme].startID);
                 printf("Road[%d].endID: %d\n", meme, roadArr[meme].endID);
-            }
+            }*/
 
             // ->roadArr[car->path[car->pathStep]].startID = startBuffer;
             //printf("Road[%d].startID: %d\n", car->path[car->pathStep], roadArr[car->path[car->pathStep]].startID);
@@ -251,17 +251,17 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             car->currNode = road->endID;
             car->pathStep++;
 
-            printf("Car stopped %d\n", carNum);
+            //printf("Car stopped %d\n", carNum);
 
             changeRoad(car, roadArr, debugBool, roadAmount);
-            printf("Road.length: %lf\n", roadArr[2].length);
-            for (meme = 0; meme < 100; meme++) {
+            //printf("Road.length: %lf\n", roadArr[2].length);
+            /*for (meme = 0; meme < 100; meme++) {
                 printf("currCar[%d]: %d\n", meme, roadArr[2].currCars[meme]);
-            }
+            }*/
         }else if(car->location <= 0 && car->dirBool == 0){
             car->speed = 0;
             car->active = 0;
-            dp->densityCarCount--;
+            *carsOnRoadCount--;
             /* Buffers because else it broke */
             // roadBuffer = roadArr[car->path[car->pathStep]];
             pushArray(*car, road);
@@ -274,9 +274,9 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
 
             //printf("Car stopped %d\n", carNum);
 
-            printf("pre Change\n");
+            //printf("pre Change\n");
             changeRoad(car, roadArr, debugBool, roadAmount);
-            printf("post Change\n");
+            //printf("post Change\n");
         }
     }
 }
@@ -290,7 +290,7 @@ int cmpfunc (const void * a, const void * b){
 void pushArray(car car, road *road){
     int i = 0, SENTINAL = 1;
 
-    printf("pre while\n");
+    //printf("pre while\n");
     while(SENTINAL){
         //printf("currCar[%d]: %d == %d <- car.ID\n", i, road->currCars[i], car.ID);
         if(road->currCars[i] == car.ID){
@@ -299,11 +299,11 @@ void pushArray(car car, road *road){
             i++;
         }
     }
-    printf("post while\n");
+    //printf("post while\n");
 
     SENTINAL = 1;
 
-    printf("pre while 2\n");
+    //printf("pre while 2\n");
     while(SENTINAL){
         road->currCars[i] = road->currCars[i + 1];
         if (road->currCars[i + 1] == -1){
@@ -311,12 +311,12 @@ void pushArray(car car, road *road){
         }
         i++;
     }
-    printf("post while 2\n");
+    //printf("post while 2\n");
 
     /*DEBUG PRINTER ARRAYET XD*/
-    for (i = 0; i < 100; i++) {
+    /*for (i = 0; i < 100; i++) {
         printf("currCar[%d]: %d\n", i, road->currCars[i]);
-    }
+    }*/
 }
 
 /* converts input to the correct unit */
@@ -350,7 +350,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
         }
     }
 
-    printf("VIBE CHECK!\n");
+    //printf("VIBE CHECK!\n");
 
     /* While loop stops when array is empty */
     while(notTested[0] != -1){

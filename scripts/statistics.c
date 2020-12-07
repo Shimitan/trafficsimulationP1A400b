@@ -22,7 +22,7 @@
  * */
 
 /* Sets up the minuteData 2D array */
-void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[]){
+void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[], int carsOnRoad[]){
     int i, l;
     for (i = 0; i < amountOfRoads * 2; i++){
         for (l = 0; l < minutesSimulated; l++){
@@ -38,6 +38,7 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amo
             }
         }
         speedIndex[i] = 0;
+        carsOnRoad[i] = 0;
     }
 }
 
@@ -80,7 +81,7 @@ void averageSpeed(data *dp){
 
 
 void calculateDensity(data *dp){
-    dp->density = (dp->densityCarCount / dp->roadLength) * 1000;
+    dp->density = (dp->densityCarCount * 1000) / (dp->roadLength) ;
 }
 
 void countCarFlow(data *dp){
