@@ -309,7 +309,7 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
 
 /* This funktion read the file called "Input.txt", and configures the roads in roadArr */
 roadPoints* getNodeAmount(int* nodeAmount) {
-    int ch, i = 0, l = 0, k = 0;
+    int ch, i = 0, l = 0, k = 0, debugBool = 0, xd;
     char str[16];
     FILE *inputFile;
     roadPoints* nodeArr;
@@ -321,7 +321,7 @@ roadPoints* getNodeAmount(int* nodeAmount) {
             str[l] = ch;
             // printf("strBuff: %c\n", strBuff[i]);
             // printf("str: %c\n", str[l]);
-            if (str[l] == '\n') {
+            if ((str[l] == '\n') && (debugBool == 0)) {
                 // for (i = 0; i < 16; i++) {
                 //     printf("str[%d]: %c\n", i, str[i]);
                 // }
@@ -331,8 +331,7 @@ roadPoints* getNodeAmount(int* nodeAmount) {
                 if (nodeArr == NULL) {
                     printf("Error! It no work D:\n");
                 }
-
-                return nodeArr;
+                debugBool = 1;
                 // printf("nodeAmount: %d\n", *nodeAmount);
                 break;
             }
@@ -340,7 +339,11 @@ roadPoints* getNodeAmount(int* nodeAmount) {
         }
 
     }
-    fclose(inputFile);
+    // printf("inputFile adresse: %p\n", inputFile);
+    xd = fclose(inputFile);
+    printf("xd: %d\n", xd);
+    // printf("inputFile adresse: %p\n", inputFile);
+    return nodeArr;
 }
 
 road* getRoadAmount(int* roadAmount) {
