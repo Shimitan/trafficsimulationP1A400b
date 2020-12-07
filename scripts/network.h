@@ -65,6 +65,7 @@ void pushArray(car car, road *road);
 void roadOutput(car car[], road road);
 double kmhTompds(road* road);
 void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount);
+void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], int nodeAmount);
 
 /* Finds distance to whatever is in front of the car, either being a node or another car */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -322,7 +323,7 @@ double kmhTompds(road* road){
 }
 
 /* Pathfinding for the car */
-void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
+void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], int nodeAmount){
     int i, j, k, elements = 1, SENTINAL = 1;
     /* Not tested holds the ID of nodes to be tested */
     int notTested[100];
@@ -337,7 +338,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
 
     //setup
     //100 skal være antal nodes
-    for(i = 0; i < 100; i++){
+    for(i = 0; i < nodeAmount; i++){
         if(i != notTested[0]){
             roadPointsArr[i].local = INFINITY;
             roadPointsArr[i].parent = NULL;
@@ -346,6 +347,8 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[]){
             roadPointsArr[i].parent = NULL;
         }
     }
+
+    printf("VIBE CHECK!\n");
 
     /* While loop stops when array is empty */
     while(notTested[0] != -1){

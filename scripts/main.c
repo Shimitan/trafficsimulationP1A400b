@@ -14,9 +14,10 @@ void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount);
 roadPoints* getNodeAmount(int* nodeAmount);
 road* getRoadAmount(int* roadAmount);
 void getRestOfInput(road roadArr[], int* seed, int* simulationTime);
+void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], int nodeAmount);
 
 
-void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount);
+void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount, int nodeAmount);
 
 
 int main(void){
@@ -174,7 +175,7 @@ int main(void){
             // car[k].endGoal = car[k].path[2];
             // car[k].currGoal = car[k].path[car[k].pathStep + 1];
             printf("pre car\n");
-            createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount);
+            createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount, nodeAmount);
             printf("post car\n");
             // for (l = 0; l < 100; l++) {
             //     if ((roadArr[l].startID == car[k].currNode && roadArr[l].endID == car[k].currGoal) || (roadArr[l].endID == car[k].currNode && roadArr[l].startID == car[k].currGoal)) {
@@ -237,7 +238,7 @@ int main(void){
 }
 
 
-void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount){
+void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount, int nodeAmount){
     int SENTINAL = 1, i = 0, j, l = 0;
 
     do{
@@ -258,7 +259,7 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
     // car->endGoal = 3;
 
     printf("pre pathfinding\n");
-    pathfinding(car, roadArr, roadPointsArr);
+    pathfinding(car, roadArr, roadPointsArr, nodeAmount);
     printf("post pathfinding\n");
 
 
@@ -323,10 +324,11 @@ roadPoints* getNodeAmount(int* nodeAmount) {
             // printf("str: %c\n", str[l]);
             if ((str[l] == '\n') && (debugBool == 0)) {
                 // for (i = 0; i < 16; i++) {
-                //     printf("str[%d]: %c\n", i, str[i]);
+                //     printf("str[%d]: %d\n", i, str[i]);
                 // }
                 str[l] = '\0';
                 *nodeAmount = atoi(str);
+                printf("amount: %d\n", *nodeAmount);
                 nodeArr = (roadPoints*)malloc(*nodeAmount * sizeof(roadPoints));
                 if (nodeArr == NULL) {
                     printf("Error! It no work D:\n");
@@ -340,8 +342,8 @@ roadPoints* getNodeAmount(int* nodeAmount) {
 
     }
     // printf("inputFile adresse: %p\n", inputFile);
-    xd = fclose(inputFile);
-    printf("xd: %d\n", xd);
+    fclose(inputFile);
+    // printf("xd: %d\n", xd);
     // printf("inputFile adresse: %p\n", inputFile);
     return nodeArr;
 }
