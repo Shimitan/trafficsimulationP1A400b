@@ -63,7 +63,7 @@ struct car{
 
 double disToEnd(car car, road road, struct car carArr[]);
 double distanceBetweenCars(car car);
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount);
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int *index, int roadAmount);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
@@ -179,7 +179,7 @@ double breakLength(car car){
     return dist;
 }
 
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount){ /*Tilføj parametre*/
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int* index, int roadAmount){ /*Tilføj parametre*/
     int l, i, startBuffer, endBuffer, lengthBuffer, meme;
     struct road roadBuffer;
     if(car->active == 1){
@@ -215,7 +215,8 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
 
         /* Gem farten til databehandling */
         if ((road->length - car->location) > 40.0 && car->location > 40.0){
-            measureSpeed(car->speed, dp, index, car->dirBool);
+            measureSpeed(car->speed, dp, *index, car->dirBool);
+            *index += 1;
         }
 
         printf("POst mesureSpeed\n");

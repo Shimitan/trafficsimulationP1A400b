@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 double disToEnd(car car, road road, struct car carArr[]);
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int index, int roadAmount);
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int *index, int roadAmount);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
@@ -36,7 +36,7 @@ int main(void){
     int active = 0;
     int k = 0;
     int j = 110;
-    int ticks = 0, minuteIndex = 0, roadIndex, m;
+    int ticks = 0, minuteIndex = 0, roadIndex, m, amountOfRoads = AMOUNT_OF_ROADS * 2, minutesSimulated = MINUTES_SIMULATED;
     int speedIndex[AMOUNT_OF_ROADS * 2];
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
@@ -45,10 +45,10 @@ int main(void){
     int *endNodes;
     int *intersections;
     car car[1000];
-
+    
     /*Allocates a 2D array for data collection statically*/
     data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
-    setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData, speedIndex);
+    setUpDataArray(amountOfRoads, minutesSimulated, minuteData, speedIndex);
 
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
@@ -220,9 +220,9 @@ int main(void){
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
                     printf("car[%d].id: %d\n", i, car[i].ID);
                     roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
-                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex[roadIndex], roadAmount);
+                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], &speedIndex[roadIndex], roadAmount);
                     minuteData[roadIndex][minuteIndex].roadID = l;
-                    speedIndex[roadIndex]++;
+                    //speedIndex[roadIndex]++;
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
                 }

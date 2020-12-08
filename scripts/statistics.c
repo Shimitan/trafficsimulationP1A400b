@@ -24,7 +24,7 @@
 /* Sets up the minuteData 2D array */
 void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[]){
     int i, l;
-    for (i = 0; i < amountOfRoads * 2; i++){
+    for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
             minuteData[i][l].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
             if (minuteData[i][l].speedOfCars == NULL){
