@@ -67,7 +67,7 @@ void measureSpeed(double speed, data *dp, int index, int dir, double maxSpeed){
     dp->speedOfCars[index] = speed;
     dp->speedMeasurementCount++;
     dp->direction = dir;
-    dp->maxSpeed = maxSpeed;
+    dp->maxSpeed = mpdsTokmh(maxSpeed);
 }
 
 void averageSpeed(data *dp){
@@ -88,7 +88,7 @@ void calculateDensity(data *dp){
 }
 
 void calculateCongestion(data *dp){
-    dp->congestion = (1 - (dp->averageSpeed/dp->maxSpeed)) * 100;
+    dp->congestion = (int) ((1 - (dp->averageSpeed/dp->maxSpeed)) * 100);
 }
 
 void countCarFlow(data *dp){
@@ -103,17 +103,25 @@ double mpdsTokmh(double speed){
     return speed * 10 * 3.6;
 }
 
+void calculateBiggerIntervals(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+
+}
+
+
+
+
 /* Prints the analysed data */
 void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
     int i, l;
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
-                printf("Ticks with car on road %d dir %d for minute %3d: %3d ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
+                printf("Ticks with car on road %2d dir %1d for minute %3d: %4d ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
                 printf("with average speed %05.2lf km/h,", minuteData[l][i].averageSpeed);
-                printf(" flow %03.2lf cars/min, density %3.2lf cars/km and %lf %% congestion\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                printf(" flow %03.2lf cars/min, density %04.2f cars/km and %3d%% congestion\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
             }
         }
+        printf("\n");
     }
 }
 

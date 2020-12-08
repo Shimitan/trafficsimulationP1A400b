@@ -4,7 +4,7 @@
 
 /* Constants */
 /*  */
-#define AMOUNT_OF_CARS 100
+#define AMOUNT_OF_CARS 10
 #define TICKS_PER_SECOND 10
 #define SECONDS_PER_MINUTE 60
 #define AMOUNT_OF_ROADS 3
@@ -33,7 +33,7 @@ struct data{
     double density;
     // =  max cars / roadLength     max cars = roadlength / (carlength + minSpacing) / roadLength = 1 / (carlength + minSpacing)
     /*Congestion*/
-    double congestion;
+    int congestion;
     /*Road stuff*/
     int roadID;
     int roadLength;
