@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 double disToEnd(car car, road road, struct car carArr[]);
-void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int *index, int roadAmount);
+void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int *index, int roadAmount, int *carsOnRoadCount);
 double breakLength(car car);
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool);
 int cmpfunc (const void * a, const void * b);
@@ -36,7 +36,8 @@ int main(void){
     int active = 0;
     int k = 0;
     int j = 110;
-    int ticks = 0, minuteIndex = 0, roadIndex, m, amountOfRoads = AMOUNT_OF_ROADS * 2, minutesSimulated = MINUTES_SIMULATED;
+    int ticks = 0, minuteIndex = 0, roadIndex = 0, m, amountOfRoads = AMOUNT_OF_ROADS * 2, minutesSimulated = MINUTES_SIMULATED;
+    int carsOnRoadCount[AMOUNT_OF_ROADS * 2];
     int speedIndex[AMOUNT_OF_ROADS * 2];
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
@@ -46,12 +47,12 @@ int main(void){
     int *intersections;
     car car[1000];
     
-    /*Allocates a 2D array for data collection statically*/
-    data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
-    setUpDataArray(amountOfRoads, minutesSimulated, minuteData, speedIndex);
-
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
+    
+    /*Allocates a 2D array for data collection statically*/
+    data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
+    setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, AMOUNT_OF_CARS, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount);
 
     for(i = 0; i < 1000; i++){
         car[i].active = 0;
@@ -144,7 +145,7 @@ int main(void){
     for (i = 0; i < nodeAmount; i++) {
         if (nodeArr[i].numOfConnections == 1) {
             endNodes[l] = nodeArr[i].ID;
-            printf("endnode[%d]: %d\n", l, endNodes[l]);
+            //printf("xd[%d]: %d\n", l, endNodes[l]);
             l++;
         } else {
             intersections[n] = nodeArr[i].ID;
@@ -153,12 +154,9 @@ int main(void){
         }
     }
 
-    for (i = 0; i < endNodeAmount; i++) {
+    /*for (i = 0; i < endNodeAmount; i++) {
         printf("endNode[%d]: %d\n", i, endNodes[i]);
-    }
-    for (i = 0; i < intersectionAmount; i++) {
-        printf("intersection[%d]: %d\n", i, intersections[i]);
-    }
+    }*/
 
     // for (i = 0; i < nodeAmount; i++) {
     //     for (l = 0; l < nodeArr[i].numOfConnections; l++) {
@@ -185,16 +183,16 @@ int main(void){
     // printf("speedIndex = %d, minuteIndex = %d\n", speedIndex, minuteIndex);
 
     while (currTick < simulationTime) {
-        currTick++;
+        //currTick++;
         j++;
         if (j >= 120 && k < AMOUNT_OF_CARS) {
             //Random midlertidigt fix xd
             // car[k].currNode = car[k].path[0];
             // car[k].endGoal = car[k].path[2];
             // car[k].currGoal = car[k].path[car[k].pathStep + 1];
-            printf("pre car\n");
+            //printf("pre car\n");
             createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount, nodeAmount);
-            printf("post car\n");
+            //printf("post car\n");
             // for (l = 0; l < 100; l++) {
             //     if ((roadArr[l].startID == car[k].currNode && roadArr[l].endID == car[k].currGoal) || (roadArr[l].endID == car[k].currNode && roadArr[l].startID == car[k].currGoal)) {
             //         createCar(&car[k], &k, roadArr, nodeArr);
@@ -218,25 +216,33 @@ int main(void){
             // printf("Road[%d].startID: %d\n", l, roadArr[l].startID);
             // printf("Road[%d].endID: %d\n", l, roadArr[l].endID);
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
-                    printf("car[%d].id: %d\n", i, car[i].ID);
+                    //printf("car[%d].id: %d\n", i, car[i].ID);
                     roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
-                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], &speedIndex[roadIndex], roadAmount);
+                    moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], &speedIndex[roadIndex], roadAmount, &carsOnRoadCount[roadIndex]);
+                    speedIndex[roadIndex]++;
+                    if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 599) {
+                    
+                    }
                     minuteData[roadIndex][minuteIndex].roadID = l;
-                    //speedIndex[roadIndex]++;
+                    minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
+                    minuteData[roadIndex][minuteIndex].timeStamp = minuteIndex;
+                    //minuteData[roadIndex][minuteIndex].direction = car[i].dirBool;
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
                 }
             }
-            if(car[i].active == 1){
+            /*if(car[i].active == 1){
                 printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
-            }
+            }*/
         }
         currTick++;
         if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {
-            minuteIndex++;
+            
             for (m = 0; m < 2 * AMOUNT_OF_ROADS; m++){
                 speedIndex[m] = 0;
+                minuteData[m][minuteIndex].densityCarCount = carsOnRoadCount[m];
             }
+            minuteIndex++;
             // printf("speedIndex = %d, minuteIndex = %d\n", speedIndex, minuteIndex);
         }
 
@@ -280,14 +286,14 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
     // car->currNode = 0;
     // car->endGoal = 3;
 
-    printf("pre pathfinding\n");
+    //printf("pre pathfinding\n");
     pathfinding(car, roadArr, roadPointsArr, nodeAmount);
-    printf("post pathfinding\n");
+    //printf("post pathfinding\n");
 
 
-    for (j = 0; j < 100; j++) {
+    /*for (j = 0; j < 100; j++) {
         printf("path[%d] = %d\n", j, car->path[j]);
-    }
+    }*/
 
     car->pathStep = 1;
     car->currGoal = car->path[car->pathStep];
@@ -302,10 +308,10 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
 
     SENTINAL = 1;
 
-    printf("currGoal: %d\n", car->currGoal);
+    //printf("currGoal: %d\n", car->currGoal);
 
     car->acceleration = ((double)(rand() % 7) + 31)/1000;
-    printf("----> ACCELERATION: %lf <------\n", car->acceleration);
+    //printf("----> ACCELERATION: %lf <------\n", car->acceleration);
     car->speedDeviation = ((rand() % 10) + 1)/100;
 
     car->speed = 0;
