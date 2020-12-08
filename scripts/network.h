@@ -193,7 +193,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         car->breakLength = breakLength(*car);
         //printf("BreakLength: %lf\n", car->breakLength);
 
-        printf("POst funks\n");
+        //printf("POst funks\n");
 
         /* Accelerates or deccelerates the car */
         if(car->speed < (road->speedLimit + car->speedDeviation) && car->breakLength < distanceToEnd){
@@ -212,13 +212,17 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             car->location -= car->speed;
         }
 
-        printf("Pre mesureSpeed\n");
+        //printf("Pre mesureSpeed\n");
 
         /* Gem farten til databehandling */
-        if ((road->length - car->location) > findAccelerationLength(car, road) && car->location > findAccelerationLength(car, road)){
+        if (car->dirBool == 1 && (road->length - car->location) > (findAccelerationLength(car, road) + 5 * (CAR_LENGTH + MIN_SPACING)) && car->location > findAccelerationLength(car, road)){
+            measureSpeed(car->speed, dp, *index, car->dirBool, road->speedLimit);
+            *index += 1;
+        } else if (car->dirBool == 0 && (road->length - car->location) > findAccelerationLength(car, road) && car->location > (findAccelerationLength(car, road) + 5 * (CAR_LENGTH + MIN_SPACING))){
             measureSpeed(car->speed, dp, *index, car->dirBool, road->speedLimit);
             *index += 1;
         }
+        
         //measureSpeed(car->speed, dp, index, car->dirBool);
         
         /* Gem antal biler der har passeret midtpunktet af vejen */
@@ -293,7 +297,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             *carsOnRoadCount -= 1;
             /* Buffers because else it broke */
             // roadBuffer = roadArr[car->path[car->pathStep]];
-            printf("Light: %d\n", road->intersecLightStart);
+            //printf("Light: %d\n", road->intersecLightStart);
             pushArray(*car, road);
             // roadArr[car->path[car->pathStep]] = roadBuffer;
 
@@ -530,38 +534,38 @@ void changeLight(road roadArr[], roadPoints* node, int roadAmount) {
     switch (node->intersecTimer) {
     /* IN CASE OF RED/RED */
     case 0:
-        printf("case: %d\n", node->intersecTimer);
+      //  printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                 roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+        //        printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
             } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                 roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+          //      printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
             }
         }
-        printf("\n");
+       // printf("\n");
         break;
 
     /* IN CASE OF RED/YELLOW_START */
     case 10:
-        printf("case: %d\n", node->intersecTimer);
+        //printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (i == 0 || i == 2) {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+          //          printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+            //        printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             } else {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+              //      printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+              //      printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             }
         }
@@ -569,23 +573,23 @@ void changeLight(road roadArr[], roadPoints* node, int roadAmount) {
 
     /* IN CASE OF RED/GREEN */
     case 30:
-        printf("case: %d\n", node->intersecTimer);
+       // printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (i == 0 || i == 2) {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+     //               printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+       //             printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             } else {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 2;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+         //           printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 2;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+           //         printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             }
         }
@@ -593,23 +597,23 @@ void changeLight(road roadArr[], roadPoints* node, int roadAmount) {
 
     /* IN CASE OF RED/YELLOW_STOP */
     case 330:
-        printf("case: %d\n", node->intersecTimer);
+       // printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (i == 0 || i == 2) {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+         //           printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+           //         printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             } else {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+         //           printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+           //         printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             }
         }
@@ -617,38 +621,38 @@ void changeLight(road roadArr[], roadPoints* node, int roadAmount) {
 
     /* IN CASE OF RED/RED */
     case 370:
-        printf("case: %d\n", node->intersecTimer);
+       // printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                 roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+         //       printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
             } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                 roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+          //      printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
             }
         }
-        printf("\n");
+  //      printf("\n");
         break;
 
     /* IN CASE OF YELLOW_START/RED */
     case 380:
-        printf("case: %d\n", node->intersecTimer);
+      //  printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (i == 0 || i == 2) {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+             //       printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+                //    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             } else {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+              //      printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+               //     printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             }
         }
@@ -656,23 +660,23 @@ void changeLight(road roadArr[], roadPoints* node, int roadAmount) {
 
     /* IN CASE OF GREEN/RED */
     case 400:
-        printf("case: %d\n", node->intersecTimer);
+     //   printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (i == 0 || i == 2) {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 2;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+           //         printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 2;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+           //         printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             } else {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+           //         printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+             //       printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             }
         }
@@ -680,23 +684,23 @@ void changeLight(road roadArr[], roadPoints* node, int roadAmount) {
 
     /* IN CASE OF YELLOW_STOP/RED */
     case 700:
-        printf("case: %d\n", node->intersecTimer);
+      //  printf("case: %d\n", node->intersecTimer);
         for (i = 0; i < node->numOfConnections; i++) {
             if (i == 0 || i == 2) {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+         //           printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 1;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+           //         printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             } else {
                 if (roadArr[connectedRoadIndex[i]].startID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightStart = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
+        //            printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightStart);
                 } else if (roadArr[connectedRoadIndex[i]].endID == node->ID) {
                     roadArr[connectedRoadIndex[i]].intersecLightEnd = 0;
-                    printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
+          //          printf("connectedRoad[%d]: %d\n", i, roadArr[connectedRoadIndex[i]].intersecLightEnd);
                 }
             }
         }

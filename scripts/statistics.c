@@ -17,7 +17,7 @@
  */
 
 /* Sets up the minuteData 2D array */
-void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[], int carsOnRoad[]){
+void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[]){
     int i, l;
     for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
@@ -45,16 +45,29 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
 
 /*Allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
-    double *speedArray = (double *) calloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond,  sizeof(double));
+    double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
     return speedArray;
 }
 
-// data* createDataArray(int amountOfRoads, int minutesSimulated){
-//     data (*dat)[minutesSimulated] = (data* ) malloc(sizeof(data[amountOfRoads][minutesSimulated]));
-//     return dat;
-// }
+data** createDataArray(int amountOfRoads, int minutesSimulated){
+    int i, j;
+    data **dat;
+    dat = malloc(amountOfRoads * sizeof(data *));
+    if (dat == NULL) {
+        printf("Error allocating memory\n");
+        exit(EXIT_FAILURE);
+    }
+    for (i = 0; i < amountOfRoads; i++){
+        dat[i] = malloc(minutesSimulated * sizeof(data));
+        if (dat[i] == NULL) {
+            printf("Error allocating memory\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+    return dat;
+}
 
-void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l;
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
@@ -108,7 +121,7 @@ double mpdsTokmh(double speed){
     return speed * 10 * 3.6;
 }
 
-void calculateBiggerIntervals(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+void calculateBiggerIntervals(int amountOfRoads, int minutesSimulated, data **minuteData){
 
 }
 
@@ -116,7 +129,7 @@ void calculateBiggerIntervals(int amountOfRoads, int minutesSimulated, data minu
 
 
 /* Prints the analysed data */
-void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l;
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
@@ -131,7 +144,7 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[
 }
 
 /* Frees the allocated memory  */
-void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
+void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l;
     for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
