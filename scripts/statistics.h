@@ -23,6 +23,7 @@ struct data{
     int speedMeasurementCount;
     double *speedOfCars; //skal være et array af alle målte hastigheder i løbet af et minut i simulationen
     double averageSpeed;
+    double maxSpeed;
     /*Flow*/
     int flowCarCount;
     double calculatedFlow;
@@ -31,6 +32,8 @@ struct data{
     int densityCarCount;
     double density;
     // =  max cars / roadLength     max cars = roadlength / (carlength + minSpacing) / roadLength = 1 / (carlength + minSpacing)
+    /*Congestion*/
+    double congestion;
     /*Road stuff*/
     int roadID;
     int roadLength;
@@ -42,7 +45,7 @@ typedef struct data data;
 
 /*Prototypes*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond);
-void measureSpeed(double speed, data *dp, int index, int dir);
+void measureSpeed(double speed, data *dp, int index, int dir, double maxSpeed);
 void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]);
 void averageSpeed(data *dp);
 double mpdsTokmh(double speed);
@@ -52,3 +55,4 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[
 void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]);
 void calculateFlow(data *dp);
 void calculateDensity(data *dp);
+void calculateCongestion(data *dp);

@@ -26,10 +26,11 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
                 printf("Error allocating memory for [%d][%d]\n", i, l);
                 exit(EXIT_FAILURE);
             }
+            minuteData[i][l].timeInterval = 1;
             minuteData[i][l].speedMeasurementCount = 0;
             minuteData[i][l].flowCarCount = 0;
             minuteData[i][l].densityCarCount = 0;
-            minuteData[i][l].timeInterval = 1;
+            
             
         }
         speedIndex[i] = 0;
@@ -44,7 +45,7 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
 
 /*Allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
-    double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
+    double *speedArray = (double *) calloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond,  sizeof(double));
     return speedArray;
 }
 
@@ -56,15 +57,17 @@ void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amount
                 averageSpeed(&minuteData[l][i]);
                 calculateFlow(&minuteData[l][i]);
                 calculateDensity(&minuteData[l][i]);
+                calculateCongestion(&minuteData[l][i]);
             }
         }
     }
 }
 
-void measureSpeed(double speed, data *dp, int index, int dir){
+void measureSpeed(double speed, data *dp, int index, int dir, double maxSpeed){
     dp->speedOfCars[index] = speed;
     dp->speedMeasurementCount++;
     dp->direction = dir;
+    dp->maxSpeed = maxSpeed;
 }
 
 void averageSpeed(data *dp){
@@ -82,6 +85,10 @@ void averageSpeed(data *dp){
 
 void calculateDensity(data *dp){
     dp->density = (double) (dp->densityCarCount * 1000) / (dp->roadLength) ;
+}
+
+void calculateCongestion(data *dp){
+    dp->congestion = (1 - (dp->averageSpeed/dp->maxSpeed)) * 100;
 }
 
 void countCarFlow(data *dp){
@@ -104,7 +111,7 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[
             if (minuteData[l][i].speedMeasurementCount > 0){
                 printf("Ticks with car on road %d dir %d for minute %3d: %3d ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
                 printf("with average speed %05.2lf km/h,", minuteData[l][i].averageSpeed);
-                printf(" flow %03.2lf cars/min and density %3.2lf cars/km\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density);
+                printf(" flow %03.2lf cars/min, density %3.2lf cars/km and %lf %% congestion\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
             }
         }
     }

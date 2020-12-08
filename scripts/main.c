@@ -207,7 +207,7 @@ int main(void){
                     minuteData[roadIndex][minuteIndex].roadID = l;
                     minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
                     minuteData[roadIndex][minuteIndex].timeStamp = minuteIndex;
-                    minuteData[roadIndex][minuteIndex].direction = car[i].dirBool;
+                    //minuteData[roadIndex][minuteIndex].direction = car[i].dirBool;
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
                 }

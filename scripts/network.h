@@ -66,6 +66,7 @@ void roadOutput(car car[], road road);
 double kmhTompds(road* road);
 void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount);
 void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], int nodeAmount);
+double findAccelerationLength(car *car, road *road);
 
 /* Finds distance to whatever is in front of the car, either being a node or another car */
 double disToEnd(car car, road road, struct car carArr[]){
@@ -188,10 +189,11 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             car->location -= car->speed;
         }
         /* Gem farten til databehandling */
-        if ((road->length - car->location) > 40.0 && car->location > 40.0){
-            measureSpeed(car->speed, dp, index, car->dirBool);
+        if ((road->length - car->location) > findAccelerationLength(car, road) && car->location > findAccelerationLength(car, road)){
+            measureSpeed(car->speed, dp, index, car->dirBool, road->speedLimit);
         }
-
+        //measureSpeed(car->speed, dp, index, car->dirBool);
+        
         /* Gem antal biler der har passeret midtpunktet af vejen */
         if (car->dirBool == 1 && car->location >= (road->length/2) && (car->location - car->speed) < (road->length/2)){
             countCarFlow(dp);
@@ -280,6 +282,14 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }
     }
 }
+
+/* Ugly physics calculation */
+double findAccelerationLength(car *car, road *road){
+    double distance;
+    distance = (double) 0.5 * (road->speedLimit * road->speedLimit)/car->acceleration;
+    return distance;
+}
+
 
 /* compare function for qsort */
 int cmpfunc (const void * a, const void * b){
