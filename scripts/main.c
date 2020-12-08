@@ -45,7 +45,7 @@ int main(void){
 
     /*Allocates a 2D array for data collection statically*/
     data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
-    setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData, speedIndex, carsOnRoadCount);
+    setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, AMOUNT_OF_CARS, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount);
 
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
@@ -200,12 +200,14 @@ int main(void){
                     //printf("car[%d].id: %d\n", i, car[i].ID);
                     roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
                     moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], speedIndex[roadIndex], roadAmount, &carsOnRoadCount[roadIndex]);
-                    minuteData[roadIndex][minuteIndex].roadID = l;
-                    minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
                     speedIndex[roadIndex]++;
                     if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 599) {
                     
                     }
+                    minuteData[roadIndex][minuteIndex].roadID = l;
+                    minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
+                    minuteData[roadIndex][minuteIndex].timeStamp = minuteIndex;
+                    minuteData[roadIndex][minuteIndex].direction = car[i].dirBool;
                     // printf("CarActive?: %d\n", car[i].active);
                     break;
                 }

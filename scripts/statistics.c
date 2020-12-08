@@ -1,7 +1,5 @@
 #include "statistics.h"
 
-/*Skal koden køre et forudbestemt stykke tid eller er det op til brugeren?*/
-
 /* 1000 målinger / sekund
  * 60 * 1000 målinger / minut
  * 60000 * 8 bytes
@@ -16,17 +14,14 @@
  *
  * Data for hver time
  *      - Baseret på 4 15 minutters målinger
- *
- * Data for hvert døgn? Maybe(TM)
- *      - Jeg har ingen ide om hvorvidt det er en god ide
- * */
+ */
 
 /* Sets up the minuteData 2D array */
-void setUpDataArray(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[], int carsOnRoad[]){
+void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data minuteData[amountOfRoads][minutesSimulated], int speedIndex[], int carsOnRoad[]){
     int i, l;
     for (i = 0; i < amountOfRoads * 2; i++){
         for (l = 0; l < minutesSimulated; l++){
-            minuteData[i][l].speedOfCars = createSpeedArray(AMOUNT_OF_CARS, TICKS_PER_SECOND);
+            minuteData[i][l].speedOfCars = createSpeedArray(amountOfCars, ticksPerSecond);
             if (minuteData[i][l].speedOfCars == NULL){
                 printf("Error allocating memory for [%d][%d]\n", i, l);
                 exit(EXIT_FAILURE);
@@ -107,8 +102,9 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data minuteData[
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
-                printf("Ticks with car on road %4d for minute %3d: %3d ", l, i, minuteData[l][i].speedMeasurementCount);
-                printf("with average speed %05.2lf km/h, flow %03.2lf cars/min and density %3.2lf cars/km\n", minuteData[l][i].averageSpeed, minuteData[l][i].calculatedFlow, minuteData[l][i].density);
+                printf("Ticks with car on road %d dir %d for minute %3d: %3d ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
+                printf("with average speed %05.2lf km/h,", minuteData[l][i].averageSpeed);
+                printf(" flow %03.2lf cars/min and density %3.2lf cars/km\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density);
             }
         }
     }
