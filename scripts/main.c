@@ -15,6 +15,7 @@ roadPoints* getNodeAmount(int* nodeAmount);
 road* getRoadAmount(int* roadAmount);
 void getRestOfInput(road roadArr[], int* seed, int* simulationTime);
 void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], int nodeAmount);
+void changeLight(road roadArr[], roadPoints* node, int roadAmount);
 
 
 void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount, int nodeAmount);
@@ -26,10 +27,12 @@ int main(void){
     int roadAmount = 0;
     int currTick = 0;
     int endNodeAmount = 0;
+    int intersectionAmount = 0;
     int seed;
     int simulationTime;
     int i = 0;
     int l = 0;
+    int n = 0;
     int active = 0;
     int k = 0;
     int j = 110;
@@ -40,6 +43,7 @@ int main(void){
     struct road *roadArr;
     roadPoints *nodeArr;
     int *endNodes;
+    int *intersections;
     car car[1000];
 
     /*Allocates a 2D array for data collection statically*/
@@ -66,6 +70,8 @@ int main(void){
     for(i = 0; i < roadAmount; i++){
         roadArr[i].startID = -1;
         roadArr[i].endID = -1;
+        roadArr[i].intersecLightStart = 2;
+        roadArr[i].intersecLightEnd = 2;
 
         for(l = 0; l < 100; l++){
             roadArr[i].currCars[l] = -1;
@@ -118,28 +124,40 @@ int main(void){
         nodeArr[roadArr[i].endID].connections[nodeArr[roadArr[i].endID].numOfConnections] = roadArr[i].startID;
         nodeArr[roadArr[i].endID].numOfConnections += 1;
         nodeArr[roadArr[i].startID].ID = roadArr[i].startID;
+        nodeArr[roadArr[i].endID].ID = roadArr[i].endID;
     }
 
     for (i = 0; i < nodeAmount; i++) {
         if (nodeArr[i].numOfConnections == 1) {
             endNodeAmount++;
+        } else {
+            intersectionAmount++;
         }
     }
 
     endNodes = (int*)malloc(endNodeAmount * sizeof(int));
+    intersections = (int*)malloc(intersectionAmount * sizeof(int));
 
     l = 0;
+    n = 0;
 
     for (i = 0; i < nodeAmount; i++) {
         if (nodeArr[i].numOfConnections == 1) {
             endNodes[l] = nodeArr[i].ID;
-            printf("xd[%d]: %d\n", l, endNodes[l]);
+            printf("endnode[%d]: %d\n", l, endNodes[l]);
             l++;
+        } else {
+            intersections[n] = nodeArr[i].ID;
+            printf("intersection[%d]: %d\n", n, intersections[n]);
+            n++;
         }
     }
 
     for (i = 0; i < endNodeAmount; i++) {
         printf("endNode[%d]: %d\n", i, endNodes[i]);
+    }
+    for (i = 0; i < intersectionAmount; i++) {
+        printf("intersection[%d]: %d\n", i, intersections[i]);
     }
 
     // for (i = 0; i < nodeAmount; i++) {
@@ -186,6 +204,10 @@ int main(void){
             //         }
             //     }
             j = 0;
+        }
+
+        for (i = 0; i < intersectionAmount; i++) {
+            changeLight(roadArr, &nodeArr[intersections[i]], roadAmount);
         }
 
         for(i = 0; i < AMOUNT_OF_CARS; i++){
