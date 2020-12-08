@@ -7,11 +7,6 @@
 //UwUbuntu
 //OwObonto
 
-typedef struct car car;
-typedef struct road road;
-typedef struct roadPoints roadPoints;
-
-
 struct roadPoints{
     int ID;
 
@@ -60,6 +55,10 @@ struct car{
     int path[100];
     int pathStep;
 };
+
+typedef struct car car;
+typedef struct road road;
+typedef struct roadPoints roadPoints;
 
 double disToEnd(car car, road road, struct car carArr[]);
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int *index, int roadAmount, int *carsOnRoadCount);

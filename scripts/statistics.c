@@ -67,6 +67,11 @@ data** createDataArray(int amountOfRoads, int minutesSimulated){
     return dat;
 }
 
+int* allocateIntArray(int length){
+    int *i = calloc(length, sizeof(int));
+    return i;
+}
+
 void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l;
     for (l = 0; l < amountOfRoads; l++) {

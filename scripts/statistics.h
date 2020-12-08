@@ -57,3 +57,4 @@ void calculateFlow(data *dp);
 void calculateDensity(data *dp);
 void calculateCongestion(data *dp);
 data** createDataArray(int amountOfRoads, int minutesSimulated);
+int* allocateIntArray(int length);

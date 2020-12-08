@@ -36,9 +36,9 @@ int main(void){
     int active = 0;
     int k = 0;
     int j = 110;
-    int ticks = 0, minuteIndex = 0, roadIndex = 0, m, amountOfRoads = AMOUNT_OF_ROADS * 2, minutesSimulated;
-    int carsOnRoadCount[AMOUNT_OF_ROADS * 2];
-    int speedIndex[AMOUNT_OF_ROADS * 2];
+    int ticks = 0, minuteIndex = 0, roadIndex = 0, m, minutesSimulated;
+    int *carsOnRoadCount;
+    int *speedIndex;
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road *roadArr;
@@ -81,8 +81,9 @@ int main(void){
     getRestOfInput(roadArr, &seed, &simulationTime);
     
     /*Allocates a 2D array for data collection statically*/
+    carsOnRoadCount = allocateIntArray(roadAmount * 2);
+    speedIndex = allocateIntArray(roadAmount * 2);
     minutesSimulated = simulationTime / (TICKS_PER_SECOND * SECONDS_PER_MINUTE);
-    
     data **minuteData = createDataArray(roadAmount * 2, minutesSimulated);
     setUpDataArray(roadAmount * 2, minutesSimulated, AMOUNT_OF_CARS, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount);
     
@@ -220,7 +221,7 @@ int main(void){
             // printf("Road[%d].endID: %d\n", l, roadArr[l].endID);
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
                     //printf("car[%d].id: %d\n", i, car[i].ID);
-                    roadIndex = car[i].dirBool == 1 ? l : l + AMOUNT_OF_ROADS;
+                    roadIndex = car[i].dirBool == 1 ? l : l + roadAmount;
                     moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], &speedIndex[roadIndex], roadAmount, &carsOnRoadCount[roadIndex]);
                     speedIndex[roadIndex]++;
                     if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 599) {
@@ -241,7 +242,7 @@ int main(void){
         currTick++;
         if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {
             
-            for (m = 0; m < 2 * AMOUNT_OF_ROADS; m++){
+            for (m = 0; m < 2 * roadAmount; m++){
                 speedIndex[m] = 0;
                 minuteData[m][minuteIndex].densityCarCount = carsOnRoadCount[m];
             }
@@ -256,11 +257,12 @@ int main(void){
     //         break;
     //     }
     // }
-    analyseData(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData);
-    printAnalysedData(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData);
-    freeSpeedArrays(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, minuteData);
+    analyseData(roadAmount * 2, minutesSimulated, minuteData);
+    printAnalysedData(roadAmount * 2, minutesSimulated, minuteData);
+    freeSpeedArrays(roadAmount * 2, minutesSimulated, minuteData);
     free(minuteData);
-    
+    free(speedIndex);
+    free(carsOnRoadCount);
     free(nodeArr);
     free(roadArr);
     free(endNodes);
