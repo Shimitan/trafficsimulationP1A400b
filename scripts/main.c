@@ -231,9 +231,9 @@ int main(void){
                     break;
                 }
             }
-            /*if(car[i].active == 1){
+            if(car[i].active == 1){
                 printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
-            }*/
+            }
         }
         currTick++;
         if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {
