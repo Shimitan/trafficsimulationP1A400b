@@ -49,6 +49,11 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     return speedArray;
 }
 
+data* createDataArray(int amountOfRoads, int minutesSimulated){
+    data (*dat)[minutesSimulated] = (data* ) malloc(sizeof(data[amountOfRoads][minutesSimulated]));
+    return dat;
+}
+
 void analyseData(int amountOfRoads, int minutesSimulated, data minuteData[amountOfRoads][minutesSimulated]){
     int i, l;
     for (l = 0; l < amountOfRoads; l++) {

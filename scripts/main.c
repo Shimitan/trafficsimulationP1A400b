@@ -42,13 +42,13 @@ int main(void){
     roadPoints *nodeArr;
     int *endNodes;
     car car[1000];
-
+    
+    nodeArr = getNodeAmount(&nodeAmount);
+    roadArr = getRoadAmount(&roadAmount);
+    
     /*Allocates a 2D array for data collection statically*/
     data minuteData[AMOUNT_OF_ROADS * 2][MINUTES_SIMULATED];
     setUpDataArray(AMOUNT_OF_ROADS * 2, MINUTES_SIMULATED, AMOUNT_OF_CARS, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount);
-
-    nodeArr = getNodeAmount(&nodeAmount);
-    roadArr = getRoadAmount(&roadAmount);
 
     for(i = 0; i < 1000; i++){
         car[i].active = 0;
