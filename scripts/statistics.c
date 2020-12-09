@@ -98,6 +98,7 @@ int* allocateIntArray(int length){
 void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l, quarterHourIntervals, hourIntervals;
     data **quarterHourData, **hourData;
+    FILE *fp;
     quarterHourIntervals = minutesSimulated / 15;
     if (minutesSimulated % 15 != 0){
         quarterHourIntervals += 1;
@@ -128,9 +129,11 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     printf("--------------------------------> 60 minute intervals <--------------------------------\n\n");
     printAnalysedData(amountOfRoads, hourIntervals, hourData);
     
-    makeOutputFile(amountOfRoads, minutesSimulated, minuteData);
-    //makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData);
-    //makeOutputFile(amountOfRoads, hourIntervals, hourData);
+    fp = fopen("Output.txt", "w");
+    fclose(fp);
+    makeOutputFile(amountOfRoads, minutesSimulated, minuteData, 1);
+    makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData, 15);
+    makeOutputFile(amountOfRoads, hourIntervals, hourData, 60);
 
 
     free(quarterHourData);
@@ -245,13 +248,29 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteDat
 }
 
 /* Write data to file */
-void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData){
+void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval){
     int i, l, print = 0;
     
     FILE *fp;
-    fp = fopen("Output.txt", "w+");
+    fp = fopen("Output.txt", "ab");
+    
+    switch (interval){
+    case 1:
+        fprintf(fp, "-------------------------------------------------->  1-minute intervals <-------------------------------------------------\n\n");
+        break;
+    
+    case 15:
+        fprintf(fp, "\n\n-------------------------------------------------->  15-minute intervals <-------------------------------------------------\n\n");
+        break;
 
-    fprintf(fp, "-------------------------------------------------->  Juan Minute intervals <-------------------------------------------------\n\n");
+    case 60:
+        fprintf(fp, "\n\n-------------------------------------------------->  60-Minute intervals <-------------------------------------------------\n\n");
+        break;
+    
+    default:
+        break;
+    }
+    
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){

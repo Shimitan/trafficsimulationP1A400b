@@ -59,4 +59,4 @@ void calculateCongestion(data *dp);
 data** createDataArray(int amountOfRoads, int minutesSimulated);
 int* allocateIntArray(int length);
 void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int interval, data **minuteData, data **largeIntervalData);
-void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData);
+void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval);
