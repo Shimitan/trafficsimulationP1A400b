@@ -16,10 +16,7 @@ road* getRoadAmount(int* roadAmount);
 void getRestOfInput(road roadArr[], int* seed, int* simulationTime);
 void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], int nodeAmount);
 void changeLight(road roadArr[], roadPoints* node, int roadAmount);
-
-
 void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount, int nodeAmount);
-
 
 int main(void){
     int debugBool = 0;
