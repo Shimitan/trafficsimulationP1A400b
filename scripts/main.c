@@ -85,7 +85,7 @@ int main(void){
     speedIndex = allocateIntArray(roadAmount * 2);
     minutesSimulated = simulationTime / (TICKS_PER_SECOND * SECONDS_PER_MINUTE);
     data **minuteData = createDataArray(roadAmount * 2, minutesSimulated);
-    setUpDataArray(roadAmount * 2, minutesSimulated, AMOUNT_OF_CARS, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount);
+    setUpDataArray(roadAmount * 2, minutesSimulated, AMOUNT_OF_CARS, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount/*, roadArr*/);
     
     
     /* WAS USED TO DEBUG THE INPUT FUNCTION */ /*
@@ -227,9 +227,9 @@ int main(void){
                     if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 599) {
                     
                     }
-                    minuteData[roadIndex][minuteIndex].roadID = l;
-                    minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
-                    minuteData[roadIndex][minuteIndex].timeStamp = minuteIndex;
+                    //minuteData[roadIndex][minuteIndex].roadID = l;
+                    //minuteData[roadIndex][minuteIndex].roadLength = roadArr[l].length;
+                    //minuteData[roadIndex][minuteIndex].timeStamp = minuteIndex;
                     //minuteData[roadIndex][minuteIndex].direction = car[i].dirBool;
                     // printf("CarActive?: %d\n", car[i].active);
                     break;

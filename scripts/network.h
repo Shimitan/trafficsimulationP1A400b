@@ -215,10 +215,10 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
 
         /* Gem farten til databehandling */
         if (car->dirBool == 1 && (road->length - car->location) > (findAccelerationLength(car, road) + 5 * (CAR_LENGTH + MIN_SPACING)) && car->location > findAccelerationLength(car, road)){
-            measureSpeed(car->speed, dp, *index, car->dirBool, road->speedLimit);
+            measureSpeed(car->speed, dp, *index);
             *index += 1;
         } else if (car->dirBool == 0 && (road->length - car->location) > findAccelerationLength(car, road) && car->location > (findAccelerationLength(car, road) + 5 * (CAR_LENGTH + MIN_SPACING))){
-            measureSpeed(car->speed, dp, *index, car->dirBool, road->speedLimit);
+            measureSpeed(car->speed, dp, *index);
             *index += 1;
         }
         
