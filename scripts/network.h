@@ -205,6 +205,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         /* Gem farten til databehandling */
         if ((road->length - car->location) > findAccelerationLength(car, road) && car->location > findAccelerationLength(car, road)){
             measureSpeed(car->speed, dp, *index, car->dirBool, road->speedLimit);
+            *index += 1;
         }
         
         /* Gem antal biler der har passeret midtpunktet af vejen */
