@@ -49,6 +49,7 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     return speedArray;
 }
 
+/*Allocates a 2D-array of type data*/
 data** createDataArray(int amountOfRoads, int minutesSimulated){
     int i, j;
     data **dat;
@@ -73,7 +74,17 @@ int* allocateIntArray(int length){
 }
 
 void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
-    int i, l;
+    int i, l, quarterHourIntervals, hourIntervals;
+    data **quarterHourData, **hourData;
+    quarterHourIntervals = minutesSimulated / 15;
+    if (minutesSimulated % 15 != 0){
+        quarterHourIntervals += 1;
+    }
+    hourIntervals = minutesSimulated / 60;
+    if (minutesSimulated % 60 != 0){
+        hourIntervals += 1;
+    }
+    
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
@@ -84,6 +95,13 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
             }
         }
     }
+    quarterHourData = createDataArray(amountOfRoads, quarterHourIntervals);
+    hourData = createDataArray(amountOfRoads, hourIntervals);
+    calculateLargerIntervals(amountOfRoads, minutesSimulated, 15, minuteData, quarterHourData);
+    calculateLargerIntervals(amountOfRoads, minutesSimulated, 60, minuteData, hourData);
+    printAnalysedData(amountOfRoads, quarterHourIntervals, quarterHourData);
+    printAnalysedData(amountOfRoads, hourIntervals, hourData);
+    
 }
 
 void measureSpeed(double speed, data *dp, int index, int dir, double maxSpeed){
@@ -126,8 +144,49 @@ double mpdsTokmh(double speed){
     return speed * 10 * 3.6;
 }
 
-void calculateBiggerIntervals(int amountOfRoads, int minutesSimulated, data **minuteData){
-
+void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int interval, data **minuteData, data **largeIntervalData){
+    int i, l, count, index;
+    
+    for (l = 0; l < amountOfRoads; l++){
+        index = 0;
+        count = 0;
+        for (i = 0; i < minutesSimulated; i++) {
+            if (count == 0) {
+                largeIntervalData[l][index].timeStamp = minuteData[l][i].timeStamp;
+                largeIntervalData[l][index].roadID = minuteData[l][i].roadID;
+                largeIntervalData[l][index].roadLength = minuteData[l][i].roadLength;
+                largeIntervalData[l][index].direction = minuteData[l][i].direction;
+                largeIntervalData[l][index].maxSpeed = minuteData[l][i].maxSpeed;
+                largeIntervalData[l][index].averageSpeed = minuteData[l][i].averageSpeed;
+                largeIntervalData[l][index].flowCarCount = minuteData[l][i].flowCarCount;
+                largeIntervalData[l][index].densityCarCount = minuteData[l][i].densityCarCount;
+                largeIntervalData[l][index].speedMeasurementCount = minuteData[l][i].speedMeasurementCount;
+                largeIntervalData[l][index].timeInterval = count + 1;
+            } else {
+                largeIntervalData[l][index].timeInterval = count + 1;
+                largeIntervalData[l][index].speedMeasurementCount += minuteData[l][i].speedMeasurementCount;
+                largeIntervalData[l][index].averageSpeed += minuteData[l][i].averageSpeed;
+                largeIntervalData[l][index].flowCarCount += minuteData[l][i].flowCarCount;
+                largeIntervalData[l][index].densityCarCount += minuteData[l][i].densityCarCount;
+            }
+            if (count == (interval - 1)){
+                index++;
+                count = 0;
+            } else {
+                count++;
+            }
+        }
+    }
+    
+    for (l = 0; l < amountOfRoads; l++){
+        for (i = 0; i <= index; i++){
+            largeIntervalData[l][index].averageSpeed = largeIntervalData[l][index].averageSpeed / largeIntervalData[l][index].timeInterval;
+            largeIntervalData[l][index].densityCarCount = largeIntervalData[l][index].densityCarCount / largeIntervalData[l][index].timeInterval;
+            calculateFlow(&largeIntervalData[l][index]);
+            calculateDensity(&largeIntervalData[l][index]);
+            calculateCongestion(&largeIntervalData[l][index]);
+        }
+    }
 }
 
 

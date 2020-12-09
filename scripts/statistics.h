@@ -58,3 +58,4 @@ void calculateDensity(data *dp);
 void calculateCongestion(data *dp);
 data** createDataArray(int amountOfRoads, int minutesSimulated);
 int* allocateIntArray(int length);
+void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int interval, data **minuteData, data **largeIntervalData);
