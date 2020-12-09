@@ -16,8 +16,10 @@
  *      - Baseret på 4 15 minutters målinger
  */
 
+
+
 /* Sets up the minuteData 2D array */
-void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[]){
+void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[]/*, road roadArr[]*/){
     int i, l;
     for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
@@ -30,6 +32,18 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
             minuteData[i][l].speedMeasurementCount = 0;
             minuteData[i][l].flowCarCount = 0;
             minuteData[i][l].densityCarCount = 0;
+            minuteData[i][l].timeStamp = l;
+            if (i < amountOfRoads / 2) {
+                minuteData[i][l].roadID = i;
+                minuteData[i][l].direction = 1;
+                //minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i].speedLimit);
+                //minuteData[i][l].roadLength = roadArr[i].length;
+            } else {
+                minuteData[i][l].roadID = (i - amountOfRoads / 2);
+                minuteData[i][l].direction = 0;
+                //minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i - amountOfRoads / 2].speedLimit);
+                //minuteData[i][l].roadLength = roadArr[i - amountOfRoads / 2].length;
+            }
             
             
         }
@@ -57,13 +71,13 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
 data** createDataArray(int amountOfRoads, int minutesSimulated){
     int i;
     data **dat;
-    dat = malloc(amountOfRoads * sizeof(data *));
+    dat = calloc(amountOfRoads, sizeof(data *));
     if (dat == NULL) {
         printf("Error allocating memory\n");
         exit(EXIT_FAILURE);
     }
     for (i = 0; i < amountOfRoads; i++){
-        dat[i] = malloc(minutesSimulated * sizeof(data));
+        dat[i] = calloc(minutesSimulated, sizeof(data));
         if (dat[i] == NULL) {
             printf("Error allocating memory\n");
             exit(EXIT_FAILURE);
@@ -119,11 +133,9 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     free(hourData);
 }
 
-void measureSpeed(double speed, data *dp, int index, int dir, double maxSpeed){
+void measureSpeed(double speed, data *dp, int index){
     dp->speedOfCars[index] = speed;
     dp->speedMeasurementCount++;
-    dp->direction = dir;
-    dp->maxSpeed = mpdsTokmh(maxSpeed);
 }
 
 void averageSpeed(data *dp){
@@ -194,12 +206,12 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
     }
     
     for (l = 0; l < amountOfRoads; l++){
-        for (i = 0; i < index; i++){
-            largeIntervalData[l][index].averageSpeed = largeIntervalData[l][index].averageSpeed / largeIntervalData[l][index].timeInterval;
-            largeIntervalData[l][index].densityCarCount = largeIntervalData[l][index].densityCarCount / largeIntervalData[l][index].timeInterval;
-            calculateFlow(&largeIntervalData[l][index]);
-            calculateDensity(&largeIntervalData[l][index]);
-            calculateCongestion(&largeIntervalData[l][index]);
+        for (i = 0; i <= index; i++){
+            largeIntervalData[l][i].averageSpeed = largeIntervalData[l][i].averageSpeed / largeIntervalData[l][i].timeInterval;
+            largeIntervalData[l][i].densityCarCount = largeIntervalData[l][i].densityCarCount / largeIntervalData[l][i].timeInterval;
+            calculateFlow(&largeIntervalData[l][i]);
+            calculateDensity(&largeIntervalData[l][i]);
+            calculateCongestion(&largeIntervalData[l][i]);
         }
     }
 }
