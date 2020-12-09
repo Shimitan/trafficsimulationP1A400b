@@ -1,0 +1,34 @@
+-------------------------------------------------->  Juan Minute intervals <-------------------------------------------------
+
+RoadID:  0     Direction: 1     Minute:   0     Avg speed (km/h):  22 out of  50     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  45 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  2     Direction: 1     Minute:   0     Avg speed (km/h):  46 out of  50     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  3     Direction: 1     Minute:   0     Avg speed (km/h):  34 out of  50     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  22 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  61 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  43 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  25 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  22 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  25 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  37 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  25 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  22 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  22 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID: 23     Direction: 1     Minute:   0     Avg speed (km/h):  22 out of  50     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  22 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  46 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  22 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):   9 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  11 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  51 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  46 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  22 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  45 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  40 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  25 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  72 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  47 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):  35 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID: 28     Direction: 0     Minute:   0     Avg speed (km/h):   0 out of 100     Flow: 0.00 cars/min     Congestion:   0%
+RoadID:  0     Direction: 0     Minute:   0     Avg speed (km/h):   7 out of   0     Flow: 0.00 cars/min     Congestion:   0%
+RoadID: 37     Direction: 0     Minute:   0     Avg speed (km/h):   0 out of 100     Flow: 0.00 cars/min     Congestion:   0%

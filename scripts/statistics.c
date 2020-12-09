@@ -114,9 +114,15 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     printf("--------------------------------> 60 minute intervals <--------------------------------\n\n");
     printAnalysedData(amountOfRoads, hourIntervals, hourData);
     
-    
+    makeOutputFile(amountOfRoads, minutesSimulated, minuteData);
+    //makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData);
+    //makeOutputFile(amountOfRoads, hourIntervals, hourData);
+
+
     free(quarterHourData);
     free(hourData);
+
+    
 }
 
 void measureSpeed(double speed, data *dp, int index, int dir, double maxSpeed){
@@ -227,7 +233,32 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteDat
 }
 
 /* Write data to file */
+void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData){
+    int i, l, print = 0;
+    
+    FILE *fp;
+    fp = fopen("Output.txt", "w+");
 
+    fprintf(fp, "-------------------------------------------------->  Juan Minute intervals <-------------------------------------------------\n\n");
+    for (l = 0; l < amountOfRoads; l++) {
+        for (i = 0; i < minutesSimulated; i++){
+            if (minuteData[l][i].speedMeasurementCount > 0){
+                fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
+                fprintf(fp, "Avg speed (km/h): %3.0lf out of %3.0lf     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                fprintf(fp, "Flow: %03.2lf cars/min     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].congestion);
+                //print = 1;
+            }
+            
+        }
+        /*if (print){
+            fprintf(fp, "\n");
+            print = 0;
+        }*/
+    }
+
+
+    fclose(fp);
+}
 
 /* Frees the allocated memory  */
 void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData){
