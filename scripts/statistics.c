@@ -46,12 +46,16 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
 /*Allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
+    if (speedArray == NULL){
+        printf("Error allocating int array\n");
+        exit(EXIT_FAILURE);
+    }
     return speedArray;
 }
 
 /*Allocates a 2D-array of type data*/
 data** createDataArray(int amountOfRoads, int minutesSimulated){
-    int i, j;
+    int i;
     data **dat;
     dat = malloc(amountOfRoads * sizeof(data *));
     if (dat == NULL) {
@@ -70,6 +74,10 @@ data** createDataArray(int amountOfRoads, int minutesSimulated){
 
 int* allocateIntArray(int length){
     int *i = calloc(length, sizeof(int));
+    if (i == NULL){
+        printf("Error allocating int array\n");
+        exit(EXIT_FAILURE);
+    }
     return i;
 }
 
@@ -99,9 +107,16 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     hourData = createDataArray(amountOfRoads, hourIntervals);
     calculateLargerIntervals(amountOfRoads, minutesSimulated, 15, minuteData, quarterHourData);
     calculateLargerIntervals(amountOfRoads, minutesSimulated, 60, minuteData, hourData);
+    printf("-------------------------------->  1 minute intervals <--------------------------------\n\n");
+    printAnalysedData(amountOfRoads, minutesSimulated, minuteData);
+    printf("--------------------------------> 15 minute intervals <--------------------------------\n\n");
     printAnalysedData(amountOfRoads, quarterHourIntervals, quarterHourData);
+    printf("--------------------------------> 60 minute intervals <--------------------------------\n\n");
     printAnalysedData(amountOfRoads, hourIntervals, hourData);
     
+    
+    free(quarterHourData);
+    free(hourData);
 }
 
 void measureSpeed(double speed, data *dp, int index, int dir, double maxSpeed){
@@ -169,7 +184,7 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
                 largeIntervalData[l][index].flowCarCount += minuteData[l][i].flowCarCount;
                 largeIntervalData[l][index].densityCarCount += minuteData[l][i].densityCarCount;
             }
-            if (count == (interval - 1)){
+            if (count == (interval - 1) && i != (minutesSimulated - 1)){
                 index++;
                 count = 0;
             } else {
@@ -179,7 +194,7 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
     }
     
     for (l = 0; l < amountOfRoads; l++){
-        for (i = 0; i <= index; i++){
+        for (i = 0; i < index; i++){
             largeIntervalData[l][index].averageSpeed = largeIntervalData[l][index].averageSpeed / largeIntervalData[l][index].timeInterval;
             largeIntervalData[l][index].densityCarCount = largeIntervalData[l][index].densityCarCount / largeIntervalData[l][index].timeInterval;
             calculateFlow(&largeIntervalData[l][index]);
@@ -194,18 +209,25 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
 
 /* Prints the analysed data */
 void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteData){
-    int i, l;
+    int i, l, print = 0;
     for (l = 0; l < amountOfRoads; l++) {
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
                 printf("Ticks with car on road %2d dir %1d for minute %3d: %4d ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
                 printf("with average speed %05.2lf km/h,", minuteData[l][i].averageSpeed);
                 printf(" flow %03.2lf cars/min, density %04.2f cars/km and %3d%% congestion\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                print = 1;
             }
         }
-        printf("\n");
+        if (print){
+            printf("\n");
+            print = 0;
+        }
     }
 }
+
+/* Write data to file */
+
 
 /* Frees the allocated memory  */
 void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData){
@@ -217,11 +239,3 @@ void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData)
         }
     }
 }
-
-
-
-
-
-/* Write data to file */
-
-

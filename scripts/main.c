@@ -258,7 +258,7 @@ int main(void){
     //     }
     // }
     analyseData(roadAmount * 2, minutesSimulated, minuteData);
-    printAnalysedData(roadAmount * 2, minutesSimulated, minuteData);
+    
     freeSpeedArrays(roadAmount * 2, minutesSimulated, minuteData);
     free(minuteData);
     free(speedIndex);
