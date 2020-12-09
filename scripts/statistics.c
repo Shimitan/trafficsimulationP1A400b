@@ -19,7 +19,7 @@
 
 
 /* Sets up the minuteData 2D array */
-void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[]/*, road roadArr[]*/){
+void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[], road roadArr[]){
     int i, l;
     for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
@@ -36,13 +36,13 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
             if (i < amountOfRoads / 2) {
                 minuteData[i][l].roadID = i;
                 minuteData[i][l].direction = 1;
-                //minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i].speedLimit);
-                //minuteData[i][l].roadLength = roadArr[i].length;
+                minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i].speedLimit);
+                minuteData[i][l].roadLength = roadArr[i].length;
             } else {
                 minuteData[i][l].roadID = (i - amountOfRoads / 2);
                 minuteData[i][l].direction = 0;
-                //minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i - amountOfRoads / 2].speedLimit);
-                //minuteData[i][l].roadLength = roadArr[i - amountOfRoads / 2].length;
+                minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i - amountOfRoads / 2].speedLimit);
+                minuteData[i][l].roadLength = roadArr[i - amountOfRoads / 2].length;
             }
             
             

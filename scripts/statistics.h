@@ -41,7 +41,25 @@ struct data{
     
 };
 
+struct road{
+    
+    int startID;
+    int endID;
+    
+    double length;
+    double speedLimit;
+    
+    /* 0 = RED, 1 = YELLOW, 2 = GREEN */
+    int intersecLightStart;
+    int intersecLightEnd;
+    
+    int maxCars;
+    int currCars[100];
+    
+};
+
 typedef struct data data;
+typedef struct road road;
 
 /*Prototypes*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond);
@@ -50,7 +68,7 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData);
 void averageSpeed(data *dp);
 double mpdsTokmh(double speed);
 void countCarFlow(data *dp);
-void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[]/*, road roadArr[]*/);
+void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[], road roadArr[]);
 void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteData);
 void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData);
 void calculateFlow(data *dp);

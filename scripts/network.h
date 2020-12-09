@@ -20,23 +20,6 @@ struct roadPoints{
 
 };
 
-struct road{
-
-    int startID;
-    int endID;
-
-    double length;
-    double speedLimit;
-
-    /* 0 = RED, 1 = YELLOW, 2 = GREEN */
-    int intersecLightStart;
-    int intersecLightEnd;
-
-    int maxCars;
-    int currCars[100];
-
-};
-
 struct car{
 
     double acceleration;
@@ -57,7 +40,6 @@ struct car{
 };
 
 typedef struct car car;
-typedef struct road road;
 typedef struct roadPoints roadPoints;
 
 double disToEnd(car car, road road, struct car carArr[]);
