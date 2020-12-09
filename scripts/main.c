@@ -232,7 +232,8 @@ int main(void){
                 }
             }
             if(car[i].active == 1){
-                printf("Location = %lf, Speed = %lf, ID = %d\n\n", car[i].location, car[i].speed, car[i].ID);
+                printf("Location = %lf, Speed = %lf, ID = %d\n", car[i].location, car[i].speed, car[i].ID);
+                printf("CurrGoal: %d\n\n", car[i].currGoal);
             }
         }
         currTick++;
@@ -267,7 +268,7 @@ int main(void){
 
 
 void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount, int nodeAmount){
-    int SENTINAL = 1, i = 0, j, l = 0;
+    int SENTINAL = 1, i = 0, j, l = 0, xd;
 
     do{
         car->currNode = endNodes[rand() % endNodeAmount];
@@ -291,9 +292,19 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
     //printf("post pathfinding\n");
 
 
-    /*for (j = 0; j < 100; j++) {
+    // for (j = 0; j < 100; j++) {
+    //     printf("path[%d] = %d\n", j, car->path[j]);
+    // }
+    xd = 1;
+    j = 0;
+    while(xd) {
         printf("path[%d] = %d\n", j, car->path[j]);
-    }*/
+        j++;
+
+        if (car->path[j] == -1) {
+            xd = 0;
+        }
+    }
 
     car->pathStep = 1;
     car->currGoal = car->path[car->pathStep];

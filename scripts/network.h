@@ -76,6 +76,7 @@ void changeLight(road roadArr[], roadPoints* node, int roadAmount);
 double findAccelerationLength(car *car, road *road);
 
 /* Finds distance to whatever is in front of the car, either being a node or another car */
+/* DO NOT FUCK WITH THE PRINTS IN THE IF-CHAIN AT THE BOTTEM... LITTERALLY DOES NOT WORK WITHOUT THEM! */
 double disToEnd(car car, road road, struct car carArr[]){
     int carInFront;
     double aheadLocation;
@@ -94,14 +95,18 @@ double disToEnd(car car, road road, struct car carArr[]){
     }else{
         if(car.dirBool == 1){
             if(road.intersecLightEnd == 2) {
+                printf("LightEnd: %d\n", road.intersecLightEnd);
                 return road.length - car.location;
             } else {
+                printf("LightEnd: %d\n", road.intersecLightEnd);
                 return road.length - car.location - 2;
             }
         }else{
             if(road.intersecLightStart == 2) {
+                printf("LightStart: %d\n", road.intersecLightStart);
                 return road.length - (road.length - car.location);
             } else {
+                printf("LightStart: %d\n", road.intersecLightStart);
                 return road.length - (road.length - car.location) - 5;
             }
         }
@@ -193,8 +198,6 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         car->breakLength = breakLength(*car);
         //printf("BreakLength: %lf\n", car->breakLength);
 
-        printf("POst funks\n");
-
         /* Accelerates or deccelerates the car */
         if(car->speed < (road->speedLimit + car->speedDeviation) && car->breakLength < distanceToEnd){
             car->speed += car->acceleration;
@@ -211,8 +214,6 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
         }else{
             car->location -= car->speed;
         }
-
-        printf("Pre mesureSpeed\n");
 
         /* Gem farten til databehandling */
         if ((road->length - car->location) > findAccelerationLength(car, road) && car->location > findAccelerationLength(car, road)){
