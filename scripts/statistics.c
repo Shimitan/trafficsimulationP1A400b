@@ -156,7 +156,7 @@ void averageSpeed(data *dp){
         for (i = 0; i < dp->speedMeasurementCount; i++){
             average += dp->speedOfCars[i];
         }
-        average = average/dp->speedMeasurementCount;
+        average = (double) average/dp->speedMeasurementCount;
     }
     dp->averageSpeed = mpdsTokmh(average);
 }
@@ -196,8 +196,10 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
         index = 0;
         count = 0;
         for (i = 0; i < minutesSimulated; i++) {
-            if (largeIntervalData[l][index].speedMeasurementCount == 0 && minuteData[l][i].averageSpeed != 0) {
+            if (count == 0){
                 largeIntervalData[l][index].timeStamp = minuteData[l][i].timeStamp;
+            }
+            if (largeIntervalData[l][index].speedMeasurementCount == 0 && minuteData[l][i].averageSpeed != 0) {
                 largeIntervalData[l][index].roadID = minuteData[l][i].roadID;
                 largeIntervalData[l][index].roadLength = minuteData[l][i].roadLength;
                 largeIntervalData[l][index].direction = minuteData[l][i].direction;
@@ -225,8 +227,8 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
     for (l = 0; l < amountOfRoads; l++){
         for (i = 0; i <= index; i++){
             if (largeIntervalData[l][i].timeInterval != 0){
-                largeIntervalData[l][i].averageSpeed = largeIntervalData[l][i].averageSpeed / largeIntervalData[l][i].speedMeasurementCount;
-                largeIntervalData[l][i].densityCarCount = largeIntervalData[l][i].densityCarCount / largeIntervalData[l][i].timeInterval;
+                largeIntervalData[l][i].averageSpeed = (double) largeIntervalData[l][i].averageSpeed / largeIntervalData[l][i].speedMeasurementCount;
+                largeIntervalData[l][i].densityCarCount = (double) largeIntervalData[l][i].densityCarCount / largeIntervalData[l][i].timeInterval;
                 calculateFlow(&largeIntervalData[l][i]);
                 calculateDensity(&largeIntervalData[l][i]);
                 calculateCongestion(&largeIntervalData[l][i]);

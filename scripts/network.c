@@ -105,7 +105,7 @@ double breakLength(car car){
 void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], int carNum, int* debugBool, data *dp, int *index, int roadAmount, int *carsOnRoadCount){ /*Tilføj parametre*/
     double distanceToEnd;
     if(car->active == 1){
-        if ((car->location == 0 && car->dirBool == 1) || (car->location == road->length && car->dirBool == 0)){
+        if (((car->location > 0 && (car->location - car->speed) <= 0) && car->dirBool == 1) || ((car->location < road->length && (car->location + car->speed) >= road->length) && car->dirBool == 0)){
             *carsOnRoadCount += 1;
         }
         

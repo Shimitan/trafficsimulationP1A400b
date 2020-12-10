@@ -42,18 +42,11 @@ int main(void){
     roadPoints *nodeArr;
     int *endNodes;
     int *intersections;
-    car car[1000];
+    car *car;
     
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
     
-    for(i = 0; i < 1000; i++){
-        car[i].active = 0;
-        car[i].pathStep = 0;
-        for (l = 0; l < 100; l++) {
-            car[i].path[l] = -1;
-        }
-    }
 
     for(i = 0; i < roadAmount; i++){
         roadArr[i].startID = -1;
@@ -61,7 +54,7 @@ int main(void){
         roadArr[i].intersecLightStart = 2;
         roadArr[i].intersecLightEnd = 2;
 
-        for(l = 0; l < 100; l++){
+        for(l = 0; l < 1000; l++){
             roadArr[i].currCars[l] = -1;
         }
     }
@@ -71,12 +64,23 @@ int main(void){
 
     getRestOfInput(roadArr, &seed, &simulationTime, &carAmount);
     
+    car = malloc(carAmount * sizeof(struct car));
+    
+    for(i = 0; i < carAmount; i++){
+        car[i].active = 0;
+        car[i].pathStep = 0;
+        for (l = 0; l < 100; l++) {
+            car[i].path[l] = -1;
+        }
+    }
+    
+    
     /*Allocates a 2D array for data collection statically*/
     carsOnRoadCount = allocateIntArray(roadAmount * 2);
     speedIndex = allocateIntArray(roadAmount * 2);
     minutesSimulated = simulationTime / (TICKS_PER_SECOND * SECONDS_PER_MINUTE);
     data **minuteData = createDataArray(roadAmount * 2, minutesSimulated);
-    setUpDataArray(roadAmount * 2, minutesSimulated, AMOUNT_OF_CARS, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount, roadArr);
+    setUpDataArray(roadAmount * 2, minutesSimulated, carAmount, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount, roadArr);
 
     srand(seed);
 
@@ -119,7 +123,7 @@ int main(void){
 
     while (currTick < simulationTime) {
         j++;
-        if (j >= 120 && k < carAmount) {
+        if (j >= 10 && k < carAmount) {
             createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount, nodeAmount);
             j = 0;
         }
@@ -152,6 +156,7 @@ int main(void){
         }
 
     }
+    printf("CurrTick = %d\n", currTick);
 
     analyseData(roadAmount * 2, minutesSimulated, minuteData);
     
@@ -162,7 +167,8 @@ int main(void){
     free(nodeArr);
     free(roadArr);
     free(endNodes);
-
+    free(car);
+    
     printf("Simulated ended!\n");
     return 0;
 }

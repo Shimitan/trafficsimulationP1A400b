@@ -3,10 +3,10 @@
 #include <stdio.h>
 
 /* Constants */
-#define AMOUNT_OF_CARS 10
+/* Time */
 #define TICKS_PER_SECOND 10
 #define SECONDS_PER_MINUTE 60
-
+/* Distance */
 #define CAR_LENGTH 5
 #define MIN_SPACING 1
 
@@ -48,7 +48,7 @@ struct road{
     int intersecLightEnd;
     
     int maxCars;
-    int currCars[100];
+    int currCars[1000];
     
 };
 
