@@ -6,12 +6,9 @@
 #define AMOUNT_OF_CARS 10
 #define TICKS_PER_SECOND 10
 #define SECONDS_PER_MINUTE 60
-#define AMOUNT_OF_ROADS 40
-#define MINUTES_SIMULATED 60
 
 #define CAR_LENGTH 5
 #define MIN_SPACING 1
-#define MAX_CARS 100
 
 /*Structs*/
 struct data{

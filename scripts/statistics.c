@@ -190,7 +190,7 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
         index = 0;
         count = 0;
         for (i = 0; i < minutesSimulated; i++) {
-            if (count == 0) {
+            if (largeIntervalData[l][index].speedMeasurementCount == 0 && minuteData[l][i].averageSpeed != 0) {
                 largeIntervalData[l][index].timeStamp = minuteData[l][i].timeStamp;
                 largeIntervalData[l][index].roadID = minuteData[l][i].roadID;
                 largeIntervalData[l][index].roadLength = minuteData[l][i].roadLength;
@@ -199,15 +199,16 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
                 largeIntervalData[l][index].averageSpeed = minuteData[l][i].averageSpeed;
                 largeIntervalData[l][index].flowCarCount = minuteData[l][i].flowCarCount;
                 largeIntervalData[l][index].densityCarCount = minuteData[l][i].densityCarCount;
-                largeIntervalData[l][index].speedMeasurementCount = minuteData[l][i].speedMeasurementCount;
-                largeIntervalData[l][index].timeInterval = count + 1;
-            } else {
-                largeIntervalData[l][index].timeInterval = count + 1;
-                largeIntervalData[l][index].speedMeasurementCount += minuteData[l][i].speedMeasurementCount;
+                largeIntervalData[l][index].speedMeasurementCount++;
+                //largeIntervalData[l][index].timeInterval = count + 1;
+            } else if (largeIntervalData[l][index].speedMeasurementCount != 0 && minuteData[l][i].averageSpeed != 0) {
+                
+                largeIntervalData[l][index].speedMeasurementCount++;
                 largeIntervalData[l][index].averageSpeed += minuteData[l][i].averageSpeed;
                 largeIntervalData[l][index].flowCarCount += minuteData[l][i].flowCarCount;
                 largeIntervalData[l][index].densityCarCount += minuteData[l][i].densityCarCount;
             }
+            largeIntervalData[l][index].timeInterval = count + 1;
             if (count == (interval - 1) && i != (minutesSimulated - 1)){
                 index++;
                 count = 0;
@@ -219,11 +220,13 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
     
     for (l = 0; l < amountOfRoads; l++){
         for (i = 0; i <= index; i++){
-            largeIntervalData[l][i].averageSpeed = largeIntervalData[l][i].averageSpeed / largeIntervalData[l][i].timeInterval;
-            largeIntervalData[l][i].densityCarCount = largeIntervalData[l][i].densityCarCount / largeIntervalData[l][i].timeInterval;
-            calculateFlow(&largeIntervalData[l][i]);
-            calculateDensity(&largeIntervalData[l][i]);
-            calculateCongestion(&largeIntervalData[l][i]);
+            if (largeIntervalData[l][i].timeInterval != 0){
+                largeIntervalData[l][i].averageSpeed = largeIntervalData[l][i].averageSpeed / largeIntervalData[l][i].speedMeasurementCount;
+                largeIntervalData[l][i].densityCarCount = largeIntervalData[l][i].densityCarCount / largeIntervalData[l][i].timeInterval;
+                calculateFlow(&largeIntervalData[l][i]);
+                calculateDensity(&largeIntervalData[l][i]);
+                calculateCongestion(&largeIntervalData[l][i]);
+            }
         }
     }
 }

@@ -135,13 +135,13 @@ int main(void){
                     break;
                 }
             }
-            if(car[i].active == 1){
+            /*if(car[i].active == 1){
                 printf("Location = %f, Speed = %f, ID = %d\n", car[i].location, car[i].speed, car[i].ID);
                 printf("CurrGoal: %d\n\n", car[i].currGoal);
-            }
+            }*/
         }
         currTick++;
-        if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0 /*|| currTick == (simulationTime - 1)*/) {
+        if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {
             
             for (m = 0; m < 2 * roadAmount; m++){
                 speedIndex[m] = 0;
