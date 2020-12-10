@@ -95,8 +95,9 @@ int* allocateIntArray(int length){
 }
 
 /* Analyses the 1 minute data, 15 minute data and 60 minute data */
-void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
+void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int seed){
     int i, l, quarterHourIntervals, hourIntervals;
+    char fileName[107] = "Output", intString[100]; 
     data **quarterHourData, **hourData;
     FILE *fp;
     quarterHourIntervals = minutesSimulated / 15;
@@ -129,11 +130,22 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     printf("--------------------------------> 60 minute intervals <--------------------------------\n\n");
     printAnalysedData(amountOfRoads, hourIntervals, hourData);
     
-    fp = fopen("Output.txt", "w");
+
+
+    sprintf(intString, "%d.txt", seed);
+    strcat(fileName, intString);
+    printf("%s\n", fileName);
+
+    fp = fopen(fileName, "w");
     fclose(fp);
-    makeOutputFile(amountOfRoads, minutesSimulated, minuteData, 1);
-    makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData, 15);
-    makeOutputFile(amountOfRoads, hourIntervals, hourData, 60);
+
+    
+
+    
+
+    makeOutputFile(amountOfRoads, minutesSimulated, minuteData, 1, fileName);
+    makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData, 15, fileName);
+    makeOutputFile(amountOfRoads, hourIntervals, hourData, 60, fileName);
 
 
     free(quarterHourData);
@@ -260,11 +272,11 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteDat
 }
 
 /* Write data to file */
-void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval){
+void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval, char *fileName){
     int i, l, print = 0;
     
     FILE *fp;
-    fp = fopen("Output.txt", "ab");
+    fp = fopen(fileName, "ab");
     
     switch (interval){
     case 1:

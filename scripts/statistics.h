@@ -1,6 +1,7 @@
 /* #includes */
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 /* Constants */
 /* Time */
@@ -58,7 +59,7 @@ typedef struct road road;
 /*Prototypes*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond);
 void measureSpeed(double speed, data *dp, int index);
-void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData);
+void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int seed);
 void averageSpeed(data *dp);
 double mpdsTokmh(double speed);
 void countCarFlow(data *dp);
@@ -71,4 +72,4 @@ void calculateCongestion(data *dp);
 data** createDataArray(int amountOfRoads, int minutesSimulated);
 int* allocateIntArray(int length);
 void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int interval, data **minuteData, data **largeIntervalData);
-void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval);
+void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval, char *fileName);

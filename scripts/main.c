@@ -158,7 +158,7 @@ int main(void){
     }
     printf("CurrTick = %d\n", currTick);
 
-    analyseData(roadAmount * 2, minutesSimulated, minuteData);
+    analyseData(roadAmount * 2, minutesSimulated, minuteData, seed);
     
     freeSpeedArrays(roadAmount * 2, minutesSimulated, minuteData);
     free(minuteData);
