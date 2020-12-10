@@ -233,7 +233,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
     int notTested[100];
     int currentNode;
     int tempArray[100];
-    double distance;
+    double difficulty;
     for(i = 0; i < 100; i++){
         notTested[i] = -1;
     }
@@ -254,7 +254,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
 
     /* While loop stops when array is empty */
     while(notTested[0] != -1){
-        distance = 0;
+        difficulty = 0;
 
         /* Removes node currently being tested from the array */
         currentNode = notTested[0];
@@ -275,19 +275,20 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
 
             /* finds distance from current node to neigbour node */
             j = 0;
-            while(distance == 0){
+            while(difficulty == 0){
                 if((roadArr[j].startID == currentNode && roadArr[j].endID == roadPointsArr[currentNode].connections[i]) || (roadArr[j].startID == roadPointsArr[currentNode].connections[i] && roadArr[j].endID == currentNode)){
-                    distance = roadArr[j].length;
+                    /* Add cars on road to this equation */
+                    difficulty = roadArr[j].length / (roadArr[j].speedLimit * 10);
                 }
                 j++;
             }   
             /* Enters the if-statement if there is a shorter route to it than alrady found, and then adds it to the array of nodes to be tested */
-            if(roadPointsArr[currentNode].local + distance < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
+            if(roadPointsArr[currentNode].local + difficulty < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
                 notTested[elements] = roadPointsArr[roadPointsArr[currentNode].connections[i]].ID;
                 elements++;
                 roadPointsArr[roadPointsArr[currentNode].connections[i]].parent = &roadPointsArr[currentNode];
 
-                roadPointsArr[roadPointsArr[currentNode].connections[i]].local = roadPointsArr[currentNode].local + distance;
+                roadPointsArr[roadPointsArr[currentNode].connections[i]].local = roadPointsArr[currentNode].local + difficulty;
             }
         }
     }
