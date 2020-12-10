@@ -4,7 +4,7 @@
 
 /* Constants */
 /*  */
-#define AMOUNT_OF_CARS 1
+#define AMOUNT_OF_CARS 10
 #define TICKS_PER_SECOND 10
 #define SECONDS_PER_MINUTE 60
 #define AMOUNT_OF_ROADS 40

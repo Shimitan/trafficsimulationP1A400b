@@ -13,7 +13,7 @@ double kmhTompds(road* road);
 void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount);
 roadPoints* getNodeAmount(int* nodeAmount);
 road* getRoadAmount(int* roadAmount);
-void getRestOfInput(road roadArr[], int* seed, int* simulationTime);
+void getRestOfInput(road roadArr[], int* seed, int* simulationTime, int* carAmount);
 void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], int nodeAmount);
 void changeLight(road roadArr[], roadPoints* node, int roadAmount);
 void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount, int nodeAmount);
@@ -22,6 +22,7 @@ int main(void){
     int debugBool = 0;
     int nodeAmount = 0;
     int roadAmount = 0;
+    int carAmount = 0;
     int currTick = 0;
     int endNodeAmount = 0;
     int intersectionAmount = 0;
@@ -68,7 +69,7 @@ int main(void){
         nodeArr[i].ID = -1;
     }
 
-    getRestOfInput(roadArr, &seed, &simulationTime);
+    getRestOfInput(roadArr, &seed, &simulationTime, &carAmount);
     
     /*Allocates a 2D array for data collection statically*/
     carsOnRoadCount = allocateIntArray(roadAmount * 2);
@@ -118,7 +119,7 @@ int main(void){
 
     while (currTick < simulationTime) {
         j++;
-        if (j >= 120 && k < AMOUNT_OF_CARS) {
+        if (j >= 120 && k < carAmount) {
             createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount, nodeAmount);
             j = 0;
         }
@@ -127,7 +128,7 @@ int main(void){
             changeLight(roadArr, &nodeArr[intersections[i]], roadAmount);
         }
 
-        for(i = 0; i < AMOUNT_OF_CARS; i++){
+        for(i = 0; i < carAmount; i++){
             for (l = 0; l < roadAmount; l++) {
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
                     roadIndex = car[i].dirBool == 1 ? l : l + roadAmount;
@@ -284,7 +285,7 @@ road* getRoadAmount(int* roadAmount) {
     return roadArr;
 }
 
-void getRestOfInput(road roadArr[], int* seed, int* simulationTime) {
+void getRestOfInput(road roadArr[], int* seed, int* simulationTime, int* carAmount) {
     int ch, i = 0, l = 0, k = 0, counter = 0;
     char str[16];
     FILE *inputFile;
@@ -308,12 +309,19 @@ void getRestOfInput(road roadArr[], int* seed, int* simulationTime) {
 
                 case 2:
                     str[l] = '\0';
+                    *carAmount = atoi(str);
+                    counter++;
+                    l = -1;
+                    break;
+
+                case 3:
+                    str[l] = '\0';
                     *seed = atoi(str);
                     counter++;
                     l = -1;
                     break;
             
-                case 3:
+                case 4:
                     str[l] = '\0';
                     *simulationTime = atoi(str)*600;
                     counter++;

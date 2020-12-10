@@ -1,5 +1,6 @@
 ID-amount
 Road-amount
+Car-amount
 Seed
 Simulation time (min)
 ID, ID, RoadLenth, speedLimit
