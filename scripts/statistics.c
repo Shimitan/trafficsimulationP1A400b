@@ -284,9 +284,9 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
         for (l = 0; l < amountOfRoads; l++) {
             for (i = 0; i < minutesSimulated; i++){
                 if (minuteData[l][i].speedMeasurementCount > 0){
-                    fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
-                    fprintf(fp, "Avg speed: %3.0lf km/h     Max speed: %3.0lf km/h     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
-                    fprintf(fp, "Flow: %5.2f cars/min     Density: %5.2f cars/km     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                    fprintf(fp, "RoadID:\t%2d\tDirection:\t%1d\tMinute:\t%3d\t", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
+                    fprintf(fp, "Avg speed:\t%3.0lf\tkm/h\tMax speed:\t%3.0lf\tkm/h\t", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fp, "Flow:\t%5.2f\tcars/min\tDensity:\t%5.2f\tcars/km\tCongestion:\t%3d\t%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
                 }
                 
             }
@@ -298,9 +298,9 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
         for (l = 0; l < amountOfRoads; l++) {
             for (i = 0; i < minutesSimulated; i++){
                 if (minuteData[l][i].speedMeasurementCount > 0){
-                    fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     Minutes with activity: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
-                    fprintf(fp, "Avg speed: %3.0lf km/h     Max speed: %3.0lf km/h     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
-                    fprintf(fp, "Flow: %5.2f cars/min     Density: %5.2f cars/km     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                    fprintf(fp, "RoadID:\t%2d\tDirection:\t%1d\tMinute:\t%3d\tMinutes with activity:\t%3d\t", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
+                    fprintf(fp, "Avg speed:\t%3.0lf\tkm/h\tMax speed:\t%3.0lf\tkm/h\t", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fp, "Flow:\t%5.2f\tcars/min\tDensity:\t%5.2f\tcars/km\tCongestion:\t%3d\t%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
                 }
                 
             }
@@ -312,9 +312,9 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
         for (l = 0; l < amountOfRoads; l++) {
             for (i = 0; i < minutesSimulated; i++){
                 if (minuteData[l][i].speedMeasurementCount > 0){
-                    fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     Minutes with activity: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
-                    fprintf(fp, "Avg speed: %3.0lf km/h     Max speed: %3.0lf km/h     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
-                    fprintf(fp, "Flow: %5.2f cars/min     Density: %5.2f cars/km     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                    fprintf(fp, "RoadID:\t%2d\tDirection:\t%1d\tMinute:\t%3d\tMinutes with activity:\t%3d\t", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
+                    fprintf(fp, "Avg speed:\t%3.0lf\tkm/h\tMax speed:\t%3.0lf\tkm/h\t", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fp, "Flow:\t%5.2f\tcars/min\tDensity:\t%5.2f\tcars/km\tCongestion:\t%3d\t%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
                 }
                 
             }
