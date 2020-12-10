@@ -13,7 +13,7 @@
  *      - Baseret på 15 1 minuts målinger
  *
  * Data for hver time
- *      - Baseret på 4 15 minutters målinger
+ *      - Baseret på 60 1 minuts målinger
  */
 
 
@@ -166,6 +166,9 @@ void calculateDensity(data *dp){
 
 void calculateCongestion(data *dp){
     dp->congestion = (int) ((1 - (dp->averageSpeed/dp->maxSpeed)) * 100);
+    if (dp->congestion < 0) {
+        dp->congestion = 0;
+    }
 }
 
 void countCarFlow(data *dp){

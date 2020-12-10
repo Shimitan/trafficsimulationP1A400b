@@ -132,10 +132,6 @@ int main(void){
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
                     roadIndex = car[i].dirBool == 1 ? l : l + roadAmount;
                     moveCar(&car[i], car, &roadArr[l], roadArr, i, &debugBool, &minuteData[roadIndex][minuteIndex], &speedIndex[roadIndex], roadAmount, &carsOnRoadCount[roadIndex]);
-                    speedIndex[roadIndex]++;
-                    if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 599) {
-                    
-                    }
                     break;
                 }
             }
@@ -145,7 +141,7 @@ int main(void){
             }
         }
         currTick++;
-        if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {
+        if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0 /*|| currTick == (simulationTime - 1)*/) {
             
             for (m = 0; m < 2 * roadAmount; m++){
                 speedIndex[m] = 0;
