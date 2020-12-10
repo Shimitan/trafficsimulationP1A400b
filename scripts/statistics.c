@@ -1,24 +1,9 @@
 #include "statistics.h"
 
-/* 1000 målinger / sekund
- * 60 * 1000 målinger / minut
- * 60000 * 8 bytes
- * 480000 bytes
- * 480 kB / minuts data
- *
- * */
-
-/* Data for 1 minut
- * Data for hvert kvarter
- *      - Baseret på 15 1 minuts målinger
- *
- * Data for hver time
- *      - Baseret på 60 1 minuts målinger
- */
-
 /* Sets up the minuteData 2D array */
 void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[], road roadArr[]){
     int i, l;
+
     for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
             minuteData[i][l].speedOfCars = createSpeedArray(amountOfCars, ticksPerSecond);
@@ -31,7 +16,7 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
             minuteData[i][l].flowCarCount = 0;
             minuteData[i][l].densityCarCount = 0;
             minuteData[i][l].timeStamp = l;
-            if (i < amountOfRoads / 2) {
+            if (i < amountOfRoads / 2){
                 minuteData[i][l].roadID = i;
                 minuteData[i][l].direction = 1;
                 minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i].speedLimit);
@@ -41,23 +26,19 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
                 minuteData[i][l].direction = 0;
                 minuteData[i][l].maxSpeed = mpdsTokmh(roadArr[i - amountOfRoads / 2].speedLimit);
                 minuteData[i][l].roadLength = roadArr[i - amountOfRoads / 2].length;
-            }
-            
-            
+            } 
         }
         speedIndex[i] = 0;
         carsOnRoad[i] = 0;
     }
-    /* Gud hader menneskeheden så det her skal stå der for at lortet virker i [0][0]
-     * Din familie vil ikke være i live til næste jul hvis du fjerner det her
-     *      - Varme julehilsner <3,
-     *        Mette Frederiksen, 07-12-2020*/
+    /* This is neccesary to make the first observation work, because the program mistakenly sets the first time interval to 0 */
     minuteData[0][0].timeInterval = 1;
 }
 
 /*Dynamically allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
+
     if (speedArray == NULL){
         printf("Error allocating int array\n");
         exit(EXIT_FAILURE);
@@ -69,14 +50,15 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
 data** createDataArray(int amountOfRoads, int minutesSimulated){
     int i;
     data **dat;
+
     dat = calloc(amountOfRoads, sizeof(data *));
-    if (dat == NULL) {
+    if (dat == NULL){
         printf("Error allocating memory\n");
         exit(EXIT_FAILURE);
     }
     for (i = 0; i < amountOfRoads; i++){
         dat[i] = calloc(minutesSimulated, sizeof(data));
-        if (dat[i] == NULL) {
+        if (dat[i] == NULL){
             printf("Error allocating memory\n");
             exit(EXIT_FAILURE);
         }
@@ -87,6 +69,7 @@ data** createDataArray(int amountOfRoads, int minutesSimulated){
 /* Dynamically allocates an int array */
 int* allocateIntArray(int length){
     int *i = calloc(length, sizeof(int));
+
     if (i == NULL){
         printf("Error allocating int array\n");
         exit(EXIT_FAILURE);
@@ -100,6 +83,7 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int
     char fileName[107] = "Output", intString[100]; 
     data **quarterHourData, **hourData;
     FILE *fp;
+
     quarterHourIntervals = minutesSimulated / 15;
     if (minutesSimulated % 15 != 0){
         quarterHourIntervals += 1;
@@ -109,7 +93,7 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int
         hourIntervals += 1;
     }
     
-    for (l = 0; l < amountOfRoads; l++) {
+    for (l = 0; l < amountOfRoads; l++){
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
                 averageSpeed(&minuteData[l][i]);
@@ -130,28 +114,19 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int
     printf("--------------------------------> 60 minute intervals <--------------------------------\n\n");
     printAnalysedData(amountOfRoads, hourIntervals, hourData);
     
-
-
+    /* File is created and emptied */
     sprintf(intString, "%d.txt", seed);
     strcat(fileName, intString);
     printf("%s\n", fileName);
-
     fp = fopen(fileName, "w");
     fclose(fp);
-
-    
-
-    
-
+    /* File is opened and data is inputted */
     makeOutputFile(amountOfRoads, minutesSimulated, minuteData, 1, fileName);
     makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData, 15, fileName);
     makeOutputFile(amountOfRoads, hourIntervals, hourData, 60, fileName);
 
-
     free(quarterHourData);
     free(hourData);
-
-    
 }
 
 /*Measures the speed of a car*/
@@ -164,6 +139,7 @@ void measureSpeed(double speed, data *dp, int index){
 void averageSpeed(data *dp){
     int i;
     double average = 0.0;
+
     if (dp->speedMeasurementCount > 0){
         for (i = 0; i < dp->speedMeasurementCount; i++){
             average += dp->speedOfCars[i];
@@ -181,7 +157,7 @@ void calculateDensity(data *dp){
 /* Calculates the congestion by finding the relative difference between the average speed and max speed */
 void calculateCongestion(data *dp){
     dp->congestion = (int) ((1 - (dp->averageSpeed/dp->maxSpeed)) * 100);
-    if (dp->congestion < 0) {
+    if (dp->congestion < 0){
         dp->congestion = 0;
     }
 }
@@ -204,14 +180,15 @@ double mpdsTokmh(double speed){
 /* Analyses the data and calculates the average in the intervals */
 void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int interval, data **minuteData, data **largeIntervalData){
     int i, l, count, index;
+
     for (l = 0; l < amountOfRoads; l++){
         index = 0;
         count = 0;
-        for (i = 0; i < minutesSimulated; i++) {
+        for (i = 0; i < minutesSimulated; i++){
             if (count == 0){
                 largeIntervalData[l][index].timeStamp = minuteData[l][i].timeStamp;
             }
-            if (largeIntervalData[l][index].speedMeasurementCount == 0 && minuteData[l][i].averageSpeed != 0) {
+            if (largeIntervalData[l][index].speedMeasurementCount == 0 && minuteData[l][i].averageSpeed != 0){
                 largeIntervalData[l][index].roadID = minuteData[l][i].roadID;
                 largeIntervalData[l][index].roadLength = minuteData[l][i].roadLength;
                 largeIntervalData[l][index].direction = minuteData[l][i].direction;
@@ -220,7 +197,7 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
                 largeIntervalData[l][index].flowCarCount = minuteData[l][i].flowCarCount;
                 largeIntervalData[l][index].densityCarCount = minuteData[l][i].densityCarCount;
                 largeIntervalData[l][index].speedMeasurementCount++;
-            } else if (largeIntervalData[l][index].speedMeasurementCount != 0 && minuteData[l][i].averageSpeed != 0) {
+            } else if (largeIntervalData[l][index].speedMeasurementCount != 0 && minuteData[l][i].averageSpeed != 0){
                 largeIntervalData[l][index].speedMeasurementCount++;
                 largeIntervalData[l][index].averageSpeed += minuteData[l][i].averageSpeed;
                 largeIntervalData[l][index].flowCarCount += minuteData[l][i].flowCarCount;
@@ -251,11 +228,12 @@ void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int inter
 
 
 
-
+/* DETTE SKAL FJERNES I DEN ENDELIGE UDGAVE, DA VI IKKE SKAL BRUGE ET TERMINALPRINT */
 /* Prints the analysed data */
 void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l, print = 0;
-    for (l = 0; l < amountOfRoads; l++) {
+
+    for (l = 0; l < amountOfRoads; l++){
         for (i = 0; i < minutesSimulated; i++){
             if (minuteData[l][i].speedMeasurementCount > 0){
                 printf("Ticks with car on road %2d dir %1d for minute %3d: %4d ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
@@ -274,14 +252,14 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteDat
 /* Write data to file */
 void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval, char *fileName){
     int i, l, print = 0;
-    
     FILE *fp;
+
     fp = fopen(fileName, "ab");
     
     switch (interval){
     case 1:
         fprintf(fp, "-------------------------------------------------->  1-minute intervals <-------------------------------------------------\n\n");
-        for (l = 0; l < amountOfRoads; l++) {
+        for (l = 0; l < amountOfRoads; l++){
             for (i = 0; i < minutesSimulated; i++){
                 if (minuteData[l][i].speedMeasurementCount > 0){
                     fprintf(fp, "RoadID:\t%2d\tDirection:\t%1d\tMinute:\t%3d\t", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
@@ -295,7 +273,7 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
     
     case 15:
         fprintf(fp, "\n\n-------------------------------------------------->  15-minute intervals <-------------------------------------------------\n\n");
-        for (l = 0; l < amountOfRoads; l++) {
+        for (l = 0; l < amountOfRoads; l++){
             for (i = 0; i < minutesSimulated; i++){
                 if (minuteData[l][i].speedMeasurementCount > 0){
                     fprintf(fp, "RoadID:\t%2d\tDirection:\t%1d\tMinute:\t%3d\tMinutes with activity:\t%3d\t", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
@@ -309,7 +287,7 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
 
     case 60:
         fprintf(fp, "\n\n-------------------------------------------------->  60-minute intervals <-------------------------------------------------\n\n");
-        for (l = 0; l < amountOfRoads; l++) {
+        for (l = 0; l < amountOfRoads; l++){
             for (i = 0; i < minutesSimulated; i++){
                 if (minuteData[l][i].speedMeasurementCount > 0){
                     fprintf(fp, "RoadID:\t%2d\tDirection:\t%1d\tMinute:\t%3d\tMinutes with activity:\t%3d\t", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
@@ -324,16 +302,13 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
     default:
         break;
     }
-    
-    
-
-
     fclose(fp);
 }
 
 /* Frees the memory allocated for the speed arrays */
 void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l;
+    
     for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
             free(minuteData[i][l].speedOfCars);
