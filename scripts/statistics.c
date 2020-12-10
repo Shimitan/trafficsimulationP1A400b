@@ -269,35 +269,51 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
     switch (interval){
     case 1:
         fprintf(fp, "-------------------------------------------------->  1-minute intervals <-------------------------------------------------\n\n");
+        for (l = 0; l < amountOfRoads; l++) {
+            for (i = 0; i < minutesSimulated; i++){
+                if (minuteData[l][i].speedMeasurementCount > 0){
+                    fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
+                    fprintf(fp, "Avg speed: %3.0lf km/h     Max speed: %3.0lf km/h     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fp, "Flow: %5.2f cars/min     Density: %5.2f cars/km     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                }
+                
+            }
+        }
         break;
     
     case 15:
         fprintf(fp, "\n\n-------------------------------------------------->  15-minute intervals <-------------------------------------------------\n\n");
+        for (l = 0; l < amountOfRoads; l++) {
+            for (i = 0; i < minutesSimulated; i++){
+                if (minuteData[l][i].speedMeasurementCount > 0){
+                    fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     Minutes with activity: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
+                    fprintf(fp, "Avg speed: %3.0lf km/h     Max speed: %3.0lf km/h     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fp, "Flow: %5.2f cars/min     Density: %5.2f cars/km     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                }
+                
+            }
+        }
         break;
 
     case 60:
-        fprintf(fp, "\n\n-------------------------------------------------->  60-Minute intervals <-------------------------------------------------\n\n");
+        fprintf(fp, "\n\n-------------------------------------------------->  60-minute intervals <-------------------------------------------------\n\n");
+        for (l = 0; l < amountOfRoads; l++) {
+            for (i = 0; i < minutesSimulated; i++){
+                if (minuteData[l][i].speedMeasurementCount > 0){
+                    fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     Minutes with activity: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp, minuteData[l][i].speedMeasurementCount);
+                    fprintf(fp, "Avg speed: %3.0lf km/h     Max speed: %3.0lf km/h     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fp, "Flow: %5.2f cars/min     Density: %5.2f cars/km     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                }
+                
+            }
+        }
         break;
     
     default:
         break;
     }
     
-    for (l = 0; l < amountOfRoads; l++) {
-        for (i = 0; i < minutesSimulated; i++){
-            if (minuteData[l][i].speedMeasurementCount > 0){
-                fprintf(fp, "RoadID: %2d     Direction: %1d     Minute: %3d     ", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
-                fprintf(fp, "Avg speed (km/h): %3.0lf out of %3.0lf     ", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
-                fprintf(fp, "Flow: %03.2lf cars/min     Congestion: %3d%%\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].congestion);
-                //print = 1;
-            }
-            
-        }
-        /*if (print){
-            fprintf(fp, "\n");
-            print = 0;
-        }*/
-    }
+    
 
 
     fclose(fp);
