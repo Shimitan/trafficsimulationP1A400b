@@ -21,7 +21,7 @@ double disToEnd(car car, road road, struct car carArr[]){
                 return road.length - car.location;
             } else {
                 printf("LightEnd: %d\n", road.intersecLightEnd);
-                return road.length - car.location - 5;
+                return road.length - car.location - 2;
             }
         }else{
             if(road.intersecLightStart == 2) {
@@ -40,7 +40,7 @@ double distanceBetweenCars(car car){
     double kmt = car.speed * 10;
     kmt *= 3.6;
 
-    return (kmt/4) + MIN_SPACING;
+    return (kmt/4) + 1;
 }
 
 /* Finds out wether there is a car in front of the current car */
