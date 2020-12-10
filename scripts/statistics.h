@@ -23,7 +23,6 @@ struct data{
     /*Flow*/
     int flowCarCount;
     double calculatedFlow;
-    double optimalFlow;
     /*Density*/
     int densityCarCount;
     double density;
@@ -34,7 +33,6 @@ struct data{
     int roadID;
     int roadLength;
     int direction;
-    
 };
 
 struct road{

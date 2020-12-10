@@ -16,8 +16,6 @@
  *      - Baseret på 60 1 minuts målinger
  */
 
-
-
 /* Sets up the minuteData 2D array */
 void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, int ticksPerSecond, data **minuteData, int speedIndex[], int carsOnRoad[], road roadArr[]){
     int i, l;
@@ -57,7 +55,7 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
     minuteData[0][0].timeInterval = 1;
 }
 
-/*Allocates an array to store the speed for each car for each tick on a given road*/
+/*Dynamically allocates an array to store the speed for each car for each tick on a given road*/
 double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
     if (speedArray == NULL){
@@ -67,7 +65,7 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
     return speedArray;
 }
 
-/*Allocates a 2D-array of type data*/
+/*Dynamically allocates a 2D-array of type data*/
 data** createDataArray(int amountOfRoads, int minutesSimulated){
     int i;
     data **dat;
@@ -86,6 +84,7 @@ data** createDataArray(int amountOfRoads, int minutesSimulated){
     return dat;
 }
 
+/* Dynamically allocates an int array */
 int* allocateIntArray(int length){
     int *i = calloc(length, sizeof(int));
     if (i == NULL){
@@ -95,6 +94,7 @@ int* allocateIntArray(int length){
     return i;
 }
 
+/* Analyses the 1 minute data, 15 minute data and 60 minute data */
 void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l, quarterHourIntervals, hourIntervals;
     data **quarterHourData, **hourData;
@@ -142,11 +142,13 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData){
     
 }
 
+/*Measures the speed of a car*/
 void measureSpeed(double speed, data *dp, int index){
     dp->speedOfCars[index] = speed;
     dp->speedMeasurementCount++;
 }
 
+/*Calculates the average speed for a given road*/
 void averageSpeed(data *dp){
     int i;
     double average = 0.0;
@@ -159,11 +161,12 @@ void averageSpeed(data *dp){
     dp->averageSpeed = mpdsTokmh(average);
 }
 
-
+/* Calculates the density */
 void calculateDensity(data *dp){
     dp->density = (double) (dp->densityCarCount * 1000) / (dp->roadLength) ;
 }
 
+/* Calculates the congestion by finding the relative difference between the average speed and max speed */
 void calculateCongestion(data *dp){
     dp->congestion = (int) ((1 - (dp->averageSpeed/dp->maxSpeed)) * 100);
     if (dp->congestion < 0) {
@@ -171,21 +174,24 @@ void calculateCongestion(data *dp){
     }
 }
 
+/* Counts the flow */
 void countCarFlow(data *dp){
     dp->flowCarCount++;
 }
 
+/* Calculates the flow for a given data point */
 void calculateFlow(data *dp){
     dp->calculatedFlow = (double) dp->flowCarCount / dp->timeInterval;
 }
 
+/* Converts meters per deci second to kmh */
 double mpdsTokmh(double speed){
     return speed * 10 * 3.6;
 }
 
+/* Analyses the data and calculates the average in the intervals */
 void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int interval, data **minuteData, data **largeIntervalData){
     int i, l, count, index;
-    
     for (l = 0; l < amountOfRoads; l++){
         index = 0;
         count = 0;
@@ -295,7 +301,7 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
     fclose(fp);
 }
 
-/* Frees the allocated memory  */
+/* Frees the memory allocated for the speed arrays */
 void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData){
     int i, l;
     for (i = 0; i < amountOfRoads; i++){
