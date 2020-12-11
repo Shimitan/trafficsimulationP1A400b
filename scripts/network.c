@@ -284,24 +284,24 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
                 j++;
             }
 
-            printf("pre while\n");
-            i = 0;
-            while(roadArr[j].currCars[i] != -1){
-                i++;
-            }
-            printf("post while\n");
+            //printf("pre while\n");
+            // i = 0;
+            // while(roadArr[j].currCars[i] != -1){
+            //     i++;
+            // }
+            // //printf("post while\n");
 
-            if(i > (roadArr[j].length / (CAR_LENGTH + MIN_SPACING))){
-                carAmount = INFINITY;
-            }else{
-                carAmount = 0;
-            }
-            printf("post if\n");
+            // if(i > (roadArr[j].length / (CAR_LENGTH + MIN_SPACING))){
+            //     carAmount = INFINITY;
+            // }else{
+            //     carAmount = 0;
+            // }
+            //printf("post if\n");
 
 
 
             /* Enters the if-statement if there is a shorter route to it than alrady found, and then adds it to the array of nodes to be tested */
-            if(roadPointsArr[currentNode].local + difficulty + carAmount < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
+            if(roadPointsArr[currentNode].local + difficulty < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
                 notTested[elements] = roadPointsArr[roadPointsArr[currentNode].connections[i]].ID;
                 elements++;
                 roadPointsArr[roadPointsArr[currentNode].connections[i]].parent = &roadPointsArr[currentNode];
@@ -310,6 +310,8 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
             }
         }
     }
+
+    printf("post while\n");
 
     if(roadPointsArr[car->endGoal].parent == NULL){
         printf("No path for %d\n", car->ID);

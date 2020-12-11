@@ -179,8 +179,9 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
         car->currNode = endNodes[rand() % endNodeAmount];
         car->endGoal = endNodes[rand() % endNodeAmount];
     }while(car->currNode == car->endGoal);
-    
+    printf("pre pathfinding\n");
     pathfinding(car, roadArr, roadPointsArr, nodeAmount);
+    printf("post pathfinding\n");
 
     car->pathStep = 1;
     car->currGoal = car->path[car->pathStep];
