@@ -234,6 +234,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
     int currentNode;
     int tempArray[100];
     double difficulty;
+    double carAmount;
     for(i = 0; i < 100; i++){
         notTested[i] = -1;
     }
@@ -281,9 +282,23 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
                     difficulty = roadArr[j].length / (roadArr[j].speedLimit * 10);
                 }
                 j++;
-            }   
+            }
+
+            i = 0;
+            while(roadArr[j].currCars[i] != -1){
+                i++;
+            }
+
+            if(i > (roadArr[j].length / (CAR_LENGTH + MIN_SPACING))){
+                carAmount = INFINITY;
+            }else{
+                carAmount = 0;
+            }
+
+
+
             /* Enters the if-statement if there is a shorter route to it than alrady found, and then adds it to the array of nodes to be tested */
-            if(roadPointsArr[currentNode].local + difficulty < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
+            if(roadPointsArr[currentNode].local + difficulty + carAmount < roadPointsArr[roadPointsArr[currentNode].connections[i]].local){
                 notTested[elements] = roadPointsArr[roadPointsArr[currentNode].connections[i]].ID;
                 elements++;
                 roadPointsArr[roadPointsArr[currentNode].connections[i]].parent = &roadPointsArr[currentNode];
