@@ -80,9 +80,10 @@ int* allocateIntArray(int length){
 /* Analyses the 1 minute data, 15 minute data and 60 minute data */
 void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int seed){
     int i, l, quarterHourIntervals, hourIntervals;
-    char fileName[107] = "Output", intString[100]; 
+    char fileName[107] = "Output", fileSelectedData[109] = "Selected", intString[100];
     data **quarterHourData, **hourData;
     FILE *fp;
+    FILE *fsp;
 
     quarterHourIntervals = minutesSimulated / 15;
     if (minutesSimulated % 15 != 0){
@@ -117,13 +118,17 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int
     /* File is created and emptied */
     sprintf(intString, "%d.csv", seed);
     strcat(fileName, intString);
+    strcat(fileSelectedData, intString);
     printf("%s\n", fileName);
+    printf("%s\n", fileSelectedData);
     fp = fopen(fileName, "w");
+    fsp = fopen(fileSelectedData, "w");
     fclose(fp);
+    fclose(fsp);
     /* File is opened and data is inputted */
-    makeOutputFile(amountOfRoads, minutesSimulated, minuteData, 1, fileName);
-    makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData, 15, fileName);
-    makeOutputFile(amountOfRoads, hourIntervals, hourData, 60, fileName);
+    makeOutputFile(amountOfRoads, minutesSimulated, minuteData, 1, fileName, fileSelectedData);
+    makeOutputFile(amountOfRoads, quarterHourIntervals, quarterHourData, 15, fileName, fileSelectedData);
+    makeOutputFile(amountOfRoads, hourIntervals, hourData, 60, fileName, fileSelectedData);
 
     free(quarterHourData);
     free(hourData);
@@ -250,11 +255,13 @@ void printAnalysedData(int amountOfRoads, int minutesSimulated, data **minuteDat
 }
 
 /* Write data to file */
-void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval, char *fileName){
-    int i, l, print = 0;
+void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval, char *fileName, char *fileSelectedData){
+    int i, l;
     FILE *fp;
+    FILE *fsp;
 
     fp = fopen(fileName, "ab");
+    fsp = fopen(fileSelectedData, "ab");
     
     switch (interval){
     case 1:
@@ -305,6 +312,56 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
     default:
         break;
     }
+    switch (interval){
+    case 1:
+        fprintf(fsp, "1-minute intervals\n");
+        fprintf(fsp, "RoadID;Direction;Minute;Avg speed (km/h);Max speed (km/h);Flow (cars/min);Density (cars/km);%% Congestion\n");
+        for (l = 0; l < amountOfRoads; l++){
+            for (i = 0; i < minutesSimulated; i++){
+                if (minuteData[l][i].speedMeasurementCount > 0 && minuteData[l][i].congestion >= 10){
+                    fprintf(fsp, "%2d;%1d;%3d;", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
+                    fprintf(fsp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fsp, "%5.2f;%5.2f;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
+                }
+                
+            }
+        }
+        break;
+    
+    case 15:
+        fprintf(fsp, "\n\n15-minute intervals\n");
+        fprintf(fsp, "RoadID;Direction;Minute;Avg speed (km/h);Max speed (km/h);Flow (cars/min);Density (cars/km);%% Congestion;Minutes with activity\n");
+        for (l = 0; l < amountOfRoads; l++){
+            for (i = 0; i < minutesSimulated; i++){
+                if (minuteData[l][i].speedMeasurementCount > 0 && minuteData[l][i].congestion >= 10){
+                    fprintf(fsp, "%2d;%1d;%3d;", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
+                    fprintf(fsp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fsp, "%5.2f;%5.2f;%3d;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion, minuteData[l][i].speedMeasurementCount);
+                }
+                
+            }
+        }
+        break;
+
+    case 60:
+        fprintf(fsp, "\n\n60-minute intervals\n");
+        fprintf(fsp, "RoadID;Direction;Minute;Avg speed (km/h);Max speed (km/h);Flow (cars/min);Density (cars/km);%% Congestion;Minutes with activity\n");
+        for (l = 0; l < amountOfRoads; l++){
+            for (i = 0; i < minutesSimulated; i++){
+                if (minuteData[l][i].speedMeasurementCount > 0 && minuteData[l][i].congestion >= 10){
+                    fprintf(fsp, "%2d;%1d;%3d;", minuteData[l][i].roadID, minuteData[l][i].direction, minuteData[l][i].timeStamp);
+                    fprintf(fsp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
+                    fprintf(fsp, "%5.2f;%5.2f;%3d;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion, minuteData[l][i].speedMeasurementCount);
+                }
+                
+            }
+        }
+        break;
+    
+    default:
+        break;
+    }
+    fclose(fsp);
     fclose(fp);
 }
 
