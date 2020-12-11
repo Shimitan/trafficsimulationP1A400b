@@ -285,13 +285,13 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
             }
 
             //printf("pre while\n");
-            i = 0;
-            while(roadArr[j].currCars[i] != -1){
-                i++;
+            k = 0;
+            while(roadArr[j].currCars[k] != -1){
+                k++;
             }
             printf("post while: i = %d\n", i);
 
-            if(i > (roadArr[j].length / (CAR_LENGTH + MIN_SPACING))){
+            if(k > (roadArr[j].length / (CAR_LENGTH + MIN_SPACING)) / 1.1){
                 carAmount = INFINITY;
             }else{
                 carAmount = 0;
