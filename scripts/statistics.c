@@ -274,7 +274,6 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
                     fprintf(fp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
                     fprintf(fp, "%5.2f;%5.2f;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
                 }
-                
             }
         }
         break;
@@ -289,7 +288,6 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
                     fprintf(fp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
                     fprintf(fp, "%5.2f;%5.2f;%3d;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion, minuteData[l][i].speedMeasurementCount);
                 }
-                
             }
         }
         break;
@@ -304,7 +302,6 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
                     fprintf(fp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
                     fprintf(fp, "%5.2f;%5.2f;%3d;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion, minuteData[l][i].speedMeasurementCount);
                 }
-                
             }
         }
         break;
@@ -323,7 +320,6 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
                     fprintf(fsp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
                     fprintf(fsp, "%5.2f;%5.2f;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion);
                 }
-                
             }
         }
         break;
@@ -338,7 +334,6 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
                     fprintf(fsp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
                     fprintf(fsp, "%5.2f;%5.2f;%3d;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion, minuteData[l][i].speedMeasurementCount);
                 }
-                
             }
         }
         break;
@@ -353,7 +348,6 @@ void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, 
                     fprintf(fsp, "%3.0lf;%3.0lf;", minuteData[l][i].averageSpeed, minuteData[l][i].maxSpeed);
                     fprintf(fsp, "%5.2f;%5.2f;%3d;%3d\n",  minuteData[l][i].calculatedFlow, minuteData[l][i].density, minuteData[l][i].congestion, minuteData[l][i].speedMeasurementCount);
                 }
-                
             }
         }
         break;
