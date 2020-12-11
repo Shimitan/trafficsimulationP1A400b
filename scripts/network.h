@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "statistics.h"
 
-#define INFINITY 2147483647
+#define INFINITY 214748364
 
 /* UwUbuntu */
 /* OwObonto */
