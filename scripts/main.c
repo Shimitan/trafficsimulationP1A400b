@@ -125,9 +125,9 @@ int main(void){
     while (currTick < simulationTime) {
 
         if(currTick >= simulationTime/1.25){
-            tickRate = (simulationTime/1.50) / (carAmount/1.5);
+            tickRate = (simulationTime/1.50) / (carAmount/1.6);
         }else if(currTick >= simulationTime/1.75){
-            tickRate = (simulationTime/1.25) / (carAmount/1.25);
+            tickRate = (simulationTime/1.25) / (carAmount/1.15);
         }
 
 
