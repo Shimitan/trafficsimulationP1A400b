@@ -74,8 +74,6 @@ int main(void){
         }
     }    
     
-    car = malloc(carAmount * sizeof(struct car));
-    
     for(i = 0; i < carAmount; i++){
         car[i].active = 0;
         car[i].pathStep = 0;
@@ -140,8 +138,6 @@ int main(void){
         }else if(currTick >= simulationTime/1.75){
             tickRate = (simulationTime/1.25) / (carAmount/1.15);
         }
-
-
 
         j++;
         if (j >= tickRate && k < carAmount) {
