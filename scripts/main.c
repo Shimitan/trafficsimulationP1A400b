@@ -36,6 +36,7 @@ int main(void){
     int ticks = 0, minuteIndex = 0, roadIndex = 0, m, minutesSimulated;
     int *carsOnRoadCount;
     int *speedIndex;
+    int tickRate;
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road *roadArr;
@@ -117,9 +118,20 @@ int main(void){
         }
     }
 
+    tickRate = (simulationTime / 1.25) / (carAmount/1.25);
+
     while (currTick < simulationTime) {
+
+        if(currTick >= simulationTime/1.25){
+            tickRate = (simulationTime/1.50) / (carAmount/1.5);
+        }else if(currTick >= simulationTime/1.75){
+            tickRate = (simulationTime/1.25) / (carAmount/1.25);
+        }
+
+
+
         j++;
-        if (j >= 120 && k < carAmount) {
+        if (j >= tickRate && k < carAmount) {
             createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount, nodeAmount);
             j = 0;
         }
