@@ -36,6 +36,7 @@ int main(void){
     int ticks = 0, minuteIndex = 0, roadIndex = 0, m, minutesSimulated;
     int *carsOnRoadCount;
     int *speedIndex;
+    int tickRate;
     road road;
     //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road *roadArr;
@@ -46,7 +47,6 @@ int main(void){
     
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
-    
 
     for(i = 0; i < roadAmount; i++){
         roadArr[i].startID = -1;
@@ -63,6 +63,16 @@ int main(void){
     }
 
     getRestOfInput(roadArr, &seed, &simulationTime, &carAmount);
+
+    car = (struct car*)malloc(carAmount * sizeof(struct car));
+
+    for(i = 0; i < carAmount; i++){
+        car[i].active = 0;
+        car[i].pathStep = 0;
+        for (l = 0; l < 100; l++) {
+            car[i].path[l] = -1;
+        }
+    }    
     
     car = malloc(carAmount * sizeof(struct car));
     
@@ -121,9 +131,20 @@ int main(void){
         }
     }
 
+    tickRate = (simulationTime / 1.25) / (carAmount/1.25);
+
     while (currTick < simulationTime) {
+
+        if(currTick >= simulationTime/1.25){
+            tickRate = (simulationTime/1.50) / (carAmount/1.6);
+        }else if(currTick >= simulationTime/1.75){
+            tickRate = (simulationTime/1.25) / (carAmount/1.15);
+        }
+
+
+
         j++;
-        if (j >= 10 && k < carAmount) {
+        if (j >= tickRate && k < carAmount) {
             createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount, nodeAmount);
             j = 0;
         }
@@ -181,8 +202,9 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
         car->currNode = endNodes[rand() % endNodeAmount];
         car->endGoal = endNodes[rand() % endNodeAmount];
     }while(car->currNode == car->endGoal);
-    
+    printf("pre pathfinding\n");
     pathfinding(car, roadArr, roadPointsArr, nodeAmount);
+    printf("post pathfinding\n");
 
     car->pathStep = 1;
     car->currGoal = car->path[car->pathStep];
