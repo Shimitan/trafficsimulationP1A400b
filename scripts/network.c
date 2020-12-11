@@ -255,6 +255,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
 
     /* While loop stops when array is empty */
     while(notTested[0] != -1){
+        printf("\nny notTested\n");
         difficulty = 0;
 
         /* Removes node currently being tested from the array */
@@ -273,6 +274,7 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
         
                 
         for(i = 0; i < roadPointsArr[currentNode].numOfConnections; i++){
+            printf("start for\n");
 
             /* finds distance from current node to neigbour node */
             j = 0;
