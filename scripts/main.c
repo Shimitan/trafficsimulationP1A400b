@@ -42,18 +42,10 @@ int main(void){
     roadPoints *nodeArr;
     int *endNodes;
     int *intersections;
-    car car[1000];
+    car *car;
     
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
-    
-    for(i = 0; i < 1000; i++){
-        car[i].active = 0;
-        car[i].pathStep = 0;
-        for (l = 0; l < 100; l++) {
-            car[i].path[l] = -1;
-        }
-    }
 
     for(i = 0; i < roadAmount; i++){
         roadArr[i].startID = -1;
@@ -70,6 +62,16 @@ int main(void){
     }
 
     getRestOfInput(roadArr, &seed, &simulationTime, &carAmount);
+
+    car = (struct car*)malloc(carAmount * sizeof(struct car));
+
+    for(i = 0; i < carAmount; i++){
+        car[i].active = 0;
+        car[i].pathStep = 0;
+        for (l = 0; l < 100; l++) {
+            car[i].path[l] = -1;
+        }
+    }    
     
     /*Allocates a 2D array for data collection statically*/
     carsOnRoadCount = allocateIntArray(roadAmount * 2);
@@ -166,6 +168,7 @@ int main(void){
     free(nodeArr);
     free(roadArr);
     free(endNodes);
+    free(car);
 
     printf("Simulated ended!\n");
     return 0;
