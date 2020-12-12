@@ -83,7 +83,7 @@ int main(void){
     }
     
     
-    /*Allocates a 2D array for data collection statically*/
+    /*Allocates a 2D array for data collection dynamically*/
     carsOnRoadCount = allocateIntArray(roadAmount * 2);
     speedIndex = allocateIntArray(roadAmount * 2);
     minutesSimulated = simulationTime / (TICKS_PER_SECOND * SECONDS_PER_MINUTE);
