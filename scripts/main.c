@@ -79,7 +79,7 @@ int main(void){
     carsOnRoadCount = allocateIntArray(roadAmount * 2);
     speedIndex = allocateIntArray(roadAmount * 2);
     minutesSimulated = simulationTime / (TICKS_PER_SECOND * SECONDS_PER_MINUTE);
-    data **minuteData = createDataArray(roadAmount * 2, minutesSimulated);
+    data **minuteData = allocateDataArray(roadAmount * 2, minutesSimulated);
     setUpDataArray(roadAmount * 2, minutesSimulated, carAmount, TICKS_PER_SECOND, minuteData, speedIndex, carsOnRoadCount, roadArr);
 
     srand(seed);
@@ -140,10 +140,6 @@ int main(void){
                     break;
                 }
             }
-            /*if(car[i].active == 1){
-                printf("Location = %f, Speed = %f, ID = %d\n", car[i].location, car[i].speed, car[i].ID);
-                printf("CurrGoal: %d\n\n", car[i].currGoal);
-            }*/
         }
         currTick++;
         if (currTick % (SECONDS_PER_MINUTE * TICKS_PER_SECOND) == 0) {

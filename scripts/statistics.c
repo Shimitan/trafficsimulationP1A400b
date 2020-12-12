@@ -47,7 +47,7 @@ double* createSpeedArray(int amountOfCars, int ticksPerSecond){
 }
 
 /*Dynamically allocates a 2D-array of type data*/
-data** createDataArray(int amountOfRoads, int minutesSimulated){
+data** allocateDataArray(int amountOfRoads, int minutesSimulated){
     int i;
     data **dat;
 
@@ -104,8 +104,8 @@ void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int
             }
         }
     }
-    quarterHourData = createDataArray(amountOfRoads, quarterHourIntervals);
-    hourData = createDataArray(amountOfRoads, hourIntervals);
+    quarterHourData = allocateDataArray(amountOfRoads, quarterHourIntervals);
+    hourData = allocateDataArray(amountOfRoads, hourIntervals);
     calculateLargerIntervals(amountOfRoads, minutesSimulated, 15, minuteData, quarterHourData);
     calculateLargerIntervals(amountOfRoads, minutesSimulated, 60, minuteData, hourData);
     printf("-------------------------------->  1 minute intervals <--------------------------------\n\n");

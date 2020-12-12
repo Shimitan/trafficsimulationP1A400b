@@ -69,7 +69,7 @@ void freeSpeedArrays(int amountOfRoads, int minutesSimulated, data **minuteData)
 void calculateFlow(data *dp);
 void calculateDensity(data *dp);
 void calculateCongestion(data *dp);
-data** createDataArray(int amountOfRoads, int minutesSimulated);
+data** allocateDataArray(int amountOfRoads, int minutesSimulated);
 int* allocateIntArray(int length);
 void calculateLargerIntervals(int amountOfRoads, int minutesSimulated, int interval, data **minuteData, data **largeIntervalData);
 void makeOutputFile(int amountOfRoads, int minutesSimulated, data **minuteData, int interval, char *fileName, char *fileSelectedData);
