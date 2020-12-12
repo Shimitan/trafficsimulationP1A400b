@@ -57,7 +57,7 @@ typedef struct data data;
 typedef struct road road;
 
 /*Prototypes*/
-double* createSpeedArray(int amountOfCars, int ticksPerSecond);
+double* allocateSpeedArray(int amountOfCars, int ticksPerSecond);
 void measureSpeed(double speed, data *dp, int index);
 void analyseData(int amountOfRoads, int minutesSimulated, data **minuteData, int seed);
 void averageSpeed(data *dp);

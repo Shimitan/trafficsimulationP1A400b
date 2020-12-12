@@ -6,7 +6,7 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
 
     for (i = 0; i < amountOfRoads; i++){
         for (l = 0; l < minutesSimulated; l++){
-            minuteData[i][l].speedOfCars = createSpeedArray(amountOfCars, ticksPerSecond);
+            minuteData[i][l].speedOfCars = allocateSpeedArray(amountOfCars, ticksPerSecond);
             if (minuteData[i][l].speedOfCars == NULL){
                 printf("Error allocating memory for [%d][%d]\n", i, l);
                 exit(EXIT_FAILURE);
@@ -36,7 +36,7 @@ void setUpDataArray(int amountOfRoads, int minutesSimulated, int amountOfCars, i
 }
 
 /*Dynamically allocates an array to store the speed for each car for each tick on a given road*/
-double* createSpeedArray(int amountOfCars, int ticksPerSecond){
+double* allocateSpeedArray(int amountOfCars, int ticksPerSecond){
     double *speedArray = (double *) malloc(SECONDS_PER_MINUTE * amountOfCars * ticksPerSecond * sizeof(double));
 
     if (speedArray == NULL){
