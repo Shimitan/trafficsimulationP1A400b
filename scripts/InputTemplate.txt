@@ -7,8 +7,3 @@ ID, ID, RoadLenth, speedLimit
 ID, ID, RoadLenth, speedLimit
 ID, ID, RoadLenth, speedLimit
 ...
-
-
-
-TILFØJ!!!
-
