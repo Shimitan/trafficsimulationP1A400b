@@ -3,14 +3,14 @@
 
 CuSuite* StrUtilGetSuite();
 /*Change prototype to relevant function name*/
-CuSuite* secondConverterGetSuite();
+CuSuite* statisticsGetSuite();
 
 void runAllTests(void){
   CuString *output = CuStringNew();
   CuSuite* suite = CuSuiteNew();
   
   /*Change second argument to whatever the function is called*/
-  CuSuiteAddSuite(suite, (CuSuite*)secondConverterGetSuite());
+  CuSuiteAddSuite(suite, (CuSuite*) statisticsGetSuite());
   
   CuSuiteRun(suite);
   CuSuiteSummary(suite, output);
