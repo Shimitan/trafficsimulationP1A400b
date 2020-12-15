@@ -58,7 +58,7 @@ dkms.conf
 *.cmake
 /scripts/cmake-build-debug
 CMakeLists.txt
-/UnitTest/CuTest_template/cmake-build-debug
+/UnitTest/cmake-build-debug
 
 
 
