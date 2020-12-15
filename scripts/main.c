@@ -36,9 +36,8 @@ int main(void){
     int ticks = 0, minuteIndex = 0, roadIndex = 0, m, minutesSimulated;
     int *carsOnRoadCount;
     int *speedIndex;
-    int tickRate;
+    int spawnRate;
     road road;
-    //Her står der Struct fordi ellers virkede den ikk... Idk why
     struct road *roadArr;
     roadPoints *nodeArr;
     int *endNodes;
@@ -48,6 +47,7 @@ int main(void){
     nodeArr = getNodeAmount(&nodeAmount);
     roadArr = getRoadAmount(&roadAmount);
 
+    /* Resets variables */
     for(i = 0; i < roadAmount; i++){
         roadArr[i].startID = -1;
         roadArr[i].endID = -1;
@@ -63,9 +63,9 @@ int main(void){
     }
 
     getRestOfInput(roadArr, &seed, &simulationTime, &carAmount);
-
     car = (struct car*)malloc(carAmount * sizeof(struct car));
 
+    /* Resets variables */
     for(i = 0; i < carAmount; i++){
         car[i].active = 0;
         car[i].pathStep = 0;
@@ -73,15 +73,6 @@ int main(void){
             car[i].path[l] = -1;
         }
     }    
-    
-    for(i = 0; i < carAmount; i++){
-        car[i].active = 0;
-        car[i].pathStep = 0;
-        for (l = 0; l < 100; l++) {
-            car[i].path[l] = -1;
-        }
-    }
-    
     
     /*Allocates a 2D array for data collection dynamically*/
     carsOnRoadCount = allocateIntArray(roadAmount * 2);
@@ -92,10 +83,11 @@ int main(void){
 
     srand(seed);
 
+
     for (i = 0; i < nodeAmount; i++) {
         nodeArr[i].ID = i;
     }
-
+    /* Gives values to nodes(ID, connections, numOfConnections) */
     for (i = 0; i < roadAmount; i++) {
         nodeArr[roadArr[i].startID].connections[nodeArr[roadArr[i].startID].numOfConnections] = roadArr[i].endID;
         nodeArr[roadArr[i].startID].numOfConnections += 1;
@@ -119,6 +111,7 @@ int main(void){
     l = 0;
     n = 0;
 
+    /* Assigns endnodes */
     for (i = 0; i < nodeAmount; i++) {
         if (nodeArr[i].numOfConnections == 1) {
             endNodes[l] = nodeArr[i].ID;
@@ -129,26 +122,30 @@ int main(void){
         }
     }
 
-    tickRate = (simulationTime / 1.25) / (carAmount/1.25);
+    spawnRate = (simulationTime / 1.25) / (carAmount/1.25);
 
     while (currTick < simulationTime) {
 
+        /* Changes spawnrate of cars */
         if(currTick >= simulationTime/1.25){
-            tickRate = (simulationTime/1.50) / (carAmount/1.6);
+            spawnRate = (simulationTime/1.50) / (carAmount/1.6);
         }else if(currTick >= simulationTime/1.75){
-            tickRate = (simulationTime/1.25) / (carAmount/1.15);
+            spawnRate = (simulationTime/1.25) / (carAmount/1.15);
         }
 
+        /* Spawns cars */
         j++;
-        if (j >= tickRate && k < carAmount) {
+        if (j >= spawnRate && k < carAmount) {
             createCar(&car[k], &k, roadArr, nodeArr, endNodes, endNodeAmount, nodeAmount);
             j = 0;
         }
 
+        /* Changes light at intersections */
         for (i = 0; i < intersectionAmount; i++) {
             changeLight(roadArr, &nodeArr[intersections[i]], roadAmount);
         }
 
+        /* runs movecar with correct parameters */
         for(i = 0; i < carAmount; i++){
             for (l = 0; l < roadAmount; l++) {
                 if ((roadArr[l].startID == car[i].currNode && roadArr[l].endID == car[i].currGoal) || (roadArr[l].endID == car[i].currNode && roadArr[l].startID == car[i].currGoal)) {
@@ -173,6 +170,7 @@ int main(void){
 
     analyseData(roadAmount * 2, minutesSimulated, minuteData, seed);
     
+    /* deallocates memory */
     freeSpeedArrays(roadAmount * 2, minutesSimulated, minuteData);
     free(minuteData);
     free(speedIndex);
@@ -190,6 +188,7 @@ int main(void){
 void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPointsArr[], int* endNodes, int endNodeAmount, int nodeAmount){
     int SENTINAL = 1, i = 0, l = 0;
 
+    /* Gives random start and endnode to car */
     do{
         car->currNode = endNodes[rand() % endNodeAmount];
         car->endGoal = endNodes[rand() % endNodeAmount];
@@ -201,6 +200,7 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
     car->pathStep = 1;
     car->currGoal = car->path[car->pathStep];
 
+    /* Finds road car will start on */
     while (SENTINAL) {
         if ((roadArr[l].startID == car->currNode && roadArr[l].endID == car->currGoal) || (roadArr[l].endID == car->currNode && roadArr[l].startID == car->currGoal)) {
             SENTINAL = 0;
@@ -237,7 +237,6 @@ void createCar(car* car, int* k, struct road roadArr[], struct roadPoints roadPo
 }
 
 /* This funktion read the file called "Input.txt", and configures the roads in roadArr */
-/* den her er ikk et problem :) */
 roadPoints* getNodeAmount(int* nodeAmount) {
     int ch, l = 0, lineRead = 0;
     char str[16];

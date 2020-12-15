@@ -129,7 +129,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             car->location -= car->speed;
         }
 
-        /* Gem farten til databehandling */
+        /* Saves speed for dataprocessing */
         if (car->dirBool == 1 && (road->length - car->location) > (findAccelerationLength(car, road) + 5 * (CAR_LENGTH + MIN_SPACING)) && car->location > findAccelerationLength(car, road)){
             measureSpeed(car->speed, dp, *index);
             *index += 1;
@@ -138,7 +138,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             *index += 1;
         }
         
-        /* Gem antal biler der har passeret midtpunktet af vejen */
+        /* Saves number of cars that has passed the middle point of a road */
         if (car->dirBool == 1 && car->location >= (road->length/2) && (car->location - car->speed) < (road->length/2)){
             countCarFlow(dp);
         } else if (car->dirBool == 0 && car->location <= (road->length/2) && (car->location + car->speed) > (road->length/2)) {
@@ -161,7 +161,7 @@ void moveCar(car* car, struct car carArr[], road* road, struct road roadArr[], i
             
             pushArray(*car, road);
             
-            car->location = road->length; /* endpoint om det er bag en anden bil eller i et kryds */
+            car->location = road->length;
 
             car->currNode = road->endID;
             car->pathStep++;
@@ -198,7 +198,6 @@ int cmpfunc (const void * a, const void * b){
 }
 
 /* pushes the array of cars on the road to avoid gaps */
-/* den her hader jeg stadig væk */
 void pushArray(car car, road *road){
     int i = 0, SENTINAL = 1;
 
@@ -317,10 +316,6 @@ void pathfinding(car* car, road roadArr[], struct roadPoints roadPointsArr[], in
     }
 }
 
-void roadOutput(car car[], road road){
-
-}
-
 /* facilitates the change in road when car reaches a node */
 void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount){
     int l, i;
@@ -355,6 +350,7 @@ void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount){
     }
 }
 
+/* Facilitates light changes at intersections */
 void changeLight(road roadArr[], roadPoints* node, int roadAmount) {
     int intersecMax = 740;
     int i, j = 0;
