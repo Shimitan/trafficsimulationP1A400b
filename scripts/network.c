@@ -327,7 +327,7 @@ void changeRoad(car* car, road roadArr[], int* debugBool, int roadAmount){
         for (l = 0; l < roadAmount; l++) {
             if ((roadArr[l].startID == car->currNode && roadArr[l].endID == car->currGoal) || (roadArr[l].endID == car->currNode && roadArr[l].startID == car->currGoal)) {
                 road = roadArr[l];
-                for (i = 0; i < 100; i++) {
+                for (i = 0; i < 1000; i++) {
                     if (roadArr[l].currCars[i] == -1) {
                         roadArr[l].currCars[i] = car->ID;
                         break;
