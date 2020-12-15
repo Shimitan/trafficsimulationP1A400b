@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include "CuTest.h"
 
-#define SECONDS_PER_MINUTE 60
-#define SECONDS_PER_HOUR 3600
-
 /*Function being tested*/
 struct data{
     /*Time*/
