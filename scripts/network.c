@@ -47,7 +47,7 @@ double distanceBetweenCars(car car){
 void isCarInFront(car car, road road, struct car carArr[], double* carLocation, int* bool){
 
     int i = 0, k = 0, j;
-    double locations[100];
+    double locations[1000];
     int temp, SENTINAL = 1;
     
     /* Makes array of locations of cars on the road */
