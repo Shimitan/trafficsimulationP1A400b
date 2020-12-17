@@ -135,6 +135,23 @@ void testFlow150Cars60min(CuTest *tc){
     CuAssertDblEquals(tc, expectedFlow, testData.calculatedFlow,0.000001);
 }
 
+void testAverageSpeed0(CuTest *tc){
+    data testData;
+    testData.speedMeasurementCount = 5;
+    double *testSpeed = (double *) malloc(testData.speedMeasurementCount * sizeof(double));
+    testData.speedMeasurementCount = 0;
+    testSpeed[0] = 2.0;
+    testSpeed[1] = 2.0;
+    testSpeed[2] = 2.0;
+    testSpeed[3] = 2.0;
+    testSpeed[4] = 2.0;
+    testData.speedOfCars = testSpeed;
+    averageSpeed(&testData);
+    double expectedSpeed = 0.0;
+    free(testSpeed);
+    CuAssertDblEquals(tc, expectedSpeed, testData.averageSpeed,0.000001);
+}
+
 void testAverageSpeed1(CuTest *tc){
     data testData;
     testData.speedMeasurementCount = 5;
@@ -147,6 +164,7 @@ void testAverageSpeed1(CuTest *tc){
     testData.speedOfCars = testSpeed;
     averageSpeed(&testData);
     double expectedSpeed = 2.0;
+    free(testSpeed);
     CuAssertDblEquals(tc, expectedSpeed, testData.averageSpeed,0.000001);
 }
 
@@ -167,6 +185,7 @@ void testAverageSpeed2(CuTest *tc){
     testData.speedOfCars = testSpeed;
     averageSpeed(&testData);
     double expectedSpeed = 2.0;
+    free(testSpeed);
     CuAssertDblEquals(tc, expectedSpeed, testData.averageSpeed,0.000001);
 }
 
@@ -192,6 +211,7 @@ void testAverageSpeed3(CuTest *tc){
     testData.speedOfCars = testSpeed;
     averageSpeed(&testData);
     double expectedSpeed = 4.933333;
+    free(testSpeed);
     CuAssertDblEquals(tc, expectedSpeed, testData.averageSpeed,0.000001);
 }
 
@@ -289,6 +309,7 @@ CuSuite* statisticsGetSuite(){
     SUITE_ADD_TEST(suite, testFlow150Cars1min);
     SUITE_ADD_TEST(suite, testFlow150Cars15min);
     SUITE_ADD_TEST(suite, testFlow150Cars60min);
+    SUITE_ADD_TEST(suite, testAverageSpeed0);
     SUITE_ADD_TEST(suite, testAverageSpeed1);
     SUITE_ADD_TEST(suite, testAverageSpeed2);
     SUITE_ADD_TEST(suite, testAverageSpeed3);
